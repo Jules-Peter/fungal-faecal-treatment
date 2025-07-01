@@ -1,46 +1,16 @@
-species,material,inoculum_age,mean_growth_speed
-Control,corn cobs,48,0
-Control,corn cobs,48,0
-Control,corn cobs,48,0
-C.comatus,wood chips,49,4.039289360608878
-C.comatus,wood chips,49,2.0090572531174877
-C.comatus,wood chips,49,1.2548682479061726
-P.ostreatus v. Floridae,corn cobs,48,0.3946625771072178
-P.ostreatus v. Floridae,corn cobs,48,3.4871678454846706
-P.ostreatus v. Floridae,corn cobs,48,0.5969026041820605
-faecal isolate 1,wood chips,48,4.821472058634336
-faecal isolate 1,wood chips,48,0.22776546738526
-faecal isolate 1,wood chips,48,3.0021844795867465
-P.ostreatus v. Floridae,wood chips,48,1.7592918860102837
-P.ostreatus v. Floridae,wood chips,48,4.821472058634336
-P.ostreatus v. Floridae,wood chips,48,0.9215338450530058
-Control,corn cobs,59,3.7140606482439322
-Control,corn cobs,59,0.6981317007977318
-Control,corn cobs,59,0.3946625771072178
-C.comatus,wood chips,60,3.4871678454846706
-C.comatus,wood chips,60,0.5969026041820605
-C.comatus,wood chips,60,4.821472058634336
-P.ostreatus v. Floridae,corn cobs,59,0.22776546738526
-P.ostreatus v. Floridae,corn cobs,59,3.0021844795867465
-P.ostreatus v. Floridae,corn cobs,59,1.7592918860102837
-faecal isolate 1,wood chips,59,4.821472058634336
-faecal isolate 1,wood chips,59,1.1074114103904023
-faecal isolate 1,wood chips,59,4.563163329339175
-P.ostreatus v. Floridae,wood chips,59,0.8344855486097889
-P.ostreatus v. Floridae,wood chips,59,0.3946625771072178
-P.ostreatus v. Floridae,wood chips,59,3.4871678454846706
-Control,corn cobs,66,0.5969026041820605
-Control,corn cobs,66,4.821472058634336
-Control,corn cobs,66,0.22776546738526
-C.comatus,wood chips,67,3.0021844795867465
-C.comatus,wood chips,67,1.7592918860102837
-C.comatus,wood chips,67,4.821472058634336
-P.ostreatus v. Floridae,corn cobs,66,0.9215338450530058
-P.ostreatus v. Floridae,corn cobs,66,3.7140606482439322
-P.ostreatus v. Floridae,corn cobs,66,0.6981317007977318
-faecal isolate 1,wood chips,66,0.33510321638291135
-faecal isolate 1,wood chips,66,2.848377339254746
-faecal isolate 1,wood chips,66,0.5026548245743669
-P.ostreatus v. Floridae,wood chips,66,4.691445029360758
-P.ostreatus v. Floridae,wood chips,66,0.19547687622336493
-P.ostreatus v. Floridae,wood chips,66,3.2672563597333855
+id_treatment,id_inoc,id_faeces,weight_0dpi,weight_14dpi,area_size_0,area_size_7,area_size_14
+1,1,1,40.18,NA,NA,NA,NA
+2,1,1,41.53,NA,NA,NA,NA
+3,1,1,40.88,NA,NA,NA,NA
+4,2,1,38.43,NA,NA,NA,NA
+5,3,1,41.05,NA,NA,NA,NA
+6,4,1,40.93,NA,1,2,3
+7,4,1,40.65,NA,NA,NA,NA
+8,4,1,40.79,NA,NA,NA,NA
+9,6,1,41.22,NA,4,5,6
+10,7,2,NA,NA,NA,NA,NA
+11,7,2,NA,NA,NA,NA,NA
+12,7,2,NA,NA,NA,NA,NA
+13,8,2,NA,NA,NA,NA,NA
+14,8,2,NA,NA,NA,NA,NA
+15,8,2,NA,NA,NA,NA,NA
