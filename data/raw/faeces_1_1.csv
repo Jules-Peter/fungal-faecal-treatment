@@ -1,0 +1,5 @@
+id_faeces,collection_date_1,collection_date_2,total-weight,ph,water_content,sample_weight_1,sample_weight_2,sample_weight_3,dilution_factor_ecoli,dilution_factor_enterococcus,e_coli_counted_1,e_coli_counted_2,e_coli_counted_3,enterococcus_counted_1,enterococcus_counted_2,enterococcus_counted_3
+1,2025-05-07T00:00:00Z,,240,,81,0.25,0.46,0.33,10,5000,48,71,66,21,56,42
+2,2025-07-08T00:00:00Z,,283,,77,0.66,1.15,0.69,50000,50,109,145,100,NA,NA,NA
+3,2025-07-09T00:00:00Z,,308,,84,0.68,0.75,0.74,50000,50,187,191,200,NA,NA,NA
+4,2025-07-15T00:00:00Z,,250,,87,0.67,0.57,0.95,50000,50,57,48,102,NA,NA,NA
