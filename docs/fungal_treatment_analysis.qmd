@@ -705,6 +705,7 @@ Based on the ANOVA assumptions tests and subsequent analyses:
 
 # Session Information
 
+
 ```{r session-info}
 sessionInfo()
 ```

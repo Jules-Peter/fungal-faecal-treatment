@@ -12,3 +12,9 @@ growth_speed_1_1 <- read_sheet("https://docs.google.com/spreadsheets/d/14VSVuUM3
 inoculum_1_1 <- read_sheet("https://docs.google.com/spreadsheets/d/1A6j-FTdwOlPrr494TVFlIqkjl4RCOjVuNB03TEnBH2M/edit?usp=drive_link")
 
 ###Writing the files in git hup directory follow up
+write_csv(bacteria_1_1, "C:/Users/jupeter/gitrepos/fungal-faecal-treatment/data/raw/bacteria_1_1.csv")
+write_csv(experiment_1_1, "C:/Users/jupeter/gitrepos/fungal-faecal-treatment/data/raw/experiment_1_1.csv")
+write_csv(faeces_1_1, "C:/Users/jupeter/gitrepos/fungal-faecal-treatment/data/raw/faeces_1_1.csv")
+write_csv(growth_speed_1_1, "C:/Users/jupeter/gitrepos/fungal-faecal-treatment/data/raw/growth_speed_1_1.csv")
+write_csv(inoculum_1_1, "C:/Users/jupeter/gitrepos/fungal-faecal-treatment/data/raw/inoculum_1_1.csv")
+
