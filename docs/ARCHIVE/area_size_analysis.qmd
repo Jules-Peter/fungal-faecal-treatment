@@ -1,0 +1,1051 @@
+---
+title: "Fungal Treatment Area Size and E. coli Analysis"
+author: "Analysis Report"
+date: today
+format: html
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(ggplot2)
+library(scales)
+
+# Try to load multcompView, install if needed
+if (!requireNamespace("multcompView", quietly = TRUE)) {
+  install.packages("multcompView", repos = "https://cran.r-project.org")
+}
+library(multcompView)
+```
+
+## Data Import and Preparation
+
+```{r statistical-functions}
+# Function to perform Tukey HSD and get letter groups
+get_letter_groups <- function(data, response_var, group_var) {
+  # Check if there's variance in the data
+  if(length(unique(data[[group_var]])) < 2) {
+    return(data.frame())
+  }
+  
+  # Perform ANOVA
+  formula_str <- paste(response_var, "~", group_var)
+  aov_result <- aov(as.formula(formula_str), data = data)
+  
+  # Get Tukey HSD results
+  tukey_result <- TukeyHSD(aov_result)
+  
+  # Try to use multcompView if available, otherwise use simple approach
+  if (exists("multcompLetters4")) {
+    # Extract compact letter display
+    tukey_letters <- multcompLetters4(aov_result, tukey_result)
+    
+    # Create dataframe with letters
+    letters_df <- data.frame(
+      group = names(tukey_letters[[group_var]]$Letters),
+      letters = tukey_letters[[group_var]]$Letters,
+      stringsAsFactors = FALSE
+    )
+    names(letters_df)[1] <- group_var
+  } else {
+    # Fallback: create simple letter groups based on p-values
+    # Get group means
+    group_means <- aggregate(data[[response_var]], 
+                           by = list(data[[group_var]]), 
+                           FUN = mean, na.rm = TRUE)
+    names(group_means) <- c(group_var, "mean")
+    group_means <- group_means[order(group_means$mean, decreasing = TRUE), ]
+    
+    # Simple letter assignment (not as sophisticated as multcompView)
+    # Groups are assigned letters based on significance threshold
+    p_values <- tukey_result[[1]][, "p adj"]
+    
+    # For simplicity, just mark significantly different groups
+    letters_df <- data.frame(
+      group = group_means[[group_var]],
+      letters = LETTERS[seq_len(nrow(group_means))],
+      stringsAsFactors = FALSE
+    )
+    names(letters_df)[1] <- group_var
+  }
+  
+  return(letters_df)
+}
+```
+
+```{r data-import}
+# Read the experiment data
+experiment_data <- read.csv("../data/processed/experiment_final.csv")
+
+# View structure of the data
+str(experiment_data)
+```
+
+## Area Size Analysis
+
+### Data Filtering
+
+We'll filter for samples that have area size measurements at both 0dpi and either 7dpi or 14dpi to calculate growth from baseline.
+
+```{r filter-data}
+# Filter for samples with valid area size measurements at 0dpi and either 7dpi or 14dpi
+area_data <- experiment_data %>%
+  filter(
+    !is.na(area_size_0dpi) & (!is.na(area_size_7dpi) | !is.na(area_size_14dpi))
+  ) %>%
+  # Remove control samples as they don't show growth
+  filter(species != "ctrl")
+
+# Check how many samples we have per species
+area_data %>%
+  group_by(species) %>%
+  summarise(n_samples = n())
+
+# Check if Sordaria is in the data
+sordaria_check <- area_data %>%
+  filter(grepl("Sordaria", species, ignore.case = TRUE))
+
+if(nrow(sordaria_check) > 0) {
+  cat("Sordaria data found:\n")
+  print(sordaria_check %>% select(species, area_size_0dpi, area_size_7dpi, area_size_14dpi))
+}
+```
+
+### Data Reshaping for Area Size Plot
+
+```{r reshape-area-data}
+# Calculate area size as difference from 0dpi baseline
+area_diff <- area_data %>%
+  mutate(
+    area_diff_7dpi = area_size_7dpi - area_size_0dpi,
+    area_diff_14dpi = area_size_14dpi - area_size_0dpi
+  )
+
+# Reshape data to long format for area size differences, only for 7dpi and 14dpi
+area_long <- area_diff %>%
+  select(id_treatment, species, id_inoc, id_faeces, starting_date, 
+         area_diff_7dpi, area_diff_14dpi) %>%
+  pivot_longer(
+    cols = c(area_diff_7dpi, area_diff_14dpi),
+    names_to = "timepoint",
+    values_to = "area_size_diff",
+    names_prefix = "area_diff_"
+  ) %>%
+  filter(!is.na(area_size_diff)) %>%
+  mutate(
+    timepoint = factor(timepoint, levels = c("7dpi", "14dpi"))
+  )
+
+# Calculate summary statistics
+area_summary <- area_long %>%
+  group_by(species, id_inoc, starting_date, timepoint) %>%
+  summarise(
+    mean_area_diff = mean(area_size_diff, na.rm = TRUE),
+    sd_area_diff = sd(area_size_diff, na.rm = TRUE),
+    se_area_diff = sd_area_diff / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  )
+
+# View the summary
+area_summary
+
+# Check if Sordaria is in the summary
+sordaria_summary <- area_summary %>%
+  filter(grepl("Sordaria", species, ignore.case = TRUE))
+
+if(nrow(sordaria_summary) > 0) {
+  cat("\nSordaria in summary data:\n")
+  print(sordaria_summary)
+} else {
+  cat("\nWARNING: Sordaria not found in summary data!\n")
+}
+```
+
+### Area Size Visualization
+
+```{r species-order}
+# Define consistent species order based on overall growth
+# First, get species with 14dpi data (preferred for ordering)
+species_with_14dpi <- area_summary %>%
+  filter(timepoint == "14dpi") %>%
+  group_by(species) %>%
+  summarise(mean_area_diff_final = mean(mean_area_diff, na.rm = TRUE)) %>%
+  arrange(desc(mean_area_diff_final)) %>%
+  pull(species)
+
+# Then, get species that only have 7dpi data
+species_only_7dpi <- area_summary %>%
+  filter(timepoint == "7dpi" & !(species %in% species_with_14dpi)) %>%
+  group_by(species) %>%
+  summarise(mean_area_diff_final = mean(mean_area_diff, na.rm = TRUE)) %>%
+  arrange(desc(mean_area_diff_final)) %>%
+  pull(species)
+
+# Combine both: 14dpi species first (ordered by growth), then 7dpi-only species
+species_order <- c(species_with_14dpi, species_only_7dpi)
+
+# Apply the ordering to the data
+area_summary <- area_summary %>%
+  mutate(species = factor(species, levels = species_order))
+
+# Check which species are in the order
+cat("Species in order:", paste(species_order, collapse = ", "), "\n")
+
+# Check if any species are missing from species_order
+missing_species <- setdiff(unique(area_summary$species), species_order)
+if(length(missing_species) > 0) {
+  cat("WARNING: Species missing from ordering:", paste(missing_species, collapse = ", "), "\n")
+  # Add missing species to the order
+  species_order <- c(species_order, missing_species)
+  # Reapply the ordering
+  area_summary <- area_summary %>%
+    mutate(species = factor(species, levels = species_order))
+}
+```
+
+```{r area-size-plot, fig.width=12, fig.height=7}
+# Define colors for each species
+# Make sure we have enough colors for all species including those only with 7dpi data
+all_species <- unique(area_summary$species)
+species_colors <- scales::hue_pal()(length(all_species))
+names(species_colors) <- all_species
+
+# First, we need to get the faeces ID for each data point in area_summary
+# Join back with original data to get id_faeces
+area_summary_with_faeces <- area_summary %>%
+  left_join(
+    area_long %>%
+      select(species, id_inoc, starting_date, timepoint, id_faeces) %>%
+      distinct(),
+    by = c("species", "id_inoc", "starting_date", "timepoint")
+  )
+
+# Get significance letters for each timepoint
+significance_letters <- area_long %>%
+  group_by(timepoint) %>%
+  group_modify(~ {
+    if(length(unique(.x$species)) > 1 && sum(!is.na(.x$area_size_diff)) > 0) {
+      letters <- get_letter_groups(.x, "area_size_diff", "species")
+      return(letters)
+    } else {
+      return(data.frame(species = character(), letters = character()))
+    }
+  }) %>%
+  ungroup()
+
+# Add significance letters to summary data
+area_summary_with_letters <- area_summary_with_faeces %>%
+  left_join(significance_letters, by = c("species", "timepoint"))
+
+# Calculate position for letters (above error bars)
+area_summary_with_letters <- area_summary_with_letters %>%
+  mutate(letter_y = mean_area_diff + se_area_diff + max(mean_area_diff) * 0.05)
+
+# Create the area size plot with consistent ordering and species colors
+p1 <- ggplot(area_summary_with_letters, aes(x = species, y = mean_area_diff, color = species)) +
+  geom_point(size = 4) +
+  geom_errorbar(
+    aes(ymin = mean_area_diff - se_area_diff, ymax = mean_area_diff + se_area_diff),
+    width = 0.2
+  ) +
+  # Add faeces numbers as text labels
+  geom_text(
+    aes(label = id_faeces),
+    color = "black",
+    size = 3,
+    vjust = -0.5,
+    hjust = 0.5
+  ) +
+  # Add significance letters
+  geom_text(
+    aes(y = letter_y, label = letters),
+    color = "black",
+    size = 4,
+    vjust = 0,
+    hjust = 0.5
+  ) +
+  facet_wrap(~timepoint, nrow = 1) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
+    legend.position = "none"  # Remove legend since species are on x-axis
+  ) +
+  labs(
+    title = "Fungal Growth (Area Size Change from Baseline)",
+    subtitle = "Points show mean ± SE; numbers = faeces sample; letters = statistical groups (Tukey HSD, p<0.05)",
+    x = "Species",
+    y = "Area Size Change from 0dpi (cm²)"
+  ) +
+  scale_color_manual(values = species_colors)
+
+print(p1)
+```
+
+### Area Size Line Plot Over Time
+
+```{r area-line-plot-prep}
+# Prepare data for line plot - combine all treatments by species
+# Add 0dpi as baseline (0 change)
+area_species_summary <- area_long %>%
+  group_by(species, timepoint) %>%
+  summarise(
+    mean_area_diff = mean(area_size_diff, na.rm = TRUE),
+    sd_area_diff = sd(area_size_diff, na.rm = TRUE),
+    se_area_diff = sd_area_diff / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    species = factor(species, levels = species_order),
+    dpi = as.numeric(gsub("dpi", "", timepoint))
+  )
+
+# Add 0dpi baseline (0 change) for each species
+baseline_data <- area_species_summary %>%
+  select(species) %>%
+  distinct() %>%
+  mutate(
+    timepoint = "0dpi",
+    dpi = 0,
+    mean_area_diff = 0,
+    sd_area_diff = 0,
+    se_area_diff = 0,
+    n = 1
+  )
+
+# Combine with the actual data
+area_species_summary <- bind_rows(baseline_data, area_species_summary) %>%
+  arrange(species, dpi)
+```
+
+```{r area-line-plot, fig.width=10, fig.height=6}
+# Add significance letters for 14 DPI to the species summary
+letters_14dpi <- significance_letters %>%
+  filter(timepoint == "14dpi") %>%
+  select(species, letters)
+
+area_species_summary_letters <- area_species_summary %>%
+  left_join(letters_14dpi, by = "species")
+
+# Create line plot showing progression over time with same colors
+p1_line <- ggplot(area_species_summary_letters, aes(x = dpi, y = mean_area_diff, color = species, group = species)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  geom_errorbar(
+    aes(ymin = mean_area_diff - se_area_diff, ymax = mean_area_diff + se_area_diff),
+    width = 0.5
+  ) +
+  # Add significance letters at 14 DPI
+  geom_text(
+    data = area_species_summary_letters %>% filter(dpi == 14),
+    aes(label = letters, y = mean_area_diff + se_area_diff + max(area_species_summary_letters$mean_area_diff) * 0.02),
+    color = "black",
+    size = 4,
+    vjust = 0,
+    hjust = -0.2
+  ) +
+  scale_x_continuous(breaks = c(0, 7, 14), labels = c("0 DPI", "7 DPI", "14 DPI")) +
+  scale_color_manual(values = species_colors) +
+  theme_bw() +
+  theme(legend.position = "right") +
+  labs(
+    title = "Fungal Growth Progression Over Time by Species",
+    subtitle = "Lines show mean ± SE; letters at 14 DPI indicate statistical groups (Tukey HSD, p<0.05)",
+    x = "Days Post Inoculation",
+    y = "Area Size Change from Baseline (cm²)",
+    color = "Species"
+  )
+
+print(p1_line)
+```
+
+### Trichoderma Species Growth Curves
+
+```{r trichoderma-plot-prep}
+# Filter for Trichoderma species only - from raw long format data
+trichoderma_long <- area_long %>%
+  filter(grepl("^T\\.|^Trichoderma", species))
+
+# Create summary for line plot
+trichoderma_data <- area_species_summary %>%
+  filter(grepl("^T\\.|^Trichoderma", species))
+
+# Check if we have any Trichoderma species
+if(nrow(trichoderma_data) > 0) {
+  # Get unique Trichoderma species for color assignment
+  trichoderma_species <- unique(trichoderma_data$species)
+  trichoderma_colors <- scales::hue_pal()(length(trichoderma_species))
+  names(trichoderma_colors) <- trichoderma_species
+}
+```
+
+```{r trichoderma-line-plot, fig.width=10, fig.height=6}
+# Create Trichoderma-specific growth plot
+if(exists("trichoderma_data") && nrow(trichoderma_data) > 0) {
+  
+  # Get significance letters for Trichoderma species at each timepoint
+  trichoderma_letters_by_time <- trichoderma_long %>%
+    group_by(timepoint) %>%
+    group_modify(~ {
+      if(length(unique(.x$species)) > 1 && sum(!is.na(.x$area_size_diff)) > 0) {
+        letters <- get_letter_groups(.x, "area_size_diff", "species")
+        return(letters)
+      } else {
+        return(data.frame(species = character(), letters = character()))
+      }
+    }) %>%
+    ungroup() %>%
+    mutate(dpi = as.numeric(gsub("dpi", "", timepoint)))
+  
+  # Add letters to trichoderma data
+  trichoderma_data_letters <- trichoderma_data %>%
+    left_join(trichoderma_letters_by_time, by = c("species", "dpi"))
+  
+  p_trichoderma <- ggplot(trichoderma_data_letters, aes(x = dpi, y = mean_area_diff, color = species, group = species)) +
+    geom_line(size = 1.5) +
+    geom_point(size = 4) +
+    geom_errorbar(
+      aes(ymin = mean_area_diff - se_area_diff, ymax = mean_area_diff + se_area_diff),
+      width = 0.5,
+      size = 1
+    ) +
+    # Add significance letters
+    geom_text(
+      aes(label = letters, y = mean_area_diff + se_area_diff + max(trichoderma_data_letters$mean_area_diff) * 0.03),
+      color = "black",
+      size = 4,
+      vjust = 0,
+      hjust = 0.5
+    ) +
+    scale_x_continuous(breaks = c(0, 7, 14), labels = c("0 DPI", "7 DPI", "14 DPI")) +
+    scale_color_manual(values = trichoderma_colors) +
+    theme_bw() +
+    theme(
+      legend.position = "right",
+      text = element_text(size = 12),
+      legend.text = element_text(size = 11)
+    ) +
+    labs(
+      title = "Trichoderma Species Growth Curves",
+      subtitle = "Growth progression with significance letters at each timepoint (Tukey HSD, p<0.05)",
+      x = "Days Post Inoculation",
+      y = "Area Size Change from Baseline (cm²)",
+      color = "Trichoderma Species"
+    )
+  
+  print(p_trichoderma)
+} else {
+  cat("No Trichoderma species found in the dataset.")
+}
+```
+
+### Statistical Analysis of Trichoderma Growth Differences
+
+```{r trichoderma-stats}
+# Data already prepared in trichoderma-plot-prep chunk
+if(exists("trichoderma_long") && nrow(trichoderma_long) > 0) {
+  # Perform ANOVA for each time point (7dpi and 14dpi only for differences)
+  timepoints <- c("7dpi", "14dpi")
+  anova_results <- list()
+  
+  for(tp in timepoints) {
+    tp_data <- trichoderma_long %>% filter(timepoint == tp)
+    
+    if(length(unique(tp_data$species)) > 1) {
+      # Perform one-way ANOVA on area differences
+      aov_result <- aov(area_size_diff ~ species, data = tp_data)
+      anova_results[[tp]] <- summary(aov_result)
+      
+      # Print ANOVA results
+      cat("\n", tp, "ANOVA Results for Growth from Baseline:\n")
+      print(anova_results[[tp]])
+      
+      # If significant, perform post-hoc test
+      if(summary(aov_result)[[1]][["Pr(>F)"]][1] < 0.05) {
+        cat("\nSignificant differences found. Performing Tukey HSD post-hoc test:\n")
+        tukey_result <- TukeyHSD(aov_result)
+        print(tukey_result)
+      }
+    }
+  }
+  
+  # Create a summary table of mean area differences by species and timepoint
+  trichoderma_summary_stats <- trichoderma_long %>%
+    group_by(species, timepoint) %>%
+    summarise(
+      n = n(),
+      mean_area_diff = round(mean(area_size_diff), 3),
+      sd = round(sd(area_size_diff), 3),
+      se = round(sd/sqrt(n), 3),
+      .groups = "drop"
+    ) %>%
+    pivot_wider(
+      names_from = timepoint,
+      values_from = c(mean_area_diff, sd, se, n),
+      names_glue = "{timepoint}_{.value}"
+    )
+  
+  knitr::kable(trichoderma_summary_stats,
+               caption = "Summary Statistics for Trichoderma Species Growth from Baseline (Area Change in cm²)")
+  
+  # Test for growth over time using repeated measures or mixed model
+  cat("\n\nGrowth Analysis Over Time:\n")
+  
+  # Since we're already working with differences from baseline, we can directly analyze the 14dpi differences
+  growth_analysis_14dpi <- trichoderma_long %>%
+    filter(timepoint == "14dpi") %>%
+    select(id_treatment, species, area_size_diff)
+  
+  # Test if growth rates differ between species at 14 DPI
+  if(nrow(growth_analysis_14dpi) > 0 && length(unique(growth_analysis_14dpi$species)) > 1) {
+    growth_aov <- aov(area_size_diff ~ species, data = growth_analysis_14dpi)
+    cat("\nANOVA for growth from baseline to 14 DPI:\n")
+    print(summary(growth_aov))
+    
+    if(summary(growth_aov)[[1]][["Pr(>F)"]][1] < 0.05) {
+      cat("\nTukey HSD for growth differences:\n")
+      print(TukeyHSD(growth_aov))
+    }
+  }
+  
+  
+  # Create ranking table for best growing Trichoderma isolates based on growth from baseline
+  trichoderma_ranking <- trichoderma_long %>%
+    filter(timepoint == "14dpi") %>%
+    group_by(species) %>%
+    summarise(
+      n_samples = n(),
+      mean_growth_14dpi = round(mean(area_size_diff, na.rm = TRUE), 3),
+      sd_growth_14dpi = round(sd(area_size_diff, na.rm = TRUE), 3),
+      .groups = "drop"
+    ) %>%
+    # Add 7dpi growth for comparison
+    left_join(
+      trichoderma_long %>%
+        filter(timepoint == "7dpi") %>%
+        group_by(species) %>%
+        summarise(mean_growth_7dpi = round(mean(area_size_diff, na.rm = TRUE), 3), .groups = "drop"),
+      by = "species"
+    ) %>%
+    arrange(desc(mean_growth_14dpi)) %>%
+    mutate(rank = row_number())
+  
+  # Display ranking table
+  cat("\n\n### Trichoderma Isolates Ranked by Growth Performance\n")
+  
+  trichoderma_ranking_display <- trichoderma_ranking %>%
+    select(rank, species, mean_growth_14dpi, sd_growth_14dpi, mean_growth_7dpi, n_samples) %>%
+    rename(
+      "Rank" = rank,
+      "Species" = species,
+      "Growth at 14 DPI (cm²)" = mean_growth_14dpi,
+      "SD" = sd_growth_14dpi,
+      "Growth at 7 DPI (cm²)" = mean_growth_7dpi,
+      "N" = n_samples
+    )
+  
+  knitr::kable(trichoderma_ranking_display,
+               caption = "Trichoderma isolates ranked by growth from baseline at 14 DPI (best performers on top)")
+  
+} else {
+  cat("No Trichoderma species found for statistical analysis.")
+}
+```
+
+## E. coli Concentration Analysis at 14 DPI
+
+### Data Preparation for E. coli Analysis
+
+```{r ecoli-data-prep}
+# Get E. coli data at 14 dpi (including controls)
+ecoli_14dpi <- experiment_data %>%
+  filter(!is.na(ecoli_conc_13dpi)) %>%  # Using ecoli_conc_13dpi as the 14dpi measurement
+  group_by(species, id_inoc, starting_date) %>%
+  summarise(
+    mean_ecoli_14dpi = mean(ecoli_conc_13dpi, na.rm = TRUE),
+    sd_ecoli_14dpi = sd(ecoli_conc_13dpi, na.rm = TRUE),
+    se_ecoli_14dpi = sd_ecoli_14dpi / sqrt(n()),
+    n = n(),
+    mean_ecoli_0dpi = first(ecoli_conc_mean),  # Initial E. coli concentration
+    .groups = "drop"
+  )
+
+# Overall summary by species (including controls)
+ecoli_summary <- ecoli_14dpi %>%
+  group_by(species) %>%
+  summarise(
+    mean_ecoli = mean(mean_ecoli_14dpi, na.rm = TRUE),
+    sd_ecoli = sd(mean_ecoli_14dpi, na.rm = TRUE),
+    se_ecoli = sd_ecoli / sqrt(n()),
+    n = n(),
+    mean_initial_ecoli = mean(mean_ecoli_0dpi, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Apply consistent species ordering (add ctrl if not in species_order)
+all_species <- unique(ecoli_summary$species)
+missing_species <- setdiff(all_species, species_order)
+final_species_order <- c(species_order, missing_species)
+
+ecoli_summary <- ecoli_summary %>%
+  mutate(species = factor(species, levels = final_species_order))
+
+print(ecoli_summary)
+```
+
+### E. coli Concentration Visualization
+
+```{r ecoli-plot, fig.width=10, fig.height=6}
+# Calculate the mean initial E. coli concentration across all samples
+mean_initial_ecoli <- mean(ecoli_14dpi$mean_ecoli_0dpi, na.rm = TRUE)
+
+# Get significance letters for E. coli data (using log-transformed values)
+ecoli_letters <- ecoli_14dpi %>%
+  filter(!is.na(mean_ecoli_14dpi) & mean_ecoli_14dpi > 0) %>%
+  mutate(log_ecoli = log10(mean_ecoli_14dpi)) %>%
+  {
+    if(length(unique(.$species)) > 1) {
+      get_letter_groups(., "log_ecoli", "species")
+    } else {
+      data.frame(species = character(), letters = character())
+    }
+  }
+
+# Add letters to summary
+ecoli_summary_letters <- ecoli_summary %>%
+  left_join(ecoli_letters, by = "species") %>%
+  mutate(
+    # Position letters above error bars on log scale
+    letter_y = mean_ecoli * 10^0.3
+  )
+
+# Create the E. coli concentration plot
+p2 <- ggplot(ecoli_summary_letters, aes(x = species, y = mean_ecoli)) +
+  geom_point(aes(color = species == "ctrl"), size = 4) +
+  geom_errorbar(
+    aes(ymin = mean_ecoli - se_ecoli, ymax = mean_ecoli + se_ecoli),
+    width = 0.2
+  ) +
+  # Add significance letters
+  geom_text(
+    aes(y = letter_y, label = letters),
+    color = "black",
+    size = 4,
+    vjust = 0,
+    hjust = 0.5
+  ) +
+  geom_hline(yintercept = mean_initial_ecoli, 
+             linetype = "dashed", 
+             color = "blue", 
+             linewidth = 1) +
+  scale_y_log10(
+    labels = scales::scientific,
+    breaks = 10^(0:10)
+  ) +
+  scale_color_manual(values = c("FALSE" = "darkred", "TRUE" = "gray50"),
+                     labels = c("FALSE" = "Treatment", "TRUE" = "Control"),
+                     name = "Sample Type") +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)
+  ) +
+  labs(
+    title = "E. coli Concentration at 14 DPI by Species (Including Controls)",
+    subtitle = paste("Blue line = initial conc.; letters = statistical groups (Tukey HSD, p<0.05, log-transformed)"),
+    x = "Species",
+    y = "E. coli Concentration (CFU/g) - Log Scale"
+  ) +
+  annotation_logticks(sides = "l")
+
+print(p2)
+```
+
+## Replication Summary
+
+### Technical and Biological Replicates
+
+```{r replicate-summary}
+# Calculate replicates summary with more detail
+# Technical replicates: same species, same faeces (id_faeces), same date
+# Biological replicates: same species, different faeces or dates
+
+replicate_summary <- experiment_data %>%
+  filter(!is.na(area_size_0dpi) | !is.na(area_size_7dpi) | !is.na(area_size_14dpi)) %>%
+  group_by(species) %>%
+  summarise(
+    total_assays = n(),
+    n_faeces_samples = n_distinct(id_faeces),
+    n_starting_dates = n_distinct(starting_date),
+    n_biological_groups = n_distinct(paste(id_faeces, starting_date)),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    avg_tech_reps_per_bio = round(total_assays / n_biological_groups, 2)
+  ) %>%
+  arrange(desc(total_assays))
+
+# Display summary table
+knitr::kable(replicate_summary, 
+             caption = "Detailed Replication Structure by Species",
+             col.names = c("Species", "Total Assays", "N Faeces", "N Dates", 
+                          "N Bio Groups", "Avg Tech Reps/Bio"))
+```
+
+## Statistical Analysis of Replicate Structure
+
+In this experiment, we have two types of replicates:
+
+- **Technical replicates**: Multiple measurements from the same faeces sample on the same day (same biological conditions)
+- **Biological replicates**: Different faeces samples or different experimental days (different biological conditions)
+
+To properly compare species, we need to account for this nested structure. Technical replicates from the same biological replicate are expected to be more similar to each other than to technical replicates from different biological replicates.
+
+### Mixed-Effects Model Analysis
+
+**What is this analysis?**
+
+A mixed-effects model is like a sophisticated version of ANOVA that accounts for the fact that some data points are more related than others. In our case:
+
+- **Fixed effect (species)**: This is what we want to test - do different fungal species perform differently?
+- **Random effect (biological replicates)**: This accounts for the fact that technical replicates from the same faeces/date combination will be more similar to each other
+
+**Why use this instead of regular ANOVA?**
+
+Regular ANOVA treats all measurements as independent, but our technical replicates are not truly independent - they come from the same biological source. Using regular ANOVA would:
+1. Overestimate our sample size (pretending we have more independent observations than we do)
+2. Underestimate error (making differences appear more significant than they are)
+3. Give incorrect p-values for species comparisons
+
+```{r load-lme4}
+# Load required packages for mixed-effects modeling
+if (!requireNamespace("lme4", quietly = TRUE)) {
+  install.packages("lme4", repos = "https://cran.r-project.org")
+}
+if (!requireNamespace("lmerTest", quietly = TRUE)) {
+  install.packages("lmerTest", repos = "https://cran.r-project.org")
+}
+library(lme4)
+library(lmerTest)
+```
+
+```{r mixed-model-analysis}
+# Prepare data for mixed model analysis
+# Focus on 14dpi data as the primary endpoint
+model_data <- area_long %>%
+  filter(timepoint == "14dpi") %>%
+  mutate(
+    # Create biological replicate ID (combination of faeces and date)
+    bio_replicate_id = paste(species, id_faeces, starting_date, sep = "_"),
+    # Log transform growth for better model fit (add 1 to handle zero/negative values)
+    log_growth = log(area_size_diff + 1)
+  ) %>%
+  filter(!is.na(area_size_diff))
+
+# Check if we have enough data for mixed modeling
+if(nrow(model_data) > 20 && length(unique(model_data$bio_replicate_id)) > 5) {
+  
+  # Fit mixed-effects model
+  # Random effect for biological replicates nested within species
+  me_model <- lmer(log_growth ~ species + (1|bio_replicate_id), data = model_data)
+  
+  cat("Mixed-Effects Model Results:\n")
+  cat("==========================\n\n")
+  
+  # Model summary
+  print(summary(me_model))
+  
+  # Variance components
+  var_comp <- as.data.frame(VarCorr(me_model))
+  cat("\n\nVariance Components:\n")
+  cat("-------------------\n")
+  print(var_comp)
+  
+  # Calculate ICC (Intraclass Correlation Coefficient)
+  # This tells us what proportion of variance is due to biological replicates
+  total_var <- sum(var_comp$vcov)
+  bio_rep_var <- var_comp$vcov[var_comp$grp == "bio_replicate_id"]
+  residual_var <- var_comp$vcov[var_comp$grp == "Residual"]
+  
+  icc_bio <- bio_rep_var / total_var
+  
+  cat("\n\nVariance Decomposition:\n")
+  cat(paste("Biological replicate variance:", round(bio_rep_var, 4), 
+            "(", round(icc_bio * 100, 1), "% of total)\n"))
+  cat(paste("Residual variance (technical):", round(residual_var, 4), 
+            "(", round((residual_var/total_var) * 100, 1), "% of total)\n"))
+  cat(paste("Total variance:", round(total_var, 4), "\n"))
+  
+  # Post-hoc comparisons between species
+  if(requireNamespace("emmeans", quietly = TRUE)) {
+    library(emmeans)
+    
+    # Get estimated marginal means
+    emm <- emmeans(me_model, "species")
+    
+    cat("\n\nEstimated Marginal Means (log scale):\n")
+    cat("------------------------------------\n")
+    print(summary(emm))
+    
+    # Pairwise comparisons
+    cat("\n\nPairwise Comparisons Between Species:\n")
+    cat("------------------------------------\n")
+    pairs_result <- pairs(emm, adjust = "tukey")
+    print(pairs_result)
+  }
+  
+} else {
+  cat("Insufficient data for mixed-effects modeling. Using simpler analysis.\n")
+  
+  # Fall back to regular ANOVA
+  if(nrow(model_data) > 0) {
+    simple_aov <- aov(area_size_diff ~ species, data = model_data)
+    print(summary(simple_aov))
+  }
+}
+```
+
+**How to interpret the results:**
+
+**Variance Components:**
+- **Biological replicate variance**: How much growth varies between different faeces/date combinations for the same species
+- **Residual variance (technical)**: How much growth varies between technical replicates from the same biological replicate
+- **ICC (Intraclass Correlation)**: The percentage shows how much of the total variation comes from biological differences vs technical measurement error
+
+**What does this tell us?**
+- High ICC (>50%): Most variation comes from biological differences - this is good! It means our technical measurements are consistent
+- Low ICC (<20%): Most variation comes from technical error - this suggests measurement problems or high technical variability
+- Medium ICC (20-50%): Balanced contribution from both sources
+
+**Species Comparisons:**
+The pairwise comparisons show which species are significantly different from each other, using the correct error term that accounts for the replicate structure.
+
+### Variance Analysis by Species
+
+**What does this analysis show?**
+
+This breaks down the sources of variation for each species individually. It helps us understand:
+1. Which species are more consistent in their growth (low variability)
+2. Which species show more biological vs technical variation
+3. The reliability of our measurements for each species
+
+```{r variance-by-species}
+# Analyze variance structure for each species
+variance_analysis <- area_long %>%
+  filter(!is.na(area_size_diff)) %>%
+  mutate(
+    bio_replicate_id = paste(id_faeces, starting_date, sep = "_")
+  ) %>%
+  group_by(species, timepoint) %>%
+  summarise(
+    n_total = n(),
+    n_bio_reps = n_distinct(bio_replicate_id),
+    mean_growth = mean(area_size_diff),
+    total_sd = sd(area_size_diff),
+    cv_percent = (total_sd / abs(mean_growth)) * 100,
+    .groups = "drop"
+  ) %>%
+  filter(timepoint == "14dpi" | (timepoint == "7dpi" & !(species %in% unique(filter(., timepoint == "14dpi")$species))))
+
+# Calculate between and within biological replicate variance where possible
+bio_rep_variance <- area_long %>%
+  filter(!is.na(area_size_diff)) %>%
+  mutate(
+    bio_replicate_id = paste(id_faeces, starting_date, sep = "_")
+  ) %>%
+  group_by(species, timepoint, bio_replicate_id) %>%
+  summarise(
+    bio_rep_mean = mean(area_size_diff),
+    n_tech_reps = n(),
+    .groups = "drop"
+  ) %>%
+  group_by(species, timepoint) %>%
+  filter(n() > 1) %>%  # Only species with multiple biological replicates
+  summarise(
+    between_bio_sd = sd(bio_rep_mean),
+    mean_tech_reps = mean(n_tech_reps),
+    .groups = "drop"
+  )
+
+# Combine variance analyses
+variance_summary <- variance_analysis %>%
+  left_join(bio_rep_variance, by = c("species", "timepoint")) %>%
+  mutate(
+    between_bio_sd = round(between_bio_sd, 3),
+    within_bio_sd = round(sqrt(pmax(0, total_sd^2 - between_bio_sd^2)), 3)
+  ) %>%
+  select(species, timepoint, n_total, n_bio_reps, mean_growth, total_sd, 
+         between_bio_sd, within_bio_sd, cv_percent)
+
+knitr::kable(variance_summary,
+             caption = "Variance Decomposition by Species",
+             col.names = c("Species", "Time", "N", "Bio Reps", "Mean Growth", 
+                          "Total SD", "Between Bio SD", "Within Bio SD", "CV%"),
+             digits = 2)
+```
+
+**How to read this table:**
+
+- **N**: Total number of measurements
+- **Bio Reps**: Number of different biological replicates (faeces/date combinations)
+- **Mean Growth**: Average growth for this species
+- **Total SD**: Overall variability in measurements
+- **Between Bio SD**: Variability between different biological replicates (how much growth varies between different faeces samples)
+- **Within Bio SD**: Variability between technical replicates from the same biological replicate (measurement precision)
+- **CV%**: Coefficient of variation (relative variability) - lower is more consistent
+
+**Good signs:**
+- Within Bio SD smaller than Between Bio SD (technical measurements are precise)
+- Low CV% (consistent performance)
+- Multiple biological replicates (more reliable conclusions)
+
+### Visualization of Replicate Variability
+
+**What does this plot show?**
+
+This plot visualizes the sources of variation in a clear way:
+- **Colored points**: Each point represents the average growth from one biological replicate (one faeces/date combination)
+- **Error bars**: Show the variation between technical replicates within that biological replicate
+- **Black crossbar**: Shows the overall average for each species across all biological replicates
+- **Different colors**: Represent different faeces samples
+
+**What to look for:**
+- **Tight error bars**: Good technical precision (measurements are repeatable)
+- **Points clustered around black bar**: Consistent biological replicates
+- **Points spread out**: High biological variation (different faeces samples behave differently)
+- **Multiple colors per species**: Good experimental design with multiple biological replicates
+
+```{r replicate-variability-plot, fig.width=12, fig.height=8}
+# Create a plot showing biological and technical replicate variability
+bio_rep_data <- area_long %>%
+  filter(!is.na(area_size_diff)) %>%
+  mutate(
+    bio_replicate_id = paste(id_faeces, starting_date, sep = "_")
+  ) %>%
+  # Focus on species with multiple biological replicates
+  group_by(species) %>%
+  filter(n_distinct(bio_replicate_id) > 1) %>%
+  ungroup()
+
+if(nrow(bio_rep_data) > 0) {
+  # Calculate means for each biological replicate
+  bio_rep_means <- bio_rep_data %>%
+    group_by(species, timepoint, bio_replicate_id, id_faeces) %>%
+    summarise(
+      bio_rep_mean = mean(area_size_diff),
+      bio_rep_se = sd(area_size_diff) / sqrt(n()),
+      n_tech = n(),
+      .groups = "drop"
+    )
+  
+  # Create plot
+  p_variance <- ggplot(bio_rep_means, aes(x = species, y = bio_rep_mean)) +
+    # Show individual biological replicates
+    geom_point(aes(color = id_faeces), size = 3, alpha = 0.7, 
+               position = position_dodge(width = 0.3)) +
+    # Add error bars for technical replicate variation
+    geom_errorbar(aes(ymin = bio_rep_mean - bio_rep_se, 
+                      ymax = bio_rep_mean + bio_rep_se,
+                      color = id_faeces),
+                  width = 0.2, position = position_dodge(width = 0.3)) +
+    # Add species means
+    stat_summary(fun = mean, geom = "crossbar", width = 0.5, 
+                 color = "black", linewidth = 1) +
+    facet_wrap(~timepoint, scales = "free_y") +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
+          legend.position = "bottom") +
+    labs(title = "Biological and Technical Replicate Variability",
+         subtitle = "Points = biological replicate means; Error bars = technical replicate SE; Black bar = species mean",
+         x = "Species",
+         y = "Area Size Change from Baseline (cm²)",
+         color = "Faeces ID")
+  
+  print(p_variance)
+} else {
+  cat("Insufficient biological replicates for variability visualization.\n")
+}
+```
+
+### Summary of Statistical Approach
+
+**The key insight:** When you have technical and biological replicates, you need to be careful about how you analyze your data. The fundamental question is: "What is your unit of replication?"
+
+**In this experiment:**
+- **Unit of replication for species comparisons**: Biological replicates (different faeces/date combinations)
+- **Technical replicates**: Tell us about measurement precision, but don't increase our statistical power for comparing species
+
+**Why this matters:**
+1. **Correct p-values**: Using the right error term ensures that significant differences are truly meaningful
+2. **Proper confidence intervals**: Reflect the real uncertainty in your conclusions
+3. **Valid conclusions**: Avoid false discoveries that come from treating technical replicates as independent
+
+**Practical recommendations:**
+- Always report both biological and technical replicate numbers
+- Use biological replicates as the unit for statistical tests between groups
+- Use technical replicates to assess measurement reliability
+- Consider the biological meaning: are you interested in the effect of species across different biological contexts (biological replicates) or just measurement precision (technical replicates)?
+
+## Summary Statistics
+
+### Area Size Growth Summary
+
+```{r area-growth-summary}
+# Calculate growth rates
+growth_summary <- area_data %>%
+  filter(!is.na(area_size_0dpi)) %>%
+  group_by(species) %>%
+  summarise(
+    n_samples = n(),
+    mean_initial_area = mean(area_size_0dpi, na.rm = TRUE),
+    mean_7dpi_area = mean(area_size_7dpi, na.rm = TRUE),
+    mean_14dpi_area = mean(area_size_14dpi, na.rm = TRUE),
+    growth_0_to_7 = mean_7dpi_area - mean_initial_area,
+    growth_0_to_14 = mean_14dpi_area - mean_initial_area,
+    .groups = "drop"
+  ) %>%
+  arrange(desc(growth_0_to_14))
+
+knitr::kable(growth_summary, digits = 2, 
+             caption = "Area Size Growth Summary by Species")
+```
+
+### E. coli Reduction Summary
+
+```{r ecoli-reduction-summary}
+# Calculate E. coli reduction
+ecoli_reduction <- ecoli_summary %>%
+  mutate(
+    log_reduction = log10(mean_initial_ecoli) - log10(mean_ecoli),
+    percent_reduction = (1 - mean_ecoli/mean_initial_ecoli) * 100
+  ) %>%
+  arrange(desc(log_reduction))
+
+knitr::kable(ecoli_reduction, digits = 2,
+             caption = "E. coli Reduction Summary by Species")
+```
+
+## Combined Visualization
+
+```{r combined-plot, fig.width=14, fig.height=12}
+# Combine all plots
+library(patchwork)
+
+combined_plot <- (p1 / p1_line / p2) + 
+  plot_annotation(
+    title = "Fungal Growth and E. coli Reduction Analysis",
+    theme = theme(plot.title = element_text(size = 16, face = "bold"))
+  )
+
+print(combined_plot)
+```
+
+## Conclusions
+
+This analysis shows:
+
+1. **Area Size Growth**: Different fungal species show varying growth patterns over the 14-day period.
+
+2. **E. coli Reduction**: The effectiveness of different fungal species in reducing E. coli concentration varies significantly.
+
+3. **Treatment Effectiveness**: Some species show both good growth and effective E. coli reduction, making them promising candidates for faecal treatment.

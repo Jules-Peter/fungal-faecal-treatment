@@ -29,7 +29,7 @@ id_inoc,species
 28,T. gamsii
 29,ctrl
 30,T. harzianum T22
-31,T. harzainum CBS245.93
+31,T. harzianum CBS245.93
 32,T. gamsii
 33,T. harzianum CBS245.93
 34,ctrl
@@ -44,3 +44,10 @@ id_inoc,species
 43,T. koningii
 44,T. atroviridae
 45,ctrl
+46,ctrl
+47,F36 Sordaria
+48,F35 Sordaria
+49,T. koningii
+50,F40
+51,F15 Faecal Isolate 1
+52,F31 Mucor I3
