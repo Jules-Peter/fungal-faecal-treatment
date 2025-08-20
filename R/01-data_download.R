@@ -35,10 +35,45 @@ experiment_1_1 <- experiment_1_1 %>%
     weight_0dpi = safe_numeric(weight_0dpi)
   )
 
+# Fix faeces_1_1 list columns that should be numeric
+faeces_1_1 <- faeces_1_1 %>%
+  mutate(
+    ph = safe_numeric(ph),
+    water_content_0dpi = safe_numeric(water_content_0dpi),
+    sample_weight_1 = safe_numeric(sample_weight_1),
+    sample_weight_2 = safe_numeric(sample_weight_2),
+    sample_weight_3 = safe_numeric(sample_weight_3),
+    dilution_factor_ecoli = safe_numeric(dilution_factor_ecoli),
+    dilution_factor_enterococcus = safe_numeric(dilution_factor_enterococcus),
+    e_coli_counted_1 = safe_numeric(e_coli_counted_1),
+    e_coli_counted_2 = safe_numeric(e_coli_counted_2),
+    e_coli_counted_3 = safe_numeric(e_coli_counted_3),
+    enterococcus_counted_1 = safe_numeric(enterococcus_counted_1),
+    enterococcus_counted_2 = safe_numeric(enterococcus_counted_2),
+    enterococcus_counted_3 = safe_numeric(enterococcus_counted_3)
+  )
+
+# Fix bacteria_1_1 list columns that should be numeric
+bacteria_1_1 <- bacteria_1_1 %>%
+  mutate(
+    sample_weight = safe_numeric(sample_weight),
+    dilution_ecoli = safe_numeric(dilution_ecoli),
+    ecoli_counted = safe_numeric(ecoli_counted)
+  )
+
+# Fix growth_speed_1_1 list columns that should be numeric  
+growth_speed_1_1 <- growth_speed_1_1 %>%
+  mutate(
+    area_size = safe_numeric(area_size)
+  )
+
 # Check data summary
 cat("\nData import summary:\n")
 cat("experiment_1_1 - Non-NA pH_14dpi values:", sum(!is.na(experiment_1_1$ph_14dpi)), "\n")
 cat("experiment_1_1 - Non-NA weight_14dpi values:", sum(!is.na(experiment_1_1$weight_14dpi)), "\n")
+cat("faeces_1_1 - Non-NA pH values:", sum(!is.na(faeces_1_1$ph)), "\n")
+cat("faeces_1_1 - Non-NA water_content_0dpi values:", sum(!is.na(faeces_1_1$water_content_0dpi)), "\n")
+cat("faeces_1_1 - pH range:", round(min(faeces_1_1$ph, na.rm = TRUE), 2), "to", round(max(faeces_1_1$ph, na.rm = TRUE), 2), "\n")
 
 ###Writing the files in git hup directory follow up
 # Use na = "NA" to write NA values as "NA" string instead of empty

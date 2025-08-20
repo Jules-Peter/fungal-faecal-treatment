@@ -1302,38 +1302,29 @@ ecoli_summary <- ecoli_summary_robust %>%
   select(species, n, n_bio_reps, mean_log_reduction, se_log_reduction, mean_percent_reduction)
 ```
 
-## pH and Weight Changes Analysis
+## pH Changes Analysis
 
 ### pH Changes from 0 to 14 DPI
 
-```{r ph-weight-data-preparation}
-# Prepare pH and weight change data
-ph_weight_data <- experiment_data %>%
-  filter(!is.na(ph_14dpi) | !is.na(weight_14dpi)) %>%
+```{r ph-data-preparation}
+# Prepare pH change data
+ph_data <- experiment_data %>%
+  filter(!is.na(ph_0dpi) & !is.na(ph_14dpi)) %>%
   mutate(
-    # Calculate weight change
-    weight_change = weight_14dpi - weight_0dpi,
-    weight_change_percent = (weight_change / weight_0dpi) * 100,
-    
-    # pH change from baseline (faeces pH) to 14 dpi
-    ph_change = ph_14dpi - ph,
-    
-    # Flag data availability
-    has_ph_data = !is.na(ph) & !is.na(ph_14dpi),
-    has_weight_data = !is.na(weight_0dpi) & !is.na(weight_14dpi),
+    # pH change from baseline (ph_0dpi) to 14 dpi
+    ph_change = ph_14dpi - ph_0dpi,
     
     # Species grouping
     species = ifelse(species == "ctrl", "Control", species)
   )
 
 # Summary statistics for pH changes
-ph_summary <- ph_weight_data %>%
-  filter(has_ph_data) %>%
+ph_summary <- ph_data %>%
   group_by(species) %>%
   summarise(
     n_ph = n(),
-    baseline_ph_mean = mean(ph, na.rm = TRUE),
-    baseline_ph_sd = sd(ph, na.rm = TRUE),
+    baseline_ph_mean = mean(ph_0dpi, na.rm = TRUE),
+    baseline_ph_sd = sd(ph_0dpi, na.rm = TRUE),
     ph_14dpi_mean = mean(ph_14dpi, na.rm = TRUE),
     ph_14dpi_sd = sd(ph_14dpi, na.rm = TRUE),
     ph_change_mean = mean(ph_change, na.rm = TRUE),
@@ -1342,25 +1333,8 @@ ph_summary <- ph_weight_data %>%
   ) %>%
   arrange(desc(ph_change_mean))
 
-# Summary statistics for weight changes
-weight_summary <- ph_weight_data %>%
-  filter(has_weight_data) %>%
-  group_by(species) %>%
-  summarise(
-    n_weight = n(),
-    weight_0dpi_mean = mean(weight_0dpi, na.rm = TRUE),
-    weight_0dpi_sd = sd(weight_0dpi, na.rm = TRUE),
-    weight_14dpi_mean = mean(weight_14dpi, na.rm = TRUE),
-    weight_14dpi_sd = sd(weight_14dpi, na.rm = TRUE),
-    weight_change_mean = mean(weight_change, na.rm = TRUE),
-    weight_change_sd = sd(weight_change, na.rm = TRUE),
-    weight_change_percent_mean = mean(weight_change_percent, na.rm = TRUE),
-    weight_change_percent_sd = sd(weight_change_percent, na.rm = TRUE),
-    .groups = "drop"
-  ) %>%
-  arrange(desc(weight_change_percent_mean))
 
-# Display summary tables
+# Display summary table
 if(nrow(ph_summary) > 0) {
   kable(
     ph_summary %>%
@@ -1372,49 +1346,36 @@ if(nrow(ph_summary) > 0) {
 } else {
   cat("No pH data available for analysis.\n")
 }
-
-if(nrow(weight_summary) > 0) {
-  kable(
-    weight_summary %>%
-      select(species, n_weight, weight_0dpi_mean, weight_14dpi_mean, 
-             weight_change_percent_mean, weight_change_percent_sd) %>%
-      mutate(across(where(is.numeric), ~ round(.x, 2))),
-    caption = "**Table 12.** Weight changes from 0 to 14 days post-inoculation",
-    col.names = c("Species", "N", "Initial Weight (g)", "Final Weight (g)", 
-                  "Mean % Change", "SD % Change")
-  )
-} else {
-  cat("No weight change data available for analysis.\n")
-}
 ```
 
-```{r ph-weight-visualization, fig.cap="**Figure 3.** pH and weight changes over 14 days of fungal treatment. (A) pH changes from baseline to 14 DPI. (B) Percent weight change over treatment period.", fig.height=10}
-# Create visualizations only if data exists
-if(nrow(ph_summary) > 0 || nrow(weight_summary) > 0) {
-  
+```{r ph-visualization, fig.cap="**Figure 3.** pH changes over 14 days of fungal treatment", fig.height=6}
+# Create visualization only if data exists  
+if(nrow(ph_summary) > 0) {
   # pH change visualization
-  if(nrow(ph_summary) > 0) {
-    p_ph <- ph_weight_data %>%
-      filter(has_ph_data) %>%
+  p_ph <- ph_data %>%
       mutate(species_ordered = factor(species, levels = ph_summary$species)) %>%
       ggplot(aes(x = species_ordered)) +
       
       # Baseline and 14 DPI points connected by lines
-      geom_point(aes(y = ph, color = "Baseline"), size = 2, alpha = 0.6) +
+      geom_point(aes(y = ph_0dpi, color = "Baseline"), size = 2, alpha = 0.6) +
       geom_point(aes(y = ph_14dpi, color = "14 DPI"), size = 2, alpha = 0.6) +
-      geom_segment(aes(xend = species_ordered, y = ph, yend = ph_14dpi),
+      geom_segment(aes(xend = species_ordered, y = ph_0dpi, yend = ph_14dpi),
                    alpha = 0.3, color = "gray50") +
       
       # Mean values with error bars
-      geom_pointrange(data = ph_summary,
-                      aes(y = baseline_ph_mean, 
+      geom_pointrange(data = ph_summary %>%
+                        mutate(species_ordered = factor(species, levels = ph_summary$species)),
+                      aes(x = species_ordered,
+                          y = baseline_ph_mean, 
                           ymin = baseline_ph_mean - baseline_ph_sd,
                           ymax = baseline_ph_mean + baseline_ph_sd,
                           color = "Baseline"),
                       position = position_nudge(x = -0.1),
                       size = 0.8, fatten = 3) +
-      geom_pointrange(data = ph_summary,
-                      aes(y = ph_14dpi_mean,
+      geom_pointrange(data = ph_summary %>%
+                        mutate(species_ordered = factor(species, levels = ph_summary$species)),
+                      aes(x = species_ordered,
+                          y = ph_14dpi_mean,
                           ymin = ph_14dpi_mean - ph_14dpi_sd,
                           ymax = ph_14dpi_mean + ph_14dpi_sd,
                           color = "14 DPI"),
@@ -1430,73 +1391,23 @@ if(nrow(ph_summary) > 0 || nrow(weight_summary) > 0) {
       labs(x = "Species", y = "pH Value",
            title = "pH Changes During Treatment",
            subtitle = "Individual measurements and means ± SD")
-  } else {
-    p_ph <- ggplot() + 
-      annotate("text", x = 1, y = 1, label = "No pH data available") +
-      theme_void()
-  }
   
-  # Weight change visualization
-  if(nrow(weight_summary) > 0) {
-    p_weight <- ph_weight_data %>%
-      filter(has_weight_data) %>%
-      mutate(species_ordered = factor(species, 
-                                      levels = weight_summary$species)) %>%
-      ggplot(aes(x = species_ordered, y = weight_change_percent)) +
-      
-      # Individual points
-      geom_jitter(width = 0.2, alpha = 0.6, size = 2, color = "gray50") +
-      
-      # Mean with confidence interval
-      geom_pointrange(data = weight_summary %>%
-                        mutate(species_ordered = factor(species, levels = weight_summary$species)),
-                      aes(x = species_ordered,
-                          y = weight_change_percent_mean,
-                          ymin = weight_change_percent_mean - weight_change_percent_sd,
-                          ymax = weight_change_percent_mean + weight_change_percent_sd),
-                      size = 0.8, fatten = 3, color = "darkgreen") +
-      
-      # Reference line at 0 (no change)
-      geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
-      
-      # Add sample size labels
-      geom_text(data = weight_summary %>%
-                  mutate(species_ordered = factor(species, levels = weight_summary$species)),
-                aes(x = species_ordered,
-                    y = weight_change_percent_mean, 
-                    label = paste0("n=", n_weight)),
-                vjust = -1.5, size = 3) +
-      
-      coord_flip() +
-      theme_bw(base_size = 10) +
-      labs(x = "Species", y = "Weight Change (%)",
-           title = "Weight Changes During Treatment",
-           subtitle = "Individual measurements and means ± SD")
-  } else {
-    p_weight <- ggplot() + 
-      annotate("text", x = 1, y = 1, label = "No weight data available") +
-      theme_void()
-  }
-  
-  # Combine plots
-  combined_ph_weight <- p_ph / p_weight
-  print(combined_ph_weight)
+  print(p_ph)
   
 } else {
-  cat("Insufficient data for pH and weight change visualization.\n")
+  cat("No pH data available for visualization.\n")
 }
 ```
 
-### Statistical Analysis of pH and Weight Changes
+### Statistical Analysis of pH Changes
 
-```{r ph-weight-statistical-analysis}
+```{r ph-statistical-analysis}
 # Statistical tests for pH changes
 if(nrow(ph_summary) > 1) {
   cat("**pH Change Analysis:**\n\n")
   
   # Test if pH changes are significantly different from zero
-  ph_change_test <- ph_weight_data %>%
-    filter(has_ph_data) %>%
+  ph_change_test <- ph_data %>%
     group_by(species) %>%
     summarise(
       n = n(),
@@ -1529,8 +1440,8 @@ if(nrow(ph_summary) > 1) {
   }
   
   # Test for differences between species
-  if(nrow(ph_weight_data %>% filter(has_ph_data)) >= 10) {
-    ph_anova <- aov(ph_change ~ species, data = ph_weight_data %>% filter(has_ph_data))
+  if(nrow(ph_data) >= 10) {
+    ph_anova <- aov(ph_change ~ species, data = ph_data)
     ph_anova_summary <- summary(ph_anova)
     
     cat("\n**Between-species pH change comparison:**\n")
@@ -1538,61 +1449,11 @@ if(nrow(ph_summary) > 1) {
     cat("- p-value:", format.pval(ph_anova_summary[[1]]$`Pr(>F)`[1]), "\n")
   }
 }
-
-# Statistical tests for weight changes
-if(nrow(weight_summary) > 1) {
-  cat("\n**Weight Change Analysis:**\n\n")
-  
-  # Test if weight changes are significantly different from zero
-  weight_change_test <- ph_weight_data %>%
-    filter(has_weight_data) %>%
-    group_by(species) %>%
-    summarise(
-      n = n(),
-      mean_change_percent = mean(weight_change_percent, na.rm = TRUE),
-      sd_change = sd(weight_change_percent, na.rm = TRUE),
-      se_change = ifelse(n > 1, sd_change / sqrt(n), NA_real_),
-      t_stat = ifelse(!is.na(se_change) & se_change > 0, mean_change_percent / se_change, NA_real_),
-      p_value = ifelse(!is.na(t_stat) & n > 1, 2 * pt(abs(t_stat), df = n - 1, lower.tail = FALSE), NA_real_),
-      significant = !is.na(p_value) & p_value < 0.05,
-      .groups = "drop"
-    )
-  
-  significant_weight_changes <- sum(weight_change_test$significant)
-  
-  cat("- Species showing significant weight changes:", significant_weight_changes, 
-      "out of", nrow(weight_change_test), "\n")
-  
-  if(significant_weight_changes > 0) {
-    cat("- Species with significant weight changes:\n")
-    weight_change_test %>%
-      filter(significant) %>%
-      arrange(p_value) %>%
-      mutate(
-        direction = ifelse(mean_change_percent > 0, "gained", "lost"),
-        p_display = ifelse(p_value < 0.001, "< 0.001", sprintf("%.3f", p_value))
-      ) %>%
-      select(species, mean_change_percent, direction, p_display) %>%
-      kable(col.names = c("Species", "Mean % Change", "Direction", "p-value")) %>%
-      print()
-  }
-  
-  # Test for differences between species
-  if(nrow(ph_weight_data %>% filter(has_weight_data)) >= 10) {
-    weight_anova <- aov(weight_change_percent ~ species, 
-                        data = ph_weight_data %>% filter(has_weight_data))
-    weight_anova_summary <- summary(weight_anova)
-    
-    cat("\n**Between-species weight change comparison:**\n")
-    cat("- F-statistic:", round(weight_anova_summary[[1]]$`F value`[1], 2), "\n")
-    cat("- p-value:", format.pval(weight_anova_summary[[1]]$`Pr(>F)`[1]), "\n")
-  }
-}
 ```
 
-### Key Findings - pH and Weight Changes
+### Key Findings - pH Changes
 
-```{r ph-weight-key-findings}
+```{r ph-key-findings}
 # Generate key findings based on the data
 cat("**Environmental Parameter Changes:**\n\n")
 
@@ -1610,23 +1471,315 @@ if(nrow(ph_summary) > 0) {
       round(max(ph_summary$ph_14dpi_mean), 1), "\n\n")
 }
 
-if(nrow(weight_summary) > 0) {
-  max_weight_loss <- weight_summary %>% slice_min(weight_change_percent_mean, n = 1)
-  min_weight_loss <- weight_summary %>% slice_max(weight_change_percent_mean, n = 1)
-  
-  cat("2. **Weight Changes**:\n")
-  cat("   - Maximum weight loss:", max_weight_loss$species,
-      "(", round(max_weight_loss$weight_change_percent_mean, 1), "%)\n")
-  cat("   - Minimum weight loss:", min_weight_loss$species,
-      "(", round(min_weight_loss$weight_change_percent_mean, 1), "%)\n")
-  cat("   - Average weight change across all species:",
-      round(mean(weight_summary$weight_change_percent_mean), 1), "%\n\n")
-}
+cat("2. **Metabolic Implications**:\n")
+alkaline_species <- sum(ph_summary$ph_change_mean > 0.5, na.rm = TRUE)
+acidic_species <- sum(ph_summary$ph_change_mean < -0.5, na.rm = TRUE)
 
-cat("3. **Treatment Implications**:\n")
+if(alkaline_species > 0) {
+  cat("   -", alkaline_species, "species alkalinized the substrate (pH increase > 0.5)\n")
+}
+if(acidic_species > 0) {
+  cat("   -", acidic_species, "species acidified the substrate (pH decrease > 0.5)\n")
+}
 cat("   - pH changes indicate active microbial metabolism and substrate modification\n")
-cat("   - Weight loss reflects decomposition and moisture evaporation\n")
-cat("   - Species-specific patterns suggest different metabolic strategies\n")
+```
+
+## Comprehensive Weight Analysis
+
+### Weight Changes from 0 to 14 DPI
+
+```{r weight-data-preparation}
+# Prepare comprehensive weight data
+weight_data <- experiment_data %>%
+  filter(!is.na(weight_0dpi) | !is.na(weight_14dpi)) %>%
+  mutate(
+    # Calculate wet weight changes
+    wet_weight_change = weight_14dpi - weight_0dpi,
+    wet_weight_percent_change = (wet_weight_change / weight_0dpi) * 100,
+    
+    # Flag data availability
+    has_wet_weight_data = !is.na(weight_0dpi) & !is.na(weight_14dpi),
+    has_dry_weight_data = if("dry_weight_0dpi" %in% names(.)) {
+      !is.na(dry_weight_0dpi) & !is.na(dry_weight_14dpi)
+    } else {
+      FALSE
+    },
+    
+    # Calculate water loss if dry weight data exists
+    water_loss = if("dry_weight_0dpi" %in% names(.)) {
+      (wet_weight_change - dry_weight_change)
+    } else {
+      NA_real_
+    },
+    water_loss_percent = if("dry_weight_0dpi" %in% names(.)) {
+      (water_loss / weight_0dpi) * 100
+    } else {
+      NA_real_
+    },
+    
+    # Species grouping
+    species = ifelse(species == "ctrl", "Control", species)
+  )
+
+# Summary statistics for weight changes
+weight_summary <- weight_data %>%
+  filter(has_wet_weight_data) %>%
+  group_by(species) %>%
+  summarise(
+    n = n(),
+    # Wet weight statistics
+    wet_weight_0dpi_mean = mean(weight_0dpi, na.rm = TRUE),
+    wet_weight_0dpi_sd = sd(weight_0dpi, na.rm = TRUE),
+    wet_weight_14dpi_mean = mean(weight_14dpi, na.rm = TRUE),
+    wet_weight_14dpi_sd = sd(weight_14dpi, na.rm = TRUE),
+    wet_weight_change_mean = mean(wet_weight_change, na.rm = TRUE),
+    wet_weight_change_sd = sd(wet_weight_change, na.rm = TRUE),
+    wet_weight_percent_change_mean = mean(wet_weight_percent_change, na.rm = TRUE),
+    wet_weight_percent_change_sd = sd(wet_weight_percent_change, na.rm = TRUE),
+    # Dry weight statistics if available
+    dry_weight_0dpi_mean = if("dry_weight_0dpi" %in% names(weight_data)) mean(dry_weight_0dpi, na.rm = TRUE) else NA_real_,
+    dry_weight_0dpi_sd = if("dry_weight_0dpi" %in% names(weight_data)) sd(dry_weight_0dpi, na.rm = TRUE) else NA_real_,
+    dry_weight_14dpi_mean = if("dry_weight_14dpi" %in% names(weight_data)) mean(dry_weight_14dpi, na.rm = TRUE) else NA_real_,
+    dry_weight_14dpi_sd = if("dry_weight_14dpi" %in% names(weight_data)) sd(dry_weight_14dpi, na.rm = TRUE) else NA_real_,
+    dry_weight_change_mean = if("dry_weight_change" %in% names(weight_data)) mean(dry_weight_change, na.rm = TRUE) else NA_real_,
+    dry_weight_change_sd = if("dry_weight_change" %in% names(weight_data)) sd(dry_weight_change, na.rm = TRUE) else NA_real_,
+    dry_weight_percent_change_mean = if("dry_weight_percent_change" %in% names(weight_data)) mean(dry_weight_percent_change, na.rm = TRUE) else NA_real_,
+    dry_weight_percent_change_sd = if("dry_weight_percent_change" %in% names(weight_data)) sd(dry_weight_percent_change, na.rm = TRUE) else NA_real_,
+    # Water loss statistics
+    water_loss_mean = if("water_loss" %in% names(weight_data)) mean(water_loss, na.rm = TRUE) else NA_real_,
+    water_loss_percent_mean = if("water_loss_percent" %in% names(weight_data)) mean(water_loss_percent, na.rm = TRUE) else NA_real_,
+    .groups = "drop"
+  ) %>%
+  arrange(desc(wet_weight_percent_change_mean))
+
+# Display comprehensive weight summary table
+if(nrow(weight_summary) > 0) {
+  # Check if dry weight data is available
+  has_dry_weight <- !all(is.na(weight_summary$dry_weight_0dpi_mean))
+  
+  if(has_dry_weight) {
+    # Full table with wet and dry weights
+    kable(
+      weight_summary %>%
+        select(species, n, 
+               wet_weight_0dpi_mean, wet_weight_14dpi_mean, wet_weight_percent_change_mean,
+               dry_weight_0dpi_mean, dry_weight_14dpi_mean, dry_weight_percent_change_mean,
+               water_loss_percent_mean) %>%
+        mutate(across(where(is.numeric), ~ round(.x, 2))),
+      caption = "**Table 12.** Comprehensive weight changes from 0 to 14 days post-inoculation",
+      col.names = c("Species", "N", 
+                    "Initial Wet (g)", "Final Wet (g)", "Wet Change (%)",
+                    "Initial Dry (g)", "Final Dry (g)", "Dry Change (%)",
+                    "Water Loss (%)")
+    )
+  } else {
+    # Table with only wet weights
+    kable(
+      weight_summary %>%
+        select(species, n, wet_weight_0dpi_mean, wet_weight_14dpi_mean, 
+               wet_weight_change_mean, wet_weight_percent_change_mean) %>%
+        mutate(across(where(is.numeric), ~ round(.x, 2))),
+      caption = "**Table 12.** Wet weight changes from 0 to 14 days post-inoculation",
+      col.names = c("Species", "N", "Initial Weight (g)", "Final Weight (g)", 
+                    "Mean Change (g)", "Mean % Change")
+    )
+    cat("\nNote: Dry weight analysis requires re-running the data cleaning script.\n")
+  }
+} else {
+  cat("No weight data available for analysis.\n")
+}
+```
+
+```{r weight-visualization, fig.cap="**Figure 4.** Comprehensive weight changes over 14 days of fungal treatment. (A) Wet and dry weight percent changes. (B) Decomposition of weight loss into water loss and organic matter loss.", fig.height=10}
+# Create visualizations only if data exists
+if(nrow(weight_summary) > 0) {
+  has_dry_weight <- !all(is.na(weight_summary$dry_weight_0dpi_mean))
+  
+  if(has_dry_weight) {
+    # Create comparison data for wet vs dry weight changes
+    comparison_data <- weight_summary %>%
+      select(species, wet_weight_percent_change_mean, dry_weight_percent_change_mean, water_loss_percent_mean) %>%
+      pivot_longer(cols = c(wet_weight_percent_change_mean, dry_weight_percent_change_mean),
+                   names_to = "weight_type",
+                   values_to = "percent_change") %>%
+      mutate(
+        weight_type = case_when(
+          weight_type == "wet_weight_percent_change_mean" ~ "Wet Weight",
+          weight_type == "dry_weight_percent_change_mean" ~ "Dry Weight"
+        ),
+        species_ordered = factor(species, levels = weight_summary$species)
+      )
+    
+    # Plot 1: Wet vs Dry weight percent changes
+    p_comparison <- ggplot(comparison_data, aes(x = species_ordered, y = percent_change, fill = weight_type)) +
+      geom_col(position = position_dodge(width = 0.8), width = 0.7, alpha = 0.8) +
+      geom_hline(yintercept = 0, linetype = "solid", alpha = 0.5) +
+      scale_fill_manual(values = c("Wet Weight" = "#4E79A7", "Dry Weight" = "#E15759"),
+                        name = "Weight Type") +
+      coord_flip() +
+      theme_minimal() +
+      theme(axis.text.y = element_text(size = 10),
+            legend.position = "top") +
+      labs(x = "Species", y = "Weight Change (%)",
+           title = "Wet vs Dry Weight Changes",
+           subtitle = "Comparing total weight loss with organic matter decomposition")
+    
+    # Plot 2: Decomposition of weight loss
+    decomposition_data <- weight_summary %>%
+      select(species, dry_weight_percent_change_mean, water_loss_percent_mean) %>%
+      mutate(species_ordered = factor(species, levels = weight_summary$species)) %>%
+      pivot_longer(cols = c(dry_weight_percent_change_mean, water_loss_percent_mean),
+                   names_to = "loss_type",
+                   values_to = "percent_loss") %>%
+      mutate(
+        loss_type = case_when(
+          loss_type == "dry_weight_percent_change_mean" ~ "Organic Matter",
+          loss_type == "water_loss_percent_mean" ~ "Water"
+        )
+      )
+    
+    p_decomposition <- ggplot(decomposition_data, aes(x = species_ordered, y = percent_loss, fill = loss_type)) +
+      geom_col(position = "stack", width = 0.7, alpha = 0.8) +
+      scale_fill_manual(values = c("Organic Matter" = "#F28E2B", "Water" = "#76B7B2"),
+                        name = "Loss Type") +
+      coord_flip() +
+      theme_minimal() +
+      theme(axis.text.y = element_text(size = 10),
+            legend.position = "top") +
+      labs(x = "Species", y = "Contribution to Total Weight Loss (%)",
+           title = "Decomposition of Weight Loss",
+           subtitle = "Water loss vs organic matter decomposition")
+    
+    # Combine plots
+    library(patchwork)
+    combined_weight <- p_comparison / p_decomposition
+    print(combined_weight)
+    
+  } else {
+    # Simple wet weight visualization if no dry weight data
+    p_wet <- weight_data %>%
+      filter(has_wet_weight_data) %>%
+      mutate(species_ordered = factor(species, levels = weight_summary$species)) %>%
+      ggplot(aes(x = species_ordered, y = wet_weight_percent_change)) +
+      
+      # Individual observations
+      geom_jitter(width = 0.2, alpha = 0.6, size = 2, color = "gray50") +
+      
+      # Mean with error bars
+      geom_point(data = weight_summary %>%
+                   mutate(species_ordered = factor(species, levels = weight_summary$species)),
+                 aes(y = wet_weight_percent_change_mean),
+                 size = 3, color = "#4E79A7") +
+      geom_errorbar(data = weight_summary %>%
+                      mutate(species_ordered = factor(species, levels = weight_summary$species)),
+                    aes(y = wet_weight_percent_change_mean,
+                        ymin = wet_weight_percent_change_mean - wet_weight_percent_change_sd,
+                        ymax = wet_weight_percent_change_mean + wet_weight_percent_change_sd),
+                    width = 0.3, color = "#4E79A7", linewidth = 1) +
+      
+      # Reference line at 0
+      geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
+      
+      coord_flip() +
+      theme_minimal() +
+      theme(axis.text.y = element_text(size = 10)) +
+      labs(x = "Species", y = "Wet Weight Change (%)",
+           title = "Wet Weight Changes After 14 Days",
+           subtitle = "Individual observations and means ± SD")
+    
+    print(p_wet)
+    cat("\nNote: Comprehensive weight analysis with dry weights requires re-running the data cleaning script.\n")
+  }
+  
+} else {
+  cat("Insufficient data for weight visualization.\n")
+}
+```
+
+### Statistical Analysis of Weight Changes
+
+```{r weight-statistical-analysis}
+# Statistical tests for dry weight changes
+if(exists("dry_weight_summary") && nrow(dry_weight_summary) > 1) {
+  cat("**Dry Weight Change Analysis:**\n\n")
+  
+  # Test if dry weight changes are significantly different from zero for each species
+  dry_weight_change_test <- dry_weight_data %>%
+    filter(has_dry_weight_data) %>%
+    group_by(species) %>%
+    summarise(
+      n = n(),
+      mean_change = mean(dry_weight_change, na.rm = TRUE),
+      sd_change = sd(dry_weight_change, na.rm = TRUE),
+      se_change = if_else(n > 1, sd_change / sqrt(n), NA_real_),
+      t_stat = if_else(!is.na(se_change) & se_change > 0, mean_change / se_change, NA_real_),
+      p_value = if_else(!is.na(t_stat) & n > 1, 2 * pt(abs(t_stat), df = n - 1, lower.tail = FALSE), NA_real_),
+      significant = if_else(!is.na(p_value), p_value < 0.05, FALSE),
+      .groups = "drop"
+    )
+  
+  significant_dry_weight_changes <- sum(dry_weight_change_test$significant, na.rm = TRUE)
+  
+  cat("- Species showing significant dry weight changes:", significant_dry_weight_changes, "out of", 
+      nrow(dry_weight_change_test), "\n")
+  
+  if(!is.na(significant_dry_weight_changes) && significant_dry_weight_changes > 0) {
+    cat("- Species with significant dry weight changes:\n")
+    dry_weight_change_test %>%
+      filter(significant) %>%
+      select(species, mean_change, p_value) %>%
+      mutate(
+        mean_change = round(mean_change, 3),
+        p_value = format.pval(p_value, digits = 3)
+      ) %>%
+      kable()
+  }
+  
+  # ANOVA for between-species comparison
+  if(nrow(dry_weight_data %>% filter(has_dry_weight_data)) >= 10) {
+    dry_weight_anova <- aov(dry_weight_percent_change ~ species, 
+                           data = dry_weight_data %>% filter(has_dry_weight_data))
+    dry_weight_anova_summary <- summary(dry_weight_anova)
+    
+    cat("\n**Between-species dry weight change comparison:**\n")
+    cat("- F-statistic:", round(dry_weight_anova_summary[[1]]$`F value`[1], 2), "\n")
+    cat("- p-value:", format.pval(dry_weight_anova_summary[[1]]$`Pr(>F)`[1]), "\n")
+  }
+}
+```
+
+### Key Findings - Dry Weight Changes
+
+```{r dry-weight-key-findings}
+cat("**Summary of Dry Weight Analysis:**\n\n")
+
+if(exists("dry_weight_summary") && nrow(dry_weight_summary) > 0) {
+  largest_dry_weight_loss <- dry_weight_summary %>% slice_min(dry_weight_percent_change_mean, n = 1)
+  smallest_dry_weight_loss <- dry_weight_summary %>% slice_max(dry_weight_percent_change_mean, n = 1)
+  
+  cat("1. **Dry Weight Dynamics**:\n")
+  cat("   - Largest dry weight loss:", largest_dry_weight_loss$species, 
+      "(", round(largest_dry_weight_loss$dry_weight_percent_change_mean, 1), "%)\n")
+  cat("   - Smallest dry weight loss:", smallest_dry_weight_loss$species,
+      "(", round(smallest_dry_weight_loss$dry_weight_percent_change_mean, 1), "%)\n")
+  cat("   - Average dry weight change across all species:",
+      round(mean(dry_weight_summary$dry_weight_percent_change_mean), 1), "%\n\n")
+  
+  cat("2. **Decomposition Efficiency**:\n")
+  # Species with >20% dry weight loss
+  high_decomposers <- dry_weight_summary %>% 
+    filter(dry_weight_percent_change_mean < -20) %>%
+    nrow()
+  
+  if(high_decomposers > 0) {
+    cat("   -", high_decomposers, "species achieved >20% dry weight reduction\n")
+  }
+  
+  cat("   - Dry weight loss directly reflects organic matter decomposition\n")
+  cat("   - Greater losses indicate more efficient substrate utilization\n")
+} else {
+  cat("Dry weight data not available. Please re-run the data cleaning script (R/data_cleaning_new.R) to generate dry weight calculations.\n")
+}
 ```
 
 ## Integrated Performance Assessment
@@ -1758,6 +1911,26 @@ if(exists("weight_summary") && nrow(weight_summary) > 0) {
     cat("- **Rapid decomposers**: ", high_decomposers, " species achieved >20% weight reduction\n")
   }
 }
+
+# Generate discussion points for dry weight changes
+if(exists("dry_weight_summary") && nrow(dry_weight_summary) > 0) {
+  cat("\n")
+  cat("- **Dry weight reduction**: More accurate measure of organic matter decomposition\n")
+  
+  dry_weight_range <- range(dry_weight_summary$dry_weight_percent_change_mean, na.rm = TRUE)
+  cat("- **Dry weight loss range**: From ", round(dry_weight_range[1], 1), "% to ",
+      round(dry_weight_range[2], 1), "%, excluding water loss effects\n")
+  
+  avg_dry_weight_loss <- mean(dry_weight_summary$dry_weight_percent_change_mean)
+  cat("- **Average dry matter reduction**: ", round(abs(avg_dry_weight_loss), 1), 
+      "%, representing true substrate utilization\n")
+  
+  efficient_decomposers <- sum(dry_weight_summary$dry_weight_percent_change_mean < -25, na.rm = TRUE)
+  if(efficient_decomposers > 0) {
+    cat("- **Highly efficient decomposers**: ", efficient_decomposers, 
+        " species achieved >25% dry matter reduction\n")
+  }
+}
 ```
 
 ### Statistical Methodology Impact
@@ -1869,7 +2042,7 @@ This evaluation reveals significant variation in fungal species performance for 
 
 2. **Antimicrobial Effectiveness**: `r if(nrow(ecoli_viz) > 0) paste("Limited but promising antimicrobial results, with", ecoli_viz$species[1], "showing", ecoli_viz$mean_log_reduction[1], "log E. coli reduction") else "Antimicrobial assessment requires expanded experimental scope"`
 
-3. **Environmental Modification**: `r if(exists("ph_summary") && nrow(ph_summary) > 0) paste("pH changes ranged from", round(min(ph_summary$ph_change_mean), 2), "to", round(max(ph_summary$ph_change_mean), 2), "units") else "pH data pending"`. `r if(exists("weight_summary") && nrow(weight_summary) > 0) paste("Weight reduction averaged", round(abs(mean(weight_summary$weight_change_percent_mean)), 1), "% over 14 days") else "Weight change data pending"`.
+3. **Environmental Modification**: `r if(exists("ph_summary") && nrow(ph_summary) > 0) paste("pH changes ranged from", round(min(ph_summary$ph_change_mean), 2), "to", round(max(ph_summary$ph_change_mean), 2), "units") else "pH data pending"`. `r if(exists("weight_summary") && nrow(weight_summary) > 0) paste("Wet weight reduction averaged", round(abs(mean(weight_summary$weight_change_percent_mean)), 1), "% over 14 days") else "Weight change data pending"`. `r if(exists("dry_weight_summary") && nrow(dry_weight_summary) > 0) paste("Dry weight reduction averaged", round(abs(mean(dry_weight_summary$dry_weight_percent_change_mean)), 1), "%, indicating substantial organic matter decomposition") else "Dry weight data pending"`.
 
 4. **Application-Specific Selection**: Different species excel in different applications, supporting targeted species selection based on treatment priorities.
 
