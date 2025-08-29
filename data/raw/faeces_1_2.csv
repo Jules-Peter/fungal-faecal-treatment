@@ -1,0 +1,4 @@
+id_faeces,collection_date_1,collection_date_2,ph,additive,additive_ratio,water_content_0dpi,sample_weight_1,sample_weight_2,sample_weight_3,dilution_factor_ecoli,e_coli_counted_1,e_coli_counted_2,e_coli_counted_3
+1,2025-08-12T00:00:00Z,,6.63,wood,0.5,0.53,0.54,1.12,0.82,5000,17,20,15
+2,2025-08-19T00:00:00Z,,6.8,wood,0.5,0.48444444444444495,0.64,0.88,0.51,2000,126,117,120
+3,2025-08-26T00:00:00Z,,6.73,wood,0.5,0.47883597883597906,0.79,1.13,0.71,2000,220,306,204

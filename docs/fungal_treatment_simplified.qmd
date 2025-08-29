@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
 
 # Load required packages with error handling
 required_packages <- c(
-  "tidyverse", "ggplot2", "scales", "knitr",
+  "tidyverse", "here", "ggplot2", "scales", "knitr",
   "lme4", "lmerTest", "emmeans", "broom.mixed",
   "performance", "see", "patchwork", "nortest",
   "car", "pwr", "effectsize", "report"
@@ -30,6 +30,7 @@ if (length(missing_packages) > 0) {
 # Load packages
 suppressMessages({
   library(tidyverse)
+  library(here)
   library(ggplot2) 
   library(scales)
   library(knitr)
@@ -61,6 +62,7 @@ MIN_OBSERVATIONS_PER_SPECIES <- 5
 OUTLIER_THRESHOLD <- 3  # MAD threshold for outlier detection
 PRACTICAL_SIGNIFICANCE_GROWTH <- 2  # cm² minimum meaningful difference
 PRACTICAL_SIGNIFICANCE_ECOLI <- 1   # log reduction minimum meaningful difference
+MAX_PLATE_AREA <- 63.62  # cm² - maximum possible growth area (full plate coverage)
 
 # Define helper functions
 source_if_exists <- function(file) {
@@ -85,6 +87,93 @@ interpret_effect_size <- function(eta_squared) {
 }
 ```
 
+# Executive Summary
+
+```{r executive-summary, results='asis'}
+# Load and prepare data for executive summary
+exp_data <- read_csv(here("data/processed/experiment_final.csv"), show_col_types = FALSE) %>%
+  mutate(
+    experiment = case_when(
+      experiment == "1_1" ~ "Experiment 1.1",
+      experiment == "1_2" ~ "Experiment 1.2",
+      TRUE ~ experiment
+    ),
+    species = ifelse(species == "ctrl", "Control", species),
+    area_percent_change = growth_14dpi,
+    e_coli_log_reduction = ifelse(!is.na(ecoli_conc_mean) & !is.na(ecoli_conc_14dpi) & ecoli_conc_mean > 0 & ecoli_conc_14dpi > 0,
+                                  log10(ecoli_conc_mean) - log10(ecoli_conc_14dpi),
+                                  NA_real_),
+    # Calculate plate coverage percentage
+    plate_coverage_14dpi = (area_size_14dpi / MAX_PLATE_AREA) * 100,
+    plate_coverage_0dpi = (area_size_0dpi / MAX_PLATE_AREA) * 100,
+    reached_full_coverage = area_size_14dpi >= (MAX_PLATE_AREA * 0.95)  # 95% threshold for "full" coverage
+  )
+
+# Calculate key metrics
+key_metrics <- exp_data %>%
+  filter(species != "Control") %>%
+  group_by(experiment) %>%
+  summarise(
+    n_species = n_distinct(species),
+    n_samples = n(),
+    mean_growth = mean(area_percent_change, na.rm = TRUE),
+    max_growth = max(area_percent_change, na.rm = TRUE),
+    ecoli_reduction_species = sum(!is.na(e_coli_log_reduction)),
+    mean_ecoli_reduction = mean(e_coli_log_reduction, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Top performers across experiments
+top_growth <- exp_data %>%
+  filter(species != "Control", !is.na(area_percent_change)) %>%
+  group_by(species) %>%
+  summarise(
+    mean_growth = mean(area_percent_change, na.rm = TRUE),
+    n_experiments = n_distinct(experiment),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(mean_growth)) %>%
+  head(3)
+
+top_ecoli <- exp_data %>%
+  filter(species != "Control", !is.na(e_coli_log_reduction)) %>%
+  group_by(species) %>%
+  summarise(
+    mean_reduction = mean(e_coli_log_reduction, na.rm = TRUE),
+    n_samples = n(),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(mean_reduction)) %>%
+  head(3)
+```
+
+## Key Findings at a Glance
+
+### Overall Performance Metrics
+
+```{r summary-table}
+kable(
+  key_metrics %>%
+    mutate(across(where(is.numeric), ~ round(.x, 1))),
+  caption = "**Table 1.** Overview of experimental results across both trials",
+  col.names = c("Experiment", "Species Tested", "Total Samples", 
+                "Mean Growth (%)", "Max Growth (%)", 
+                "Species w/ E.coli Data", "Mean Log Reduction")
+)
+```
+
+### Top Performing Species
+
+**Fungal Growth Champions:**
+- **`r if(nrow(top_growth) > 0) top_growth$species[1] else "N/A"`**: `r if(nrow(top_growth) > 0) round(top_growth$mean_growth[1], 1) else "N/A"`% average growth
+- **`r if(nrow(top_growth) > 1) top_growth$species[2] else "N/A"`**: `r if(nrow(top_growth) > 1) round(top_growth$mean_growth[2], 1) else "N/A"`% average growth  
+- **`r if(nrow(top_growth) > 2) top_growth$species[3] else "N/A"`**: `r if(nrow(top_growth) > 2) round(top_growth$mean_growth[3], 1) else "N/A"`% average growth
+
+*Note: Growth measured up to plate maximum of 63.62 cm². High-performing species may be growth-limited by available space.*
+
+**E. coli Reduction Leaders:**
+`r if(nrow(top_ecoli) > 0) paste0("- **", top_ecoli$species[1], "**: ", round(top_ecoli$mean_reduction[1], 2), " log reduction (n=", top_ecoli$n_samples[1], ")\\n- **", if(nrow(top_ecoli) > 1) top_ecoli$species[2] else "N/A", "**: ", if(nrow(top_ecoli) > 1) round(top_ecoli$mean_reduction[2], 2) else "N/A", if(nrow(top_ecoli) > 1) paste0(" log reduction (n=", top_ecoli$n_samples[2], ")") else "") else "Limited E. coli data available"`
+
 # Introduction
 
 Fungal treatment of fecal matter offers a promising biological approach for waste management that can simultaneously reduce pathogenic microorganisms and decompose organic matter. This study evaluates multiple fungal species for their growth performance and antimicrobial effectiveness.
@@ -94,49 +183,45 @@ Fungal treatment of fecal matter offers a promising biological approach for wast
 1. **Growth performance**: Assess fungal colony expansion over time as an indicator of decomposition capacity
 2. **Antimicrobial effectiveness**: Measure reduction of *E. coli* concentrations as a proxy for pathogen elimination  
 3. **Species ranking**: Identify optimal species for practical applications
+4. **Decomposition efficiency**: Evaluate weight loss and moisture changes during treatment
 
 # Methods
 
 The experiment employed a randomized design with multiple fungal species tested on fecal substrate. Growth was measured as colony area size at 0, 7, and 14 days post-inoculation (dpi). *E. coli* concentrations were measured at baseline and 14 dpi to assess antimicrobial effectiveness.
 
+## Growth Measurement Constraints
+
+The maximum possible growth area is **63.62 cm²** (full plate coverage). Species reaching >95% plate coverage (60.44 cm²) are considered growth-limited by available space rather than biological constraints. For such species, normalized growth rates are calculated based on available space to provide more accurate growth potential assessments:
+
+**Normalized Growth Rate** = (Actual Growth ÷ Available Space at Day 0) × 100%
+**Plate Coverage** = (Colony Area ÷ 63.62 cm²) × 100%
+
+These metrics better represent intrinsic growth capacity for fast-growing species that reach the plate boundary. Species showing >95% plate coverage are considered "growth-limited" and may have underestimated growth potential in traditional percentage calculations.
+
 ```{r data-import}
 # Load experimental data with robust error handling
-data_paths <- c(
-  "../data/processed/experiment_final.csv",
-  "data/processed/experiment_final.csv",
-  "../../data/processed/experiment_final.csv",
-  "/mnt/c/Users/jupeter/gitrepos/fungal-faecal-treatment/data/processed/experiment_final.csv"
-)
+data_path <- here("data", "processed", "experiment_final.csv")
 
-load_data <- function(paths) {
-  for (path in paths) {
-    if (file.exists(path)) {
-      tryCatch({
-        # Read with explicit NA strings specification
-        data <- read_csv(path, 
-                        show_col_types = FALSE,
-                        na = c("", "NA", "na", "NULL"))
-        message("✓ Data loaded from: ", path)
-        return(data)
-      }, error = function(e) {
-        warning("Failed to load ", path, ": ", e$message)
-      })
-    }
-  }
-  stop("Could not find or load experiment_final.csv from any expected location")
+if (!file.exists(data_path)) {
+  stop("Could not find experiment_final.csv at: ", data_path, "\n",
+       "Please run the data processing scripts first:\n",
+       "  - R/01-data_download.R\n",
+       "  - R/data_cleaning_new.R")
 }
 
-experiment_data_raw <- load_data(data_paths)
+# Read with explicit NA strings specification
+experiment_data_raw <- read_csv(data_path, 
+                                show_col_types = FALSE,
+                                na = c("", "NA", "na", "NULL"))
+
+message("✓ Data loaded from: ", data_path)
+message("  Rows: ", nrow(experiment_data_raw))
+message("  Columns: ", ncol(experiment_data_raw))
 
 # Data validation and cleaning with safer approach
 experiment_data <- experiment_data_raw %>%
-  # First, check what we're working with
-  {
-    cat("Original data types:\n")
-    cat("area_size_0dpi:", class(.$area_size_0dpi), "\n")
-    cat("ecoli_conc_mean:", class(.$ecoli_conc_mean), "\n")
-    .
-  } %>%
+  # Filter for experiment 1_1 only (default if no experiment column)
+  filter(is.na(experiment) | experiment == "1_1") %>%
   # Convert columns individually with error handling
   mutate(
     # Handle area size columns
@@ -146,15 +231,15 @@ experiment_data <- experiment_data_raw %>%
     
     # Handle E. coli columns  
     ecoli_conc_mean = suppressWarnings(as.numeric(ecoli_conc_mean)),
-    ecoli_conc_13dpi = suppressWarnings(as.numeric(ecoli_conc_13dpi)),
+    ecoli_conc_14dpi = suppressWarnings(as.numeric(ecoli_conc_14dpi)),
     
     # Create standardized identifiers
-    bio_replicate_id = paste(species, id_faeces, starting_date, sep = "_"),
-    tech_replicate_id = paste(bio_replicate_id, id_treatment, sep = "_"),
+    bio_replicate_id = str_c(species, id_faeces, starting_date, sep = "_"),
+    tech_replicate_id = str_c(bio_replicate_id, id_treatment, sep = "_"),
     
     # Clean and standardize species names - group similar treatments
-    species = trimws(species),
-    species = ifelse(is.na(species) | species == "", "unknown", species),
+    species = str_trim(species),
+    species = if_else(is.na(species) | species == "", "unknown", species),
     
     # Standardize species names to group only actual duplicates/typos
     species_standardized = case_when(
@@ -188,7 +273,7 @@ experiment_data <- experiment_data_raw %>%
   ) %>%
   # Remove completely empty rows (keep if at least one measurement exists)
   filter(!(is.na(area_size_0dpi) & is.na(area_size_7dpi) & is.na(area_size_14dpi) & 
-           is.na(ecoli_conc_mean) & is.na(ecoli_conc_13dpi))) %>%
+           is.na(ecoli_conc_mean) & is.na(ecoli_conc_14dpi))) %>%
   # Fill in missing 14dpi values for Sordaria strains
   mutate(
     area_size_14dpi = case_when(
@@ -199,7 +284,7 @@ experiment_data <- experiment_data_raw %>%
   # Add data quality flags
   mutate(
     has_growth_data = !is.na(area_size_0dpi),
-    has_ecoli_data = !is.na(ecoli_conc_mean) & !is.na(ecoli_conc_13dpi),
+    has_ecoli_data = !is.na(ecoli_conc_mean) & !is.na(ecoli_conc_14dpi),
     measurement_completeness = case_when(
       !is.na(area_size_14dpi) ~ "complete_14d",
       !is.na(area_size_7dpi) ~ "complete_7d", 
@@ -231,6 +316,147 @@ message("- Complete cases: ", data_summary$complete_cases)
 
 # Results
 
+## Growth Limits and Plate Coverage Analysis
+
+```{r plate-coverage-analysis}
+# Analyze plate coverage
+coverage_summary <- exp_data %>%
+  filter(species != "Control", !is.na(plate_coverage_14dpi)) %>%
+  group_by(species) %>%
+  summarise(
+    n = n(),
+    mean_coverage = mean(plate_coverage_14dpi, na.rm = TRUE),
+    max_coverage = max(plate_coverage_14dpi, na.rm = TRUE),
+    samples_full_coverage = sum(reached_full_coverage, na.rm = TRUE),
+    percent_full_coverage = (samples_full_coverage / n) * 100,
+    mean_initial_coverage = mean(plate_coverage_0dpi, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(mean_coverage))
+
+# Display coverage summary for top performers
+if(nrow(coverage_summary) > 0) {
+  kable(
+    coverage_summary %>%
+      head(10) %>%
+      mutate(across(where(is.numeric), ~ round(.x, 1))),
+    caption = "**Table 2.** Plate coverage analysis showing species approaching growth limits",
+    col.names = c("Species", "N", "Mean Coverage (%)", "Max Coverage (%)", 
+                  "Samples at Full Coverage", "% Reaching Full Coverage", "Initial Coverage (%)")
+  )
+}
+
+# Identify growth-limited species
+growth_limited <- coverage_summary %>%
+  filter(percent_full_coverage > 50)
+
+if(nrow(growth_limited) > 0) {
+  cat("\n### Species Reaching Growth Limits\n\n")
+  cat("The following species frequently reached full plate coverage (>95% of 63.62 cm²), indicating their growth was limited by available space:\n\n")
+  for(i in 1:nrow(growth_limited)) {
+    cat("- **", growth_limited$species[i], "**: ", 
+        round(growth_limited$percent_full_coverage[i], 0), 
+        "% of samples reached full coverage\n", sep = "")
+  }
+  cat("\n*Note: Growth percentages for these species may underestimate their true growth potential.*\n")
+}
+```
+
+```{r coverage-visualization, fig.height=6, fig.cap="**Figure 2.** Plate coverage distribution showing species approaching the maximum growth limit of 63.62 cm². Red dashed line indicates full plate coverage."}
+if(nrow(coverage_summary) > 0) {
+  # Create coverage plot
+  coverage_plot_data <- exp_data %>%
+    filter(species != "Control", !is.na(plate_coverage_14dpi)) %>%
+    mutate(species_ordered = factor(species, levels = coverage_summary$species))
+  
+  ggplot(coverage_plot_data, aes(x = species_ordered, y = plate_coverage_14dpi)) +
+    geom_boxplot(alpha = 0.7, fill = "lightblue") +
+    geom_hline(yintercept = 95, color = "red", linetype = "dashed", size = 1) +
+    annotate("text", x = 1, y = 97, label = "Full plate coverage limit", 
+             hjust = 0, color = "red", size = 3) +
+    coord_flip() +
+    labs(x = "", y = "Plate Coverage at 14 DPI (%)",
+         title = "Fungal Growth Plate Coverage",
+         subtitle = "Maximum possible coverage = 100% (63.62 cm²)") +
+    theme_minimal(base_size = 12) +
+    scale_y_continuous(limits = c(0, 105), breaks = seq(0, 100, 20))
+}
+```
+
+## Overview Dashboard
+
+```{r results-overview, fig.height=8, fig.cap="**Figure 3.** Performance overview of all tested fungal species. (A) Growth performance across experiments. (B) E. coli reduction effectiveness. Species are ordered by mean performance."}
+# Load experiment final data
+exp_data <- read_csv(here("data/processed/experiment_final.csv"), show_col_types = FALSE) %>%
+  mutate(
+    experiment = case_when(
+      experiment == "1_1" ~ "Experiment 1.1",
+      experiment == "1_2" ~ "Experiment 1.2",
+      TRUE ~ experiment
+    ),
+    species = ifelse(species == "ctrl", "Control", species)
+  )
+
+# Calculate percent change from growth data
+exp_data <- exp_data %>%
+  mutate(
+    area_percent_change = growth_14dpi,
+    e_coli_log_reduction = ifelse(!is.na(ecoli_conc_mean) & !is.na(ecoli_conc_14dpi) & ecoli_conc_mean > 0 & ecoli_conc_14dpi > 0,
+                                  log10(ecoli_conc_mean) - log10(ecoli_conc_14dpi),
+                                  NA_real_)
+  )
+
+# Prepare overview data
+overview_growth <- exp_data %>%
+  filter(species != "Control", !is.na(area_percent_change)) %>%
+  group_by(species) %>%
+  summarise(
+    mean_growth = mean(area_percent_change, na.rm = TRUE),
+    se_growth = sd(area_percent_change, na.rm = TRUE) / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(mean_growth))
+
+overview_ecoli <- exp_data %>%
+  filter(species != "Control", !is.na(e_coli_log_reduction)) %>%
+  group_by(species) %>%
+  summarise(
+    mean_reduction = mean(e_coli_log_reduction, na.rm = TRUE),
+    se_reduction = sd(e_coli_log_reduction, na.rm = TRUE) / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(mean_reduction))
+
+# Create overview plots
+p1 <- ggplot(overview_growth, aes(x = reorder(species, mean_growth), y = mean_growth)) +
+  geom_col(fill = "forestgreen", alpha = 0.7) +
+  geom_errorbar(aes(ymin = mean_growth - se_growth, ymax = mean_growth + se_growth),
+                width = 0.2, alpha = 0.5) +
+  coord_flip() +
+  labs(x = "", y = "Mean Growth (%)", 
+       subtitle = "(A) Fungal Growth Performance") +
+  theme_minimal(base_size = 12) +
+  theme(axis.text.y = element_text(size = 10))
+
+if(nrow(overview_ecoli) > 0) {
+  p2 <- ggplot(overview_ecoli, aes(x = reorder(species, mean_reduction), y = mean_reduction)) +
+    geom_col(fill = "darkred", alpha = 0.7) +
+    geom_errorbar(aes(ymin = mean_reduction - se_reduction, ymax = mean_reduction + se_reduction),
+                  width = 0.2, alpha = 0.5) +
+    coord_flip() +
+    labs(x = "", y = "Mean Log Reduction", 
+         subtitle = "(B) E. coli Reduction Effectiveness") +
+    theme_minimal(base_size = 12) +
+    theme(axis.text.y = element_text(size = 10))
+  
+  p1 / p2
+} else {
+  p1
+}
+```
+
 ## Data Overview
 
 ```{r data-summary}
@@ -241,7 +467,7 @@ growth_data_check <- experiment_data %>%
     has_area_7 = !is.na(area_size_7dpi) & area_size_7dpi != "NA", 
     has_area_14 = !is.na(area_size_14dpi) & area_size_14dpi != "NA",
     has_ecoli_initial = !is.na(ecoli_conc_mean) & ecoli_conc_mean != "NA",
-    has_ecoli_final = !is.na(ecoli_conc_13dpi) & ecoli_conc_13dpi != "NA"
+    has_ecoli_final = !is.na(ecoli_conc_14dpi) & ecoli_conc_14dpi != "NA"
   )
 
 # Growth data summary
@@ -252,7 +478,7 @@ growth_species_summary <- growth_data_check %>%
     total_measurements = n(),
     has_7dpi = sum(has_area_7, na.rm = TRUE),
     has_14dpi = sum(has_area_14, na.rm = TRUE),
-    biological_replicates = n_distinct(paste(id_faeces, starting_date)),
+    biological_replicates = n_distinct(str_c(id_faeces, starting_date)),
     .groups = "drop"
   ) %>%
   arrange(desc(total_measurements))
@@ -272,7 +498,7 @@ ecoli_species_summary <- growth_data_check %>%
   group_by(species) %>%
   summarise(
     total_measurements = n(),
-    biological_replicates = n_distinct(paste(id_faeces, starting_date)),
+    biological_replicates = n_distinct(str_c(id_faeces, starting_date)),
     .groups = "drop"
   ) %>%
   arrange(desc(total_measurements))
@@ -416,7 +642,7 @@ p1_trajectories <- growth_rates %>%
 p2_rates <- growth_summary_robust %>%
   filter(day == 14 | (day == 7 & !species %in% unique(growth_summary_robust$species[growth_summary_robust$day == 14]))) %>%
   mutate(
-    timepoint_label = paste0(day, " days"),
+    timepoint_label = str_c(day, " days"),
     species_reorder = reorder(species, mean_growth_rate)
   ) %>%
   ggplot(aes(x = species_reorder, y = mean_growth_rate, fill = sufficient_power)) +
@@ -429,7 +655,7 @@ p2_rates <- growth_summary_robust %>%
   ) +
   
   geom_text(
-    aes(label = paste0("n=", n_bio_reps, "/", n_obs)), 
+    aes(label = str_c("n=", n_bio_reps, "/", n_obs)), 
     hjust = -0.1, size = 2.5
   ) +
   
@@ -463,7 +689,7 @@ growth_viz_data <- growth_summary_robust %>%
   filter(day == 14 | (day == 7 & !species %in% unique(growth_summary_robust$species[growth_summary_robust$day == 14]))) %>%
   mutate(
     mean_growth = mean_growth_rate * day,  # approximate total growth
-    timepoint = paste0(day, " DPI")
+    timepoint = str_c(day, " DPI")
   ) %>%
   arrange(desc(mean_growth))
 
@@ -474,7 +700,7 @@ if(nrow(growth_viz_data) == 0) {
     slice_max(mean_growth_rate, n = 10) %>%
     mutate(
       mean_growth = mean_growth_rate * day,
-      timepoint = paste0(day, " DPI")
+      timepoint = str_c(day, " DPI")
     ) %>%
     arrange(desc(mean_growth))
 }
@@ -580,7 +806,7 @@ cat("**Longitudinal Mixed-Effects Analysis Dataset:**\n")
 cat("- Species included:", n_distinct(modeling_data$species), "\n")
 cat("- Total observations:", nrow(modeling_data), "\n") 
 cat("- Biological replicates:", n_distinct(modeling_data$bio_replicate_id), "\n")
-cat("- Timepoints:", paste(sort(unique(modeling_data$day)), collapse = ", "), "\n\n")
+cat("- Timepoints:", str_c(sort(unique(modeling_data$day)), collapse = ", "), "\n\n")
 
 # Model fitting with progressive complexity
 if(nrow(modeling_data) >= 10 && n_distinct(modeling_data$species) >= 2) {
@@ -862,7 +1088,7 @@ ecoli_data_clean <- experiment_data %>%
   mutate(
     # Handle potential zeros and negative values in log calculations
     ecoli_initial = pmax(1, as.numeric(ecoli_conc_mean)),  # minimum 1 CFU/g
-    ecoli_final = pmax(0.1, as.numeric(ecoli_conc_13dpi)),  # minimum 0.1 CFU/g (detection limit)
+    ecoli_final = pmax(0.1, as.numeric(ecoli_conc_14dpi)),  # minimum 0.1 CFU/g (detection limit)
     
     # Robust log reduction calculation
     log_reduction = log10(ecoli_initial / ecoli_final),
@@ -1045,7 +1271,7 @@ if(nrow(ecoli_data_clean) > 0) {
                  linetype = "dashed", color = "darkgreen") +
       
       geom_text(
-        aes(label = paste0("n=", n_bio_reps, "/", n_obs)),
+        aes(label = str_c("n=", n_bio_reps, "/", n_obs)),
         hjust = -0.1, size = 2.5
       ) +
       
@@ -1840,7 +2066,7 @@ if(nrow(integrated_data) > 0) {
 ### Growth Performance
 - **Species diversity**: `r nrow(growth_summary_stats)` species showed measurable growth on fecal substrate
 - **Performance range**: Growth varied by `r round(max(growth_viz_data$mean_growth, na.rm = TRUE)/min(growth_viz_data$mean_growth, na.rm = TRUE), 1)`-fold between best and worst performers
-- **Top growth species**: `r paste(growth_viz_data$species[1:min(3, nrow(growth_viz_data))], collapse = ", ")` showed superior faecal colonization potential
+- **Top growth species**: `r str_c(growth_viz_data$species[1:min(3, nrow(growth_viz_data))], collapse = ", ")` showed superior faecal colonization potential
 
 ### Antimicrobial Effectiveness
 
@@ -1855,7 +2081,7 @@ if(nrow(treatment_data) > 0) {
   
   cat("- **Pathogen reduction**:", nrow(treatment_data), "fungal species demonstrated measurable E. coli reduction\n")
   cat("- **Effective treatments**:", effective_treatments, "species achieved ≥1 log (90%) bacterial reduction\n")
-  cat("- **Top antimicrobial species**:", paste(top_species$species, collapse = ", "), "\n")
+  cat("- **Top antimicrobial species**:", str_c(top_species$species, collapse = ", "), "\n")
   
   if(nrow(control_data) > 0) {
     better_than_control <- sum(treatment_data$mean_log_reduction > control_data$mean_log_reduction)
@@ -1945,11 +2171,11 @@ if(exists("growth_lmer")) {
   cat("1. **Proper Error Structure**: By modeling biological replicates as random effects, we account for the fact that technical replicates from the same biological source are more similar to each other than to replicates from different sources\n\n")
   
   icc_interpretation <- if(icc > 0.5) {
-    paste("indicates that most variation (", round(icc*100, 1), "%) comes from genuine biological differences between replicates, suggesting excellent experimental precision")
+    str_c("indicates that most variation (", round(icc*100, 1), "%) comes from genuine biological differences between replicates, suggesting excellent experimental precision")
   } else if(icc > 0.2) {
-    paste("shows that", round(icc*100, 1), "% of variation comes from biological differences, with the remainder from technical factors")
+    str_c("shows that ", round(icc*100, 1), "% of variation comes from biological differences, with the remainder from technical factors")
   } else {
-    paste("reveals that only", round(icc*100, 1), "% of variation comes from biological differences, indicating substantial technical noise")
+    str_c("reveals that only ", round(icc*100, 1), "% of variation comes from biological differences, indicating substantial technical noise")
   }
   
   cat("2. **Variance Decomposition**: The ICC of", round(icc, 3), icc_interpretation, "\n\n")
@@ -2000,11 +2226,11 @@ cat("- **Power analysis**: Pre-study calculations to determine adequate sample s
 
 **For Rapid Decomposition Applications:**
 - Primary recommendation: `r growth_viz_data$species[1]` (highest growth rate)
-- Alternative options: `r paste(growth_viz_data$species[2:min(3, nrow(growth_viz_data))], collapse = ", ")`
+- Alternative options: `r str_c(growth_viz_data$species[2:min(3, nrow(growth_viz_data))], collapse = ", ")`
 
-`r if(nrow(ecoli_viz) > 0) paste("**For Pathogen Reduction Applications:**\n- Primary recommendation:", ecoli_viz$species[1], "(highest E. coli reduction)\n- Clinical threshold: Species achieving ≥2 log reduction suitable for pathogen control") else "**For Pathogen Reduction Applications:**\n- Additional studies needed with broader species panel\n- Current data insufficient for pathogen reduction recommendations"`
+`r if(nrow(ecoli_viz) > 0) str_c("**For Pathogen Reduction Applications:**\n- Primary recommendation: ", ecoli_viz$species[1], " (highest E. coli reduction)\n- Clinical threshold: Species achieving ≥2 log reduction suitable for pathogen control") else "**For Pathogen Reduction Applications:**\n- Additional studies needed with broader species panel\n- Current data insufficient for pathogen reduction recommendations"`
 
-`r if(exists("integrated_performance") && nrow(integrated_performance) > 0) paste("**For Combined Applications:**\n- Balanced performance:", integrated_performance$species[1], "(highest combined score)\n- Dual-purpose treatment systems should prioritize species with both capabilities") else "**For Combined Applications:**\n- Sequential treatment approach recommended\n- Use high-growth species for decomposition, then high-antimicrobial species for pathogen control"`
+`r if(exists("integrated_performance") && nrow(integrated_performance) > 0) str_c("**For Combined Applications:**\n- Balanced performance: ", integrated_performance$species[1], " (highest combined score)\n- Dual-purpose treatment systems should prioritize species with both capabilities") else "**For Combined Applications:**\n- Sequential treatment approach recommended\n- Use high-growth species for decomposition, then high-antimicrobial species for pathogen control"`
 
 ## Limitations and Future Research Priorities
 
@@ -2031,6 +2257,535 @@ cat("- **Power analysis**: Pre-study calculations to determine adequate sample s
 2. **Technology transfer**: Implementation in target communities and regions
 3. **Integration studies**: Combination with other waste treatment technologies
 4. **Strain improvement**: Optimization of fungal strains for enhanced performance
+
+# Experiment 1_2 Analysis
+
+## Overview
+
+```{r exp2-overview-metrics}
+# Load experiment final data if not already loaded
+if(!exists("exp_data")) {
+  exp_data <- read_csv(here("data/processed/experiment_final.csv"), show_col_types = FALSE) %>%
+    mutate(
+      experiment = case_when(
+        experiment == "1_1" ~ "Experiment 1.1",
+        experiment == "1_2" ~ "Experiment 1.2",
+        TRUE ~ experiment
+      ),
+      species = ifelse(species == "ctrl", "Control", species),
+      area_percent_change = growth_14dpi,
+      e_coli_log_reduction = ifelse(!is.na(ecoli_conc_mean) & !is.na(ecoli_conc_14dpi) & ecoli_conc_mean > 0 & ecoli_conc_14dpi > 0,
+                                    log10(ecoli_conc_mean) - log10(ecoli_conc_14dpi),
+                                    NA_real_)
+    )
+}
+
+# Calculate comprehensive metrics for Experiment 1_2
+exp2_metrics <- exp_data %>%
+  filter(experiment == "Experiment 1.2") %>%
+  summarise(
+    total_samples = n(),
+    fungal_species = n_distinct(species[species != "Control"]),
+    control_samples = sum(species == "Control"),
+    
+    # Growth metrics
+    growth_samples = sum(!is.na(area_percent_change)),
+    mean_growth_all = mean(area_percent_change, na.rm = TRUE),
+    median_growth_all = median(area_percent_change, na.rm = TRUE),
+    
+    # E. coli metrics
+    ecoli_samples = sum(!is.na(e_coli_log_reduction)),
+    mean_ecoli_reduction = mean(e_coli_log_reduction, na.rm = TRUE),
+    species_with_ecoli = n_distinct(species[!is.na(e_coli_log_reduction)]),
+    
+    # Weight metrics
+    weight_samples = sum(!is.na(weight_14dpi)),
+    mean_weight_loss = mean((weight_0dpi - weight_14dpi) / weight_0dpi * 100, na.rm = TRUE),
+    
+    # pH metrics
+    ph_samples = sum(!is.na(ph_14dpi)),
+    mean_ph_change = mean(ph_14dpi - ph_0dpi, na.rm = TRUE)
+  )
+
+# Species-level summary
+exp2_species_summary <- exp_data %>%
+  filter(experiment == "Experiment 1.2", species != "Control") %>%
+  group_by(species) %>%
+  summarise(
+    n = n(),
+    growth = mean(area_percent_change, na.rm = TRUE),
+    growth_sd = sd(area_percent_change, na.rm = TRUE),
+    ecoli_reduction = mean(e_coli_log_reduction, na.rm = TRUE),
+    weight_loss = mean((weight_0dpi - weight_14dpi) / weight_0dpi * 100, na.rm = TRUE),
+    ph_change = mean(ph_14dpi - ph_0dpi, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(growth))
+```
+
+### Experiment 1.2 Key Metrics
+
+- **Total Samples**: `r exp2_metrics$total_samples` (including `r exp2_metrics$control_samples` controls)
+- **Fungal Species Tested**: `r exp2_metrics$fungal_species`
+- **Mean Growth**: `r round(exp2_metrics$mean_growth_all, 1)`% (median: `r round(exp2_metrics$median_growth_all, 1)`%)
+- **E. coli Data Available**: `r exp2_metrics$ecoli_samples` samples from `r exp2_metrics$species_with_ecoli` species
+- **Weight Loss Data**: `r exp2_metrics$weight_samples` samples (mean loss: `r round(exp2_metrics$mean_weight_loss, 1)`%)
+- **pH Change**: `r round(exp2_metrics$mean_ph_change, 2)` units average increase
+
+### Performance Summary Table
+
+```{r exp2-summary-table}
+if(exists("exp2_species_summary") && nrow(exp2_species_summary) > 0) {
+  kable(
+    exp2_species_summary %>%
+      select(species, n, growth, ecoli_reduction, weight_loss, ph_change) %>%
+      mutate(across(where(is.numeric), ~ round(.x, 2))),
+    caption = "**Table X.** Experiment 1.2 comprehensive species performance metrics",
+    col.names = c("Species", "N", "Growth (%)", "E.coli Log Red.", "Weight Loss (%)", "pH Change")
+  )
+}
+```
+
+This section presents the analysis of the second experiment (1_2), which follows the same methodology as experiment 1_1 to validate findings and assess reproducibility.
+
+```{r exp2-data-import}
+# Filter data for experiment 1_2
+experiment_2_data <- experiment_data_raw %>%
+  filter(experiment == "1_2") %>%
+  # Apply same data cleaning as experiment 1_1
+  mutate(
+    # Handle area size columns
+    area_size_0dpi = suppressWarnings(as.numeric(area_size_0dpi)),
+    area_size_7dpi = suppressWarnings(as.numeric(area_size_7dpi)),
+    area_size_14dpi = suppressWarnings(as.numeric(area_size_14dpi)),
+    
+    # Handle E. coli columns  
+    ecoli_conc_mean = suppressWarnings(as.numeric(ecoli_conc_mean)),
+    ecoli_conc_14dpi = suppressWarnings(as.numeric(ecoli_conc_14dpi)),
+    
+    # Create standardized identifiers
+    bio_replicate_id = paste(species, id_faeces, starting_date, sep = "_"),
+    tech_replicate_id = paste(bio_replicate_id, id_treatment, sep = "_"),
+    
+    # Clean and standardize species names
+    species = trimws(species),
+    species = ifelse(is.na(species) | species == "", "unknown", species),
+    
+    # Use same species standardization as experiment 1_1
+    species_standardized = case_when(
+      str_detect(species, "T\\. harzianum T22") ~ "T. harzianum T22",
+      str_detect(species, "T\\. harzianum CBS245.93") ~ "T. harzianum CBS245.93",
+      species == "F33 Sordaria" ~ "F33 Sordaria",
+      species == "F35 Sordaria" ~ "F35 Sordaria", 
+      str_detect(species, "T\\. atroviridae") ~ "T. atroviridae", 
+      str_detect(species, "T\\. virens") ~ "T. virens",
+      str_detect(species, "T\\. gamsii") ~ "T. gamsii",
+      str_detect(species, "T\\. koningii") ~ "T. koningii",
+      str_detect(species, "T\\. veluntinum") ~ "T. veluntinum",
+      str_detect(species, "P\\. ostreatus") ~ "P. ostreatus",
+      str_detect(species, "C\\. comatus") ~ "C. comatus",
+      str_detect(species, "Mucor") ~ "Mucor spp",
+      str_detect(species, "Faecal isolate") ~ "Faecal isolate",
+      str_detect(species, "Panaeolous") ~ "Panaeolous spp",
+      str_detect(species, "F37 Mold") ~ "F37 Mold",
+      str_detect(species, "F39 Thermo tolerant") ~ "F39 Thermotolerant",
+      species == "ctrl" ~ "ctrl",
+      TRUE ~ species
+    ),
+    
+    species = species_standardized
+  ) %>%
+  filter(!(is.na(area_size_0dpi) & is.na(area_size_7dpi) & is.na(area_size_14dpi) & 
+           is.na(ecoli_conc_mean) & is.na(ecoli_conc_14dpi)))
+
+# Summary of experiment 2 data
+exp2_summary <- experiment_2_data %>%
+  filter(species != "ctrl") %>%
+  group_by(species) %>%
+  summarise(
+    n_samples = n(),
+    biological_replicates = n_distinct(str_c(id_faeces, starting_date)),
+    has_growth_data = sum(!is.na(area_size_0dpi) & !is.na(area_size_14dpi)),
+    has_ecoli_data = sum(!is.na(ecoli_conc_mean) & !is.na(ecoli_conc_14dpi)),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(n_samples))
+
+kable(exp2_summary,
+      caption = "**Table X.** Experiment 1_2 data availability by species",
+      col.names = c("Species", "Total Samples", "Biological Replicates", 
+                    "Growth Data", "E. coli Data"))
+```
+
+## Growth Performance Comparison
+
+```{r exp2-growth-analysis}
+# Prepare growth data for experiment 2
+exp2_growth_data <- experiment_2_data %>%
+  filter(!is.na(area_size_0dpi), !is.na(area_size_14dpi), species != "ctrl") %>%
+  mutate(
+    growth_14dpi = area_size_14dpi - area_size_0dpi,
+    growth_percent = (growth_14dpi / area_size_0dpi) * 100
+  ) %>%
+  group_by(species) %>%
+  summarise(
+    n = n(),
+    mean_growth = mean(growth_14dpi, na.rm = TRUE),
+    se_growth = sd(growth_14dpi, na.rm = TRUE) / sqrt(n()),
+    mean_growth_percent = mean(growth_percent, na.rm = TRUE),
+    se_growth_percent = sd(growth_percent, na.rm = TRUE) / sqrt(n()),
+    .groups = "drop"
+  ) %>%
+  filter(n >= 3) %>%
+  arrange(desc(mean_growth))
+
+# Create growth comparison plot
+p_exp2_growth <- ggplot(exp2_growth_data, aes(x = reorder(species, mean_growth), y = mean_growth)) +
+  geom_col(fill = "darkgreen", alpha = 0.7) +
+  geom_errorbar(aes(ymin = mean_growth - se_growth, ymax = mean_growth + se_growth),
+                width = 0.2) +
+  coord_flip() +
+  labs(x = "Species", y = "Growth (cm²)",
+       title = "Experiment 1_2: Fungal Growth Performance at 14 DPI",
+       subtitle = paste("n =", sum(exp2_growth_data$n), "samples from", 
+                       nrow(exp2_growth_data), "species")) +
+  theme_minimal() +
+  theme(axis.text.y = element_text(face = "italic"))
+
+print(p_exp2_growth)
+
+# Top performers in experiment 2
+top_exp2_species <- exp2_growth_data %>%
+  slice_head(n = 5) %>%
+  select(species, mean_growth, mean_growth_percent)
+
+kable(top_exp2_species,
+      caption = "**Table Y.** Top 5 performing species in Experiment 1_2",
+      col.names = c("Species", "Mean Growth (cm²)", "Mean Growth (%)"),
+      digits = 1)
+```
+
+## E. coli Reduction Analysis
+
+```{r exp2-ecoli-analysis}
+# Prepare E. coli data for experiment 2
+exp2_ecoli_data <- experiment_2_data %>%
+  filter(!is.na(ecoli_conc_mean), !is.na(ecoli_conc_14dpi), 
+         species != "ctrl", ecoli_conc_mean > 0, ecoli_conc_14dpi > 0) %>%
+  mutate(
+    log_ecoli_initial = log10(ecoli_conc_mean),
+    log_ecoli_final = log10(ecoli_conc_14dpi),
+    log_reduction = log_ecoli_initial - log_ecoli_final,
+    percent_reduction = ((ecoli_conc_mean - ecoli_conc_14dpi) / ecoli_conc_mean) * 100
+  ) %>%
+  group_by(species) %>%
+  summarise(
+    n = n(),
+    mean_log_reduction = mean(log_reduction, na.rm = TRUE),
+    se_log_reduction = sd(log_reduction, na.rm = TRUE) / sqrt(n()),
+    mean_percent_reduction = mean(percent_reduction, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  filter(n >= 3) %>%
+  arrange(desc(mean_log_reduction))
+
+if(nrow(exp2_ecoli_data) > 0) {
+  # Create E. coli reduction plot
+  p_exp2_ecoli <- ggplot(exp2_ecoli_data, aes(x = reorder(species, mean_log_reduction), 
+                                               y = mean_log_reduction)) +
+    geom_col(fill = "darkred", alpha = 0.7) +
+    geom_errorbar(aes(ymin = mean_log_reduction - se_log_reduction, 
+                      ymax = mean_log_reduction + se_log_reduction),
+                  width = 0.2) +
+    coord_flip() +
+    labs(x = "Species", y = "Log Reduction",
+         title = "Experiment 1_2: E. coli Reduction at 13 DPI",
+         subtitle = paste("n =", sum(exp2_ecoli_data$n), "samples from", 
+                         nrow(exp2_ecoli_data), "species")) +
+    theme_minimal() +
+    theme(axis.text.y = element_text(face = "italic"))
+  
+  print(p_exp2_ecoli)
+  
+  kable(exp2_ecoli_data,
+        caption = "**Table Z.** E. coli reduction by species in Experiment 1_2",
+        col.names = c("Species", "n", "Mean Log Reduction", "SE", "Mean % Reduction"),
+        digits = 2)
+} else {
+  cat("Insufficient E. coli data available for Experiment 1_2 analysis\n")
+}
+```
+
+## Comparison Between Experiments
+
+```{r exp-comparison}
+# Compare top performers between experiments
+if(exists("growth_viz_data") && nrow(exp2_growth_data) > 0) {
+  # Get top 5 from each experiment
+  top_exp1 <- growth_viz_data %>%
+    slice_head(n = 5) %>%
+    select(species, exp1_growth = mean_growth)
+  
+  top_exp2 <- exp2_growth_data %>%
+    slice_head(n = 5) %>%
+    select(species, exp2_growth = mean_growth)
+  
+  # Create comparison
+  comparison <- full_join(top_exp1, top_exp2, by = "species") %>%
+    mutate(
+      exp1_growth = round(exp1_growth, 1),
+      exp2_growth = round(exp2_growth, 1),
+      consistency = case_when(
+        !is.na(exp1_growth) & !is.na(exp2_growth) ~ "Both experiments",
+        !is.na(exp1_growth) ~ "Experiment 1 only",
+        !is.na(exp2_growth) ~ "Experiment 2 only"
+      )
+    )
+  
+  kable(comparison,
+        caption = "**Table AA.** Comparison of top performing species between experiments",
+        col.names = c("Species", "Exp 1_1 Growth (cm²)", "Exp 1_2 Growth (cm²)", "Presence"))
+  
+  # Calculate correlation if there are common species
+  common_species <- inner_join(
+    growth_viz_data %>% select(species, exp1_growth = mean_growth),
+    exp2_growth_data %>% select(species, exp2_growth = mean_growth),
+    by = "species"
+  )
+  
+  if(nrow(common_species) >= 3) {
+    correlation <- cor.test(common_species$exp1_growth, common_species$exp2_growth)
+    cat("\nCorrelation between experiments for common species: r =", 
+        round(correlation$estimate, 3), 
+        ", p =", round(correlation$p.value, 4), "\n")
+  }
+}
+```
+
+## Key Findings from Experiment 1_2
+
+1. **Reproducibility**: `r if(exists("common_species") && nrow(common_species) >= 3) paste("Growth performance showed", ifelse(correlation$estimate > 0.7, "strong", ifelse(correlation$estimate > 0.4, "moderate", "weak")), "correlation (r =", round(correlation$estimate, 3), ") between experiments") else "Limited overlap between experiments prevents correlation analysis"`
+
+2. **Top Performers**: `r if(nrow(exp2_growth_data) > 0) paste(exp2_growth_data$species[1], "showed highest growth in Experiment 1_2 with", round(exp2_growth_data$mean_growth[1], 1), "cm²") else "Growth data pending"`
+
+3. **E. coli Reduction**: `r if(exists("exp2_ecoli_data") && nrow(exp2_ecoli_data) > 0) paste(nrow(exp2_ecoli_data), "species showed measurable E. coli reduction") else "Limited E. coli data available"`
+
+## Weight Change Analysis for Experiment 1_2
+
+```{r exp2-weight-analysis}
+# Load data if not already loaded
+if(!exists("exp_data")) {
+  exp_data <- read_csv(here("data/processed/experiment_final.csv"), show_col_types = FALSE) %>%
+    mutate(
+      experiment = case_when(
+        experiment == "1_1" ~ "Experiment 1.1",
+        experiment == "1_2" ~ "Experiment 1.2",
+        TRUE ~ experiment
+      ),
+      species = ifelse(species == "ctrl", "Control", species)
+    )
+}
+
+# Focused weight analysis for Experiment 1_2
+exp2_weight_data <- exp_data %>%
+  filter(experiment == "Experiment 1.2", !is.na(weight_14dpi)) %>%
+  mutate(
+    weight_change = weight_14dpi - weight_0dpi,
+    weight_percent_change = (weight_change / weight_0dpi) * 100,
+    # Calculate dry weights if water content available
+    dry_weight_14dpi = if("water_content_14dpi" %in% names(.)) {
+      weight_14dpi * (1 - water_content_14dpi)
+    } else {
+      NA_real_
+    },
+    # Estimate initial dry weight (assuming similar water content)
+    dry_weight_0dpi = if("water_content_14dpi" %in% names(.)) {
+      weight_0dpi * (1 - water_content_14dpi)
+    } else {
+      NA_real_
+    },
+    dry_weight_change = dry_weight_14dpi - dry_weight_0dpi,
+    dry_weight_percent_change = (dry_weight_change / dry_weight_0dpi) * 100,
+    species_type = ifelse(species == "Control", "Control", "Fungal Treatment")
+  )
+
+# Summary by species
+exp2_weight_summary <- exp2_weight_data %>%
+  group_by(species) %>%
+  summarise(
+    n = n(),
+    initial_weight = mean(weight_0dpi, na.rm = TRUE),
+    final_weight = mean(weight_14dpi, na.rm = TRUE),
+    weight_loss_percent = -mean(weight_percent_change, na.rm = TRUE),
+    water_content = mean(water_content_14dpi, na.rm = TRUE) * 100,
+    dry_matter_loss = if(any(!is.na(dry_weight_percent_change))) {
+      -mean(dry_weight_percent_change, na.rm = TRUE)
+    } else {
+      NA_real_
+    },
+    .groups = "drop"
+  ) %>%
+  arrange(desc(weight_loss_percent))
+
+# Display weight change table
+if(nrow(exp2_weight_summary) > 0) {
+  kable(
+    exp2_weight_summary %>%
+      mutate(across(where(is.numeric), ~ round(.x, 2))),
+    caption = "**Table Y.** Weight changes in Experiment 1.2 showing decomposition efficiency",
+    col.names = c("Species", "N", "Initial (g)", "Final (g)", "Weight Loss (%)", 
+                  "Water Content (%)", "Dry Matter Loss (%)")
+  )
+} else {
+  cat("No weight change data available for Experiment 1.2\n")
+}
+```
+
+```{r exp2-weight-visualization, fig.height=8, fig.cap="**Figure X.** Experiment 1.2 weight changes and decomposition patterns. (A) Total weight loss by species. (B) Relationship between fungal growth and weight loss. (C) Water content at day 14."}
+if(nrow(exp2_weight_data) > 0) {
+  # Panel A: Weight loss by species
+  p1 <- ggplot(exp2_weight_summary, aes(x = reorder(species, weight_loss_percent), 
+                                         y = weight_loss_percent)) +
+    geom_col(fill = "chocolate", alpha = 0.7) +
+    coord_flip() +
+    labs(x = "", y = "Weight Loss (%)",
+         subtitle = "(A) Decomposition efficiency by species") +
+    theme_minimal(base_size = 12)
+  
+  # Panel B: Growth vs weight loss correlation
+  correlation_data <- exp2_weight_data %>%
+    filter(!is.na(area_percent_change))
+  
+  if(nrow(correlation_data) > 5) {
+    cor_test <- cor.test(correlation_data$area_percent_change, 
+                        -correlation_data$weight_percent_change)
+    
+    p2 <- ggplot(correlation_data, aes(x = area_percent_change, y = -weight_percent_change)) +
+      geom_point(aes(color = species_type), size = 3, alpha = 0.7) +
+      geom_smooth(method = "lm", se = TRUE, color = "black", linetype = "dashed") +
+      scale_color_manual(values = c("Control" = "red", "Fungal Treatment" = "forestgreen")) +
+      labs(x = "Fungal Growth (%)", y = "Weight Loss (%)",
+           subtitle = paste("(B) Growth-decomposition relationship (r =", 
+                           round(cor_test$estimate, 3), ")"),
+           color = "Treatment") +
+      theme_minimal(base_size = 12) +
+      theme(legend.position = "bottom")
+  } else {
+    p2 <- NULL
+  }
+  
+  # Panel C: Water content
+  p3 <- ggplot(exp2_weight_summary %>% filter(!is.na(water_content)), 
+               aes(x = reorder(species, water_content), y = water_content)) +
+    geom_col(fill = "skyblue", alpha = 0.7) +
+    geom_hline(yintercept = 50, linetype = "dashed", color = "red", alpha = 0.5) +
+    coord_flip() +
+    labs(x = "", y = "Water Content (%)",
+         subtitle = "(C) Final moisture levels") +
+    theme_minimal(base_size = 12)
+  
+  # Combine plots
+  if(!is.null(p2)) {
+    p1 / p2 / p3
+  } else {
+    p1 / p3
+  }
+}
+```
+
+### Key Weight Change Findings
+
+1. **Decomposition Leaders**: `r if(nrow(exp2_weight_summary) > 0) paste(exp2_weight_summary$species[1], "showed highest weight loss (", round(exp2_weight_summary$weight_loss_percent[1], 1), "%), indicating superior decomposition") else "Weight data analysis pending"`
+2. **Water vs Organic Matter**: `r if(nrow(exp2_weight_summary) > 0) paste("Average water content at day 14 was", round(mean(exp2_weight_summary$water_content, na.rm = TRUE), 1), "%") else "Water content data pending"`
+3. **Growth-Decomposition Link**: `r if(exists("cor_test")) paste("Fungal growth showed", ifelse(cor_test$estimate > 0.5, "strong positive", ifelse(cor_test$estimate > 0.3, "moderate positive", "weak")), "correlation with decomposition") else "Correlation analysis pending"`
+
+# Comprehensive Performance Summary
+
+```{r performance-summary, fig.height=10, fig.cap="**Figure Z.** Integrated performance assessment of fungal species across all measured parameters. Size indicates sample size, position shows growth vs decomposition efficiency, and color indicates E. coli reduction capability."}
+# Create integrated performance data
+performance_data <- exp_data %>%
+  filter(species != "Control") %>%
+  group_by(species) %>%
+  summarise(
+    n = n(),
+    mean_growth = mean(area_percent_change, na.rm = TRUE),
+    se_growth = sd(area_percent_change, na.rm = TRUE) / sqrt(sum(!is.na(area_percent_change))),
+    mean_weight_loss = mean((weight_0dpi - weight_14dpi) / weight_0dpi * 100, na.rm = TRUE),
+    mean_ecoli_reduction = mean(e_coli_log_reduction, na.rm = TRUE),
+    ph_change = mean(ph_14dpi - ph_0dpi, na.rm = TRUE),
+    has_ecoli_data = any(!is.na(e_coli_log_reduction)),
+    .groups = "drop"
+  ) %>%
+  filter(!is.na(mean_growth))
+
+# Create performance matrix plot
+if(nrow(performance_data) > 0) {
+  p_matrix <- ggplot(performance_data, aes(x = mean_growth, y = mean_weight_loss)) +
+    geom_point(aes(size = n, color = mean_ecoli_reduction), alpha = 0.7) +
+    geom_text(aes(label = species), vjust = -1, size = 3) +
+    scale_size_continuous(range = c(3, 10), name = "Sample Size") +
+    scale_color_gradient2(low = "blue", mid = "yellow", high = "red", 
+                         midpoint = 0.5, na.value = "grey50",
+                         name = "E. coli\nLog Reduction") +
+    labs(x = "Fungal Growth (%)", y = "Weight Loss (%)",
+         title = "Integrated Performance Assessment",
+         subtitle = "Position shows growth-decomposition balance, color shows antimicrobial effect") +
+    theme_minimal(base_size = 12) +
+    theme(legend.position = "right")
+  
+  print(p_matrix)
+}
+
+# Create ranking table
+rankings <- performance_data %>%
+  mutate(
+    growth_rank = rank(desc(mean_growth)),
+    decomp_rank = rank(desc(mean_weight_loss)),
+    ecoli_rank = ifelse(has_ecoli_data, rank(desc(mean_ecoli_reduction)), NA),
+    overall_score = (1/growth_rank + 1/decomp_rank + ifelse(!is.na(ecoli_rank), 1/ecoli_rank, 0)) / 
+                   (2 + !is.na(ecoli_rank))
+  ) %>%
+  arrange(desc(overall_score)) %>%
+  select(species, growth_rank, decomp_rank, ecoli_rank, overall_score)
+
+# Display top performers
+kable(
+  rankings %>%
+    head(10) %>%
+    mutate(overall_score = round(overall_score, 3)),
+  caption = "**Table Z.** Top 10 fungal species ranked by integrated performance score",
+  col.names = c("Species", "Growth Rank", "Decomposition Rank", "E. coli Rank", "Overall Score")
+)
+```
+
+## Performance Categories
+
+```{r performance-categories}
+# Categorize species by primary strength
+categories <- performance_data %>%
+  mutate(
+    primary_strength = case_when(
+      mean_growth > quantile(mean_growth, 0.75, na.rm = TRUE) & 
+        mean_weight_loss > quantile(mean_weight_loss, 0.75, na.rm = TRUE) ~ "All-rounder",
+      mean_growth > quantile(mean_growth, 0.75, na.rm = TRUE) ~ "Growth specialist",
+      mean_weight_loss > quantile(mean_weight_loss, 0.75, na.rm = TRUE) ~ "Decomposer",
+      mean_ecoli_reduction > 1 & !is.na(mean_ecoli_reduction) ~ "Antimicrobial",
+      TRUE ~ "Moderate performer"
+    )
+  ) %>%
+  group_by(primary_strength) %>%
+  summarise(
+    species_list = paste(species, collapse = ", "),
+    count = n(),
+    .groups = "drop"
+  )
+
+# Display categories
+for(i in 1:nrow(categories)) {
+  cat("**", categories$primary_strength[i], "** (", categories$count[i], " species): ", 
+      categories$species_list[i], "\n\n", sep = "")
+}
+```
 
 # Conclusions
 

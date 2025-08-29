@@ -1,53 +1,141 @@
-id_inoc,species
-1,P. ostreatus v. Floridae
-2,P. ostreatus v. Floridae
-3,C. comatus
-4,ctrl
-5,ctrl
-6,Faecal isolate 1
-7,Faecal isolate 1
-8,Mucor spp I3
-9,ctrl
-10,Faecal isolate 1
-11,Mucor spp I3
-12,Trichoderma koningiopsis
-13,ctrl
-14,Faecal isolate 1
-15,Mucor spp I3
-16,ctrl
-17,T. gamsii
-18,T. koningii
-19,T. gamsii
-20,T. veluntinum
-21,T. harzianum CBS245.93
-22,ctrl
-23,T. virens
-24,T. atroviridae
-25,T. harzianum T22
-26,T. harzianum T22
-27,T. harzianum CBS245.93
-28,T. gamsii
-29,ctrl
-30,T. harzianum T22
-31,T. harzianum CBS245.93
-32,T. gamsii
-33,T. harzianum CBS245.93
-34,ctrl
-35,F33 Sordaria
-36,F35 Sordaria
-37,Panaeolous
-38,F39 Thermo tolerant
-39,T. veluntinum
-40,F33 Sordaria
-41,F35 Sordaria
-42,F37 Mold
-43,T. koningii
-44,T. atroviridae
-45,ctrl
-46,ctrl
-47,F36 Sordaria
-48,F35 Sordaria
-49,T. koningii
-50,F40
-51,F15 Faecal Isolate 1
-52,F31 Mucor I3
+id_inoc,species,experiment
+1,P. ostreatus v. Floridae,1_1
+2,P. ostreatus v. Floridae,1_1
+3,C. comatus,1_1
+4,ctrl,1_1
+5,ctrl,1_1
+6,F15 Faecal isolate 1,1_1
+7,F15 Faecal isolate 1,1_1
+8,F31 Mucor spp I3,1_1
+9,ctrl,1_1
+10,Faecal isolate 1,1_1
+11,F31 Mucor spp I3,1_1
+12,Trichoderma koningiopsis,1_1
+13,ctrl,1_1
+14,F15 Faecal isolate 1,1_1
+15,F31 Mucor spp I3,1_1
+16,ctrl,1_1
+17,T. gamsii,1_1
+18,T. koningii,1_1
+19,T. gamsii,1_1
+20,T. veluntinum,1_1
+21,T. harzianum CBS245.93,1_1
+22,ctrl,1_1
+23,T. virens,1_1
+24,T. atroviridae,1_1
+25,T. harzianum T22,1_1
+26,T. harzianum T22,1_1
+27,T. harzianum CBS245.93,1_1
+28,T. gamsii,1_1
+29,ctrl,1_1
+30,T. harzianum T22,1_1
+31,T. harzianum CBS245.93,1_1
+32,T. gamsii,1_1
+33,T. harzianum CBS245.93,1_1
+34,ctrl,1_1
+35,F33 Sordaria,1_1
+36,F35 Sordaria,1_1
+37,Panaeolous,1_1
+38,F39 Thermo tolerant,1_1
+39,T. veluntinum,1_1
+40,F33 Sordaria,1_1
+41,F35 Sordaria,1_1
+42,F37 Mold,1_1
+43,T. koningii,1_1
+44,T. atroviridae,1_1
+45,ctrl,1_1
+46,ctrl,1_1
+47,F36 Sordaria,1_1
+48,F35 Sordaria,1_1
+49,T. koningii,1_1
+50,F40,1_1
+51,F15 Faecal Isolate 1,1_1
+52,F31 Mucor I3,1_1
+53,ctrl,1_1
+54,F36 Sordaria,1_1
+55,F35 Sordaria,1_1
+56,T. koningii,1_1
+57,F40,1_1
+58,F15 Faecal Isolate 1,1_1
+59,F31 Mucor I3,1_1
+60,T. harzianum T22,1_1
+61,T. gamsii,1_1
+62,F33 Sordaria,1_1
+63,T. harzianum CBS245.93,1_1
+64,ctrl,1_1
+65,Mucor spp I3,1_1
+66,F35 Sordaria,1_1
+67,T. koningii,1_1
+68,F15 Faecal Isolate 1,1_1
+69,P. ostreatus v. Floridae,1_1
+70,Sordaria + T. harz,1_1
+1,P. ostreatus v. Floridae,1_2
+2,P. ostreatus v. Floridae,1_2
+3,C. comatus,1_2
+4,ctrl,1_2
+5,ctrl,1_2
+6,F15 Faecal isolate 1,1_2
+7,F15 Faecal isolate 1,1_2
+8,F31 Mucor spp I3,1_2
+9,ctrl,1_2
+10,Faecal isolate 1,1_2
+11,F31 Mucor spp I3,1_2
+12,Trichoderma koningiopsis,1_2
+13,ctrl,1_2
+14,F15 Faecal isolate 1,1_2
+15,F31 Mucor spp I3,1_2
+16,ctrl,1_2
+17,T. gamsii,1_2
+18,T. koningii,1_2
+19,T. gamsii,1_2
+20,T. veluntinum,1_2
+21,T. harzianum CBS245.93,1_2
+22,ctrl,1_2
+23,T. virens,1_2
+24,T. atroviridae,1_2
+25,T. harzianum T22,1_2
+26,T. harzianum T22,1_2
+27,T. harzianum CBS245.93,1_2
+28,T. gamsii,1_2
+29,ctrl,1_2
+30,T. harzianum T22,1_2
+31,T. harzianum CBS245.93,1_2
+32,T. gamsii,1_2
+33,T. harzianum CBS245.93,1_2
+34,ctrl,1_2
+35,F33 Sordaria,1_2
+36,F35 Sordaria,1_2
+37,Panaeolous,1_2
+38,F39 Thermo tolerant,1_2
+39,T. veluntinum,1_2
+40,F33 Sordaria,1_2
+41,F35 Sordaria,1_2
+42,F37 Mold,1_2
+43,T. koningii,1_2
+44,T. atroviridae,1_2
+45,ctrl,1_2
+46,ctrl,1_2
+47,F36 Sordaria,1_2
+48,F35 Sordaria,1_2
+49,T. koningii,1_2
+50,F40,1_2
+51,F15 Faecal Isolate 1,1_2
+52,F31 Mucor I3,1_2
+53,ctrl,1_2
+54,F36 Sordaria,1_2
+55,F35 Sordaria,1_2
+56,T. koningii,1_2
+57,F40,1_2
+58,F15 Faecal Isolate 1,1_2
+59,F31 Mucor I3,1_2
+60,T. harzianum T22,1_2
+61,T. gamsii,1_2
+62,F33 Sordaria,1_2
+63,T. harzianum CBS245.93,1_2
+64,ctrl,1_2
+65,Mucor spp I3,1_2
+66,F35 Sordaria,1_2
+67,T. koningii,1_2
+68,F15 Faecal Isolate 1,1_2
+69,P. ostreatus v. Floridae,1_2
+70,Sordaria + T. harz,1_2

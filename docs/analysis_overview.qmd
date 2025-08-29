@@ -1,0 +1,381 @@
+---
+title: "Fungal Treatment Analysis Overview"
+format: 
+  html:
+    toc: false
+    number-sections: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, 
+                      fig.width = 12, fig.height = 8, dpi = 300)
+
+library(tidyverse)
+library(here)
+library(ggplot2)
+library(scales)
+library(knitr)
+library(patchwork)
+
+# Load data
+exp_data <- read_csv(here("data/processed/experiment_final.csv"), show_col_types = FALSE) %>%
+  mutate(
+    species = ifelse(species == "ctrl", "Control", species),
+    MAX_PLATE_AREA = 63.62
+  )
+
+# Remove F37 Mold and F39 Thermo tolerant from analysis
+exp_data <- exp_data %>%
+  filter(species != "F37 Mold", species != "F39 Thermo tolerant")
+
+# Robust outlier detection function using MAD
+detect_outliers <- function(x, threshold = 3) {
+  mad_val <- mad(x, na.rm = TRUE)
+  median_val <- median(x, na.rm = TRUE)
+  abs(x - median_val) > threshold * mad_val
+}
+
+# Remove outliers from key variables
+exp_data <- exp_data %>%
+  group_by(species) %>%
+  mutate(
+    # Mark outliers
+    growth_outlier = detect_outliers(area_size_14dpi),
+    weight_outlier = detect_outliers(weight_14dpi),
+    ph_outlier = detect_outliers(ph_14dpi),
+    ecoli_outlier = detect_outliers(ecoli_conc_14dpi),
+    # Any outlier in key variables
+    is_outlier = growth_outlier | weight_outlier | ph_outlier | ecoli_outlier
+  ) %>%
+  ungroup() %>%
+  filter(!is_outlier | is.na(is_outlier))
+
+# Create consistent species ordering with Control first
+species_order <- exp_data %>%
+  distinct(species) %>%
+  arrange(species != "Control", species) %>%
+  pull(species)
+
+exp_data <- exp_data %>%
+  mutate(species = factor(species, levels = species_order))
+```
+
+# Sample Size Summary
+
+## Experiment 1_1 Replicates
+
+```{r exp1-replicates}
+exp1_summary <- exp_data %>%
+  filter(experiment == "1_1") %>%
+  group_by(species) %>%
+  summarise(
+    technical_replicates = n(),
+    biological_replicates = n_distinct(paste(id_faeces, starting_date)),
+    growth_data = sum(!is.na(area_size_14dpi)),
+    ecoli_data = sum(!is.na(ecoli_conc_14dpi)),
+    weight_data = sum(!is.na(weight_14dpi)),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(technical_replicates))
+
+kable(exp1_summary,
+      caption = "**Experiment 1_1: Sample sizes and data availability**",
+      col.names = c("Species", "Technical Reps", "Biological Reps", "Growth Data", "E.coli Data", "Weight Data"))
+```
+
+## Experiment 1_2 Replicates
+
+```{r exp2-replicates}
+exp2_summary <- exp_data %>%
+  filter(experiment == "1_2") %>%
+  group_by(species) %>%
+  summarise(
+    technical_replicates = n(),
+    biological_replicates = n_distinct(paste(id_faeces, starting_date)),
+    growth_data = sum(!is.na(area_size_14dpi)),
+    ecoli_data = sum(!is.na(ecoli_conc_14dpi)),
+    weight_data = sum(!is.na(weight_14dpi)),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(technical_replicates))
+
+kable(exp2_summary,
+      caption = "**Experiment 1_2: Sample sizes and data availability**",
+      col.names = c("Species", "Technical Reps", "Biological Reps", "Growth Data", "E.coli Data", "Weight Data"))
+```
+
+# Growth Analysis
+
+## Experiment 1_1 Growth
+
+```{r growth-exp1, fig.height=8}
+# Growth data for Experiment 1_1
+growth_exp1 <- exp_data %>%
+  filter(experiment == "1_1", !is.na(area_size_7dpi) | !is.na(area_size_14dpi)) %>%
+  group_by(species) %>%
+  summarise(
+    mean_7dpi = mean(area_size_7dpi, na.rm = TRUE),
+    mean_14dpi = mean(area_size_14dpi, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  pivot_longer(cols = c(mean_7dpi, mean_14dpi),
+               names_to = "timepoint",
+               values_to = "area_cm2") %>%
+  filter(!is.na(area_cm2), is.finite(area_cm2)) %>%
+  mutate(
+    day = case_when(
+      timepoint == "mean_7dpi" ~ "7 DPI",
+      timepoint == "mean_14dpi" ~ "14 DPI"
+    )
+  )
+
+if(nrow(growth_exp1) > 0) {
+  # Ensure consistent ordering
+  growth_exp1 <- growth_exp1 %>%
+    mutate(species = factor(species, levels = rev(species_order)))
+  
+  ggplot(growth_exp1, aes(x = area_cm2, y = species, fill = day)) +
+    geom_col(position = "dodge", alpha = 0.8) +
+    geom_vline(xintercept = 63.62, linetype = "dashed", color = "red", alpha = 0.7) +
+    labs(title = "Experiment 1_1: Fungal Growth at 7 and 14 DPI",
+         x = "Colony Area (cm²)",
+         y = "Species",
+         fill = "Timepoint") +
+    theme_minimal(base_size = 12) +
+    theme(legend.position = "bottom")
+} else {
+  plot.new()
+  text(0.5, 0.5, "No growth data available for Experiment 1_1", cex = 1.2)
+}
+```
+
+## Experiment 1_2 Growth
+
+```{r growth-exp2, fig.height=8}
+# Growth data for Experiment 1_2
+growth_exp2 <- exp_data %>%
+  filter(experiment == "1_2", !is.na(area_size_7dpi) | !is.na(area_size_14dpi)) %>%
+  group_by(species) %>%
+  summarise(
+    mean_7dpi = mean(area_size_7dpi, na.rm = TRUE),
+    mean_14dpi = mean(area_size_14dpi, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  pivot_longer(cols = c(mean_7dpi, mean_14dpi),
+               names_to = "timepoint",
+               values_to = "area_cm2") %>%
+  filter(!is.na(area_cm2), is.finite(area_cm2)) %>%
+  mutate(
+    day = case_when(
+      timepoint == "mean_7dpi" ~ "7 DPI",
+      timepoint == "mean_14dpi" ~ "14 DPI"
+    )
+  )
+
+if(nrow(growth_exp2) > 0) {
+  # Ensure consistent ordering
+  growth_exp2 <- growth_exp2 %>%
+    mutate(species = factor(species, levels = rev(species_order)))
+  
+  ggplot(growth_exp2, aes(x = area_cm2, y = species, fill = day)) +
+    geom_col(position = "dodge", alpha = 0.8) +
+    geom_vline(xintercept = 63.62, linetype = "dashed", color = "red", alpha = 0.7) +
+    labs(title = "Experiment 1_2: Fungal Growth at 7 and 14 DPI",
+         x = "Colony Area (cm²)",
+         y = "Species",
+         fill = "Timepoint") +
+    theme_minimal(base_size = 12) +
+    theme(legend.position = "bottom")
+} else {
+  plot.new()
+  text(0.5, 0.5, "No growth data available for Experiment 1_2", cex = 1.2)
+}
+```
+
+# pH Changes
+
+## Experiment 1_1 pH Changes
+
+```{r ph-exp1, fig.height=6}
+ph_exp1 <- exp_data %>%
+  filter(experiment == "1_1", !is.na(ph_0dpi), !is.na(ph_14dpi)) %>%
+  mutate(ph_change = ph_14dpi - ph_0dpi)
+
+if(nrow(ph_exp1) > 0) {
+  ggplot(ph_exp1, aes(x = factor(species, levels = rev(species_order)), y = ph_change)) +
+    geom_boxplot(alpha = 0.7, fill = "lightblue") +
+    geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
+    coord_flip() +
+    labs(title = "Experiment 1_1: pH Changes from 0 to 14 DPI",
+         x = "Species",
+         y = "pH Change (14 DPI - 0 DPI)") +
+    theme_minimal(base_size = 12)
+} else {
+  plot.new()
+  text(0.5, 0.5, "No pH data available for Experiment 1_1", cex = 1.2)
+}
+```
+
+## Experiment 1_2 pH Changes
+
+```{r ph-exp2, fig.height=6}
+ph_exp2 <- exp_data %>%
+  filter(experiment == "1_2", !is.na(ph_0dpi), !is.na(ph_14dpi)) %>%
+  mutate(ph_change = ph_14dpi - ph_0dpi)
+
+if(nrow(ph_exp2) > 0) {
+  ggplot(ph_exp2, aes(x = factor(species, levels = rev(species_order)), y = ph_change)) +
+    geom_boxplot(alpha = 0.7, fill = "lightcoral") +
+    geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
+    coord_flip() +
+    labs(title = "Experiment 1_2: pH Changes from 0 to 14 DPI",
+         x = "Species",
+         y = "pH Change (14 DPI - 0 DPI)") +
+    theme_minimal(base_size = 12)
+} else {
+  plot.new()
+  text(0.5, 0.5, "No pH data available for Experiment 1_2", cex = 1.2)
+}
+```
+
+# E. coli Reduction
+
+## Experiment 1_1 E. coli Reduction
+
+```{r ecoli-exp1, fig.height=6}
+ecoli_exp1 <- exp_data %>%
+  filter(experiment == "1_1", !is.na(ecoli_conc_mean), !is.na(ecoli_conc_14dpi),
+         ecoli_conc_mean > 0, ecoli_conc_14dpi > 0) %>%
+  mutate(ecoli_log_reduction = log10(ecoli_conc_mean) - log10(ecoli_conc_14dpi))
+
+if(nrow(ecoli_exp1) > 0) {
+  ggplot(ecoli_exp1, aes(x = factor(species, levels = rev(species_order)), y = ecoli_log_reduction)) +
+    geom_boxplot(alpha = 0.7, fill = "lightgreen") +
+    geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
+    coord_flip() +
+    labs(title = "Experiment 1_1: E. coli Log Reduction",
+         x = "Species",
+         y = "Log Reduction (Log10 Initial - Log10 Final)") +
+    theme_minimal(base_size = 12)
+} else {
+  plot.new()
+  text(0.5, 0.5, "No E. coli data available for Experiment 1_1", cex = 1.2)
+}
+```
+
+## Experiment 1_2 E. coli Reduction
+
+```{r ecoli-exp2, fig.height=6}
+ecoli_exp2 <- exp_data %>%
+  filter(experiment == "1_2", !is.na(ecoli_conc_mean), !is.na(ecoli_conc_14dpi),
+         ecoli_conc_mean > 0, ecoli_conc_14dpi > 0) %>%
+  mutate(ecoli_log_reduction = log10(ecoli_conc_mean) - log10(ecoli_conc_14dpi))
+
+if(nrow(ecoli_exp2) > 0) {
+  ggplot(ecoli_exp2, aes(x = factor(species, levels = rev(species_order)), y = ecoli_log_reduction)) +
+    geom_boxplot(alpha = 0.7, fill = "lightpink") +
+    geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
+    coord_flip() +
+    labs(title = "Experiment 1_2: E. coli Log Reduction",
+         x = "Species",
+         y = "Log Reduction (Log10 Initial - Log10 Final)") +
+    theme_minimal(base_size = 12)
+} else {
+  plot.new()
+  text(0.5, 0.5, "No E. coli data available for Experiment 1_2", cex = 1.2)
+}
+```
+
+# Weight Changes
+
+## Experiment 1_1 Weight Changes
+
+### Wet Weight Changes
+
+```{r wet-weight-exp1, fig.height=6}
+wet_weight_exp1 <- exp_data %>%
+  filter(experiment == "1_1", !is.na(weight_0dpi), !is.na(weight_14dpi)) %>%
+  mutate(wet_weight_percent_change = ((weight_14dpi - weight_0dpi) / weight_0dpi) * 100)
+
+if(nrow(wet_weight_exp1) > 0) {
+  ggplot(wet_weight_exp1, aes(x = factor(species, levels = rev(species_order)), y = wet_weight_percent_change)) +
+    geom_boxplot(alpha = 0.7, fill = "lightsteelblue") +
+    geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
+    coord_flip() +
+    labs(title = "Experiment 1_1: Wet Weight Changes",
+         x = "Species",
+         y = "Wet Weight Change (%)") +
+    theme_minimal(base_size = 12)
+} else {
+  plot.new()
+  text(0.5, 0.5, "No wet weight data available for Experiment 1_1", cex = 1.2)
+}
+```
+
+### Dry Weight Changes
+
+```{r dry-weight-exp1, fig.height=6}
+dry_weight_exp1 <- exp_data %>%
+  filter(experiment == "1_1", !is.na(dry_weight_0dpi), !is.na(dry_weight_14dpi)) %>%
+  mutate(dry_weight_percent_change = ((dry_weight_14dpi - dry_weight_0dpi) / dry_weight_0dpi) * 100)
+
+if(nrow(dry_weight_exp1) > 0) {
+  ggplot(dry_weight_exp1, aes(x = factor(species, levels = rev(species_order)), y = dry_weight_percent_change)) +
+    geom_boxplot(alpha = 0.7, fill = "wheat") +
+    geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
+    coord_flip() +
+    labs(title = "Experiment 1_1: Dry Weight Changes",
+         x = "Species",
+         y = "Dry Weight Change (%)") +
+    theme_minimal(base_size = 12)
+} else {
+  plot.new()
+  text(0.5, 0.5, "No dry weight data available for Experiment 1_1", cex = 1.2)
+}
+```
+
+## Experiment 1_2 Weight Changes
+
+### Wet Weight Changes
+
+```{r wet-weight-exp2, fig.height=6}
+wet_weight_exp2 <- exp_data %>%
+  filter(experiment == "1_2", !is.na(weight_0dpi), !is.na(weight_14dpi)) %>%
+  mutate(wet_weight_percent_change = ((weight_14dpi - weight_0dpi) / weight_0dpi) * 100)
+
+if(nrow(wet_weight_exp2) > 0) {
+  ggplot(wet_weight_exp2, aes(x = factor(species, levels = rev(species_order)), y = wet_weight_percent_change)) +
+    geom_boxplot(alpha = 0.7, fill = "lightsalmon") +
+    geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
+    coord_flip() +
+    labs(title = "Experiment 1_2: Wet Weight Changes",
+         x = "Species",
+         y = "Wet Weight Change (%)") +
+    theme_minimal(base_size = 12)
+} else {
+  plot.new()
+  text(0.5, 0.5, "No wet weight data available for Experiment 1_2", cex = 1.2)
+}
+```
+
+### Dry Weight Changes
+
+```{r dry-weight-exp2, fig.height=6}
+dry_weight_exp2 <- exp_data %>%
+  filter(experiment == "1_2", !is.na(dry_weight_0dpi), !is.na(dry_weight_14dpi)) %>%
+  mutate(dry_weight_percent_change = ((dry_weight_14dpi - dry_weight_0dpi) / dry_weight_0dpi) * 100)
+
+if(nrow(dry_weight_exp2) > 0) {
+  ggplot(dry_weight_exp2, aes(x = factor(species, levels = rev(species_order)), y = dry_weight_percent_change)) +
+    geom_boxplot(alpha = 0.7, fill = "plum") +
+    geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
+    coord_flip() +
+    labs(title = "Experiment 1_2: Dry Weight Changes",
+         x = "Species",
+         y = "Dry Weight Change (%)") +
+    theme_minimal(base_size = 12)
+} else {
+  plot.new()
+  text(0.5, 0.5, "No dry weight data available for Experiment 1_2", cex = 1.2)
+}
+```
