@@ -10,7 +10,7 @@ id_inoc,species,experiment
 9,ctrl,1_1
 10,Faecal isolate 1,1_1
 11,F31 Mucor spp I3,1_1
-12,Trichoderma koningiopsis,1_1
+12,T. koningiopsis,1_1
 13,ctrl,1_1
 14,F15 Faecal isolate 1,1_1
 15,F31 Mucor spp I3,1_1
@@ -80,7 +80,7 @@ id_inoc,species,experiment
 9,ctrl,1_2
 10,Faecal isolate 1,1_2
 11,F31 Mucor spp I3,1_2
-12,Trichoderma koningiopsis,1_2
+12,T. koningiopsis,1_2
 13,ctrl,1_2
 14,F15 Faecal isolate 1,1_2
 15,F31 Mucor spp I3,1_2

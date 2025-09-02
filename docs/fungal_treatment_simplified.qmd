@@ -157,7 +157,7 @@ kable(
     mutate(across(where(is.numeric), ~ round(.x, 1))),
   caption = "**Table 1.** Overview of experimental results across both trials",
   col.names = c("Experiment", "Species Tested", "Total Samples", 
-                "Mean Growth (%)", "Max Growth (%)", 
+                "Mean Growth (cm^2)", "Max Growth (cm^2)", 
                 "Species w/ E.coli Data", "Mean Log Reduction")
 )
 ```

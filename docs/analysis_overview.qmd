@@ -28,27 +28,9 @@ exp_data <- read_csv(here("data/processed/experiment_final.csv"), show_col_types
 exp_data <- exp_data %>%
   filter(species != "F37 Mold", species != "F39 Thermo tolerant")
 
-# Robust outlier detection function using MAD
-detect_outliers <- function(x, threshold = 3) {
-  mad_val <- mad(x, na.rm = TRUE)
-  median_val <- median(x, na.rm = TRUE)
-  abs(x - median_val) > threshold * mad_val
-}
-
-# Remove outliers from key variables
+# Remove data points marked with "exclude" during data cleaning
 exp_data <- exp_data %>%
-  group_by(species) %>%
-  mutate(
-    # Mark outliers
-    growth_outlier = detect_outliers(area_size_14dpi),
-    weight_outlier = detect_outliers(weight_14dpi),
-    ph_outlier = detect_outliers(ph_14dpi),
-    ecoli_outlier = detect_outliers(ecoli_conc_14dpi),
-    # Any outlier in key variables
-    is_outlier = growth_outlier | weight_outlier | ph_outlier | ecoli_outlier
-  ) %>%
-  ungroup() %>%
-  filter(!is_outlier | is.na(is_outlier))
+  filter(is.na(exclude) | exclude != "exclude")
 
 # Create consistent species ordering with Control first
 species_order <- exp_data %>%
@@ -109,40 +91,38 @@ kable(exp2_summary,
 ## Experiment 1_1 Growth
 
 ```{r growth-exp1, fig.height=8}
-# Growth data for Experiment 1_1
-growth_exp1 <- exp_data %>%
-  filter(experiment == "1_1", !is.na(area_size_7dpi) | !is.na(area_size_14dpi)) %>%
-  group_by(species) %>%
-  summarise(
-    mean_7dpi = mean(area_size_7dpi, na.rm = TRUE),
-    mean_14dpi = mean(area_size_14dpi, na.rm = TRUE),
-    .groups = "drop"
-  ) %>%
-  pivot_longer(cols = c(mean_7dpi, mean_14dpi),
+# Growth data for Experiment 1_1 - raw data for boxplots
+growth_exp1_raw <- exp_data %>%
+  filter(experiment == "1_1") %>%
+  select(species, area_size_7dpi, area_size_14dpi) %>%
+  pivot_longer(cols = c(area_size_7dpi, area_size_14dpi),
                names_to = "timepoint",
                values_to = "area_cm2") %>%
   filter(!is.na(area_cm2), is.finite(area_cm2)) %>%
   mutate(
     day = case_when(
-      timepoint == "mean_7dpi" ~ "7 DPI",
-      timepoint == "mean_14dpi" ~ "14 DPI"
-    )
+      timepoint == "area_size_7dpi" ~ "7 DPI",
+      timepoint == "area_size_14dpi" ~ "14 DPI"
+    ),
+    species = factor(species, levels = species_order)
   )
 
-if(nrow(growth_exp1) > 0) {
-  # Ensure consistent ordering
-  growth_exp1 <- growth_exp1 %>%
-    mutate(species = factor(species, levels = rev(species_order)))
+if(nrow(growth_exp1_raw) > 0) {
+  # Add separation lines between species
+  n_species <- length(levels(growth_exp1_raw$species))
+  separation_lines <- seq(1.5, n_species - 0.5, by = 1)
   
-  ggplot(growth_exp1, aes(x = area_cm2, y = species, fill = day)) +
-    geom_col(position = "dodge", alpha = 0.8) +
+  ggplot(growth_exp1_raw, aes(x = area_cm2, y = species, fill = day)) +
+    geom_hline(yintercept = separation_lines, color = "gray80", linetype = "solid", size = 0.5) +
+    geom_boxplot(alpha = 0.7, position = position_dodge(width = 0.8)) +
     geom_vline(xintercept = 63.62, linetype = "dashed", color = "red", alpha = 0.7) +
     labs(title = "Experiment 1_1: Fungal Growth at 7 and 14 DPI",
          x = "Colony Area (cm²)",
          y = "Species",
          fill = "Timepoint") +
     theme_minimal(base_size = 12) +
-    theme(legend.position = "bottom")
+    theme(legend.position = "bottom",
+          panel.grid.minor = element_blank())
 } else {
   plot.new()
   text(0.5, 0.5, "No growth data available for Experiment 1_1", cex = 1.2)
@@ -152,45 +132,47 @@ if(nrow(growth_exp1) > 0) {
 ## Experiment 1_2 Growth
 
 ```{r growth-exp2, fig.height=8}
-# Growth data for Experiment 1_2
-growth_exp2 <- exp_data %>%
-  filter(experiment == "1_2", !is.na(area_size_7dpi) | !is.na(area_size_14dpi)) %>%
-  group_by(species) %>%
-  summarise(
-    mean_7dpi = mean(area_size_7dpi, na.rm = TRUE),
-    mean_14dpi = mean(area_size_14dpi, na.rm = TRUE),
-    .groups = "drop"
-  ) %>%
-  pivot_longer(cols = c(mean_7dpi, mean_14dpi),
+# Growth data for Experiment 1_2 - raw data for boxplots
+growth_exp2_raw <- exp_data %>%
+  filter(experiment == "1_2") %>%
+  select(species, area_size_7dpi, area_size_14dpi) %>%
+  pivot_longer(cols = c(area_size_7dpi, area_size_14dpi),
                names_to = "timepoint",
                values_to = "area_cm2") %>%
   filter(!is.na(area_cm2), is.finite(area_cm2)) %>%
   mutate(
     day = case_when(
-      timepoint == "mean_7dpi" ~ "7 DPI",
-      timepoint == "mean_14dpi" ~ "14 DPI"
-    )
+      timepoint == "area_size_7dpi" ~ "7 DPI",
+      timepoint == "area_size_14dpi" ~ "14 DPI"
+    ),
+    species = factor(species, levels = species_order)
   )
 
-if(nrow(growth_exp2) > 0) {
-  # Ensure consistent ordering
-  growth_exp2 <- growth_exp2 %>%
-    mutate(species = factor(species, levels = rev(species_order)))
+if(nrow(growth_exp2_raw) > 0) {
+  # Add separation lines between species
+  n_species <- length(levels(growth_exp2_raw$species))
+  separation_lines <- seq(1.5, n_species - 0.5, by = 1)
   
-  ggplot(growth_exp2, aes(x = area_cm2, y = species, fill = day)) +
-    geom_col(position = "dodge", alpha = 0.8) +
+  ggplot(growth_exp2_raw, aes(x = area_cm2, y = species, fill = day)) +
+    geom_hline(yintercept = separation_lines, color = "gray80", linetype = "solid", size = 0.5) +
+    geom_boxplot(alpha = 0.7, position = position_dodge(width = 0.8)) +
     geom_vline(xintercept = 63.62, linetype = "dashed", color = "red", alpha = 0.7) +
     labs(title = "Experiment 1_2: Fungal Growth at 7 and 14 DPI",
          x = "Colony Area (cm²)",
          y = "Species",
          fill = "Timepoint") +
     theme_minimal(base_size = 12) +
-    theme(legend.position = "bottom")
+    theme(legend.position = "bottom",
+          panel.grid.minor = element_blank())
 } else {
   plot.new()
   text(0.5, 0.5, "No growth data available for Experiment 1_2", cex = 1.2)
 }
 ```
+
+Several fungi grow reliably on fresh human faeces. The fastest growing species on pure as well as on 2:1 wood chip mixed faeces are the Sordaria isolates. The fungal mycelium degrades in unmixed samples after around 7 days the mycelium is still visible at day 14 in the mixed samples and only becomes weaker less dense.Formation of conidida (Mucor, Trichoderma) and fruiting bodies (perithecia, Sordaria) are only visible in mixed samples.
+
+On Basidiomycetes (isolate F40, coprinopsis?) showed very strong mycelium growth in one assay, while failed completely in the first one. Adding more accesible cellulose and using stronger inoculum could help improving reliability of the mycelium growth.
 
 # pH Changes
 
@@ -202,14 +184,20 @@ ph_exp1 <- exp_data %>%
   mutate(ph_change = ph_14dpi - ph_0dpi)
 
 if(nrow(ph_exp1) > 0) {
+  # Add separation lines between species
+  n_species <- length(species_order)
+  separation_lines <- seq(1.5, n_species - 0.5, by = 1)
+  
   ggplot(ph_exp1, aes(x = factor(species, levels = rev(species_order)), y = ph_change)) +
+    geom_vline(xintercept = separation_lines, color = "gray80", linetype = "solid", size = 0.5) +
     geom_boxplot(alpha = 0.7, fill = "lightblue") +
     geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
     coord_flip() +
     labs(title = "Experiment 1_1: pH Changes from 0 to 14 DPI",
          x = "Species",
          y = "pH Change (14 DPI - 0 DPI)") +
-    theme_minimal(base_size = 12)
+    theme_minimal(base_size = 12) +
+    theme(panel.grid.minor = element_blank())
 } else {
   plot.new()
   text(0.5, 0.5, "No pH data available for Experiment 1_1", cex = 1.2)
@@ -224,19 +212,34 @@ ph_exp2 <- exp_data %>%
   mutate(ph_change = ph_14dpi - ph_0dpi)
 
 if(nrow(ph_exp2) > 0) {
+  # Add separation lines between species
+  n_species <- length(species_order)
+  separation_lines <- seq(1.5, n_species - 0.5, by = 1)
+  
   ggplot(ph_exp2, aes(x = factor(species, levels = rev(species_order)), y = ph_change)) +
+    geom_vline(xintercept = separation_lines, color = "gray80", linetype = "solid", size = 0.5) +
     geom_boxplot(alpha = 0.7, fill = "lightcoral") +
     geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
     coord_flip() +
     labs(title = "Experiment 1_2: pH Changes from 0 to 14 DPI",
          x = "Species",
          y = "pH Change (14 DPI - 0 DPI)") +
-    theme_minimal(base_size = 12)
+    theme_minimal(base_size = 12) +
+    theme(panel.grid.minor = element_blank())
 } else {
   plot.new()
   text(0.5, 0.5, "No pH data available for Experiment 1_2", cex = 1.2)
 }
 ```
+
+-   In pure and mixed samples the pH of all plates that showed fungal growth increased to around 9
+-   Plates without fungal growth the pH was lower around 5.5
+
+This change of pH is due to ammonia production, ammonia is produced due to bacterial metabolism of amino acids to gain energy. The problem is that fungal enzymes might not work at this pH and the degradation is slowed down.
+
+Fungi are known to produce acids and during degradation and prefer an environment slightly acidic around 5.5
+
+Follow up question Can the pH be kept in the optimal range by replacing the hard degradable wood chips with easier degradable material flax fibers and flax fibers mixed with cellulose powder.
 
 # E. coli Reduction
 
@@ -249,14 +252,20 @@ ecoli_exp1 <- exp_data %>%
   mutate(ecoli_log_reduction = log10(ecoli_conc_mean) - log10(ecoli_conc_14dpi))
 
 if(nrow(ecoli_exp1) > 0) {
+  # Add separation lines between species
+  n_species <- length(species_order)
+  separation_lines <- seq(1.5, n_species - 0.5, by = 1)
+  
   ggplot(ecoli_exp1, aes(x = factor(species, levels = rev(species_order)), y = ecoli_log_reduction)) +
+    geom_vline(xintercept = separation_lines, color = "gray80", linetype = "solid", size = 0.5) +
     geom_boxplot(alpha = 0.7, fill = "lightgreen") +
     geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
     coord_flip() +
     labs(title = "Experiment 1_1: E. coli Log Reduction",
          x = "Species",
          y = "Log Reduction (Log10 Initial - Log10 Final)") +
-    theme_minimal(base_size = 12)
+    theme_minimal(base_size = 12) +
+    theme(panel.grid.minor = element_blank())
 } else {
   plot.new()
   text(0.5, 0.5, "No E. coli data available for Experiment 1_1", cex = 1.2)
@@ -272,19 +281,29 @@ ecoli_exp2 <- exp_data %>%
   mutate(ecoli_log_reduction = log10(ecoli_conc_mean) - log10(ecoli_conc_14dpi))
 
 if(nrow(ecoli_exp2) > 0) {
+  # Add separation lines between species
+  n_species <- length(species_order)
+  separation_lines <- seq(1.5, n_species - 0.5, by = 1)
+  
   ggplot(ecoli_exp2, aes(x = factor(species, levels = rev(species_order)), y = ecoli_log_reduction)) +
+    geom_vline(xintercept = separation_lines, color = "gray80", linetype = "solid", size = 0.5) +
     geom_boxplot(alpha = 0.7, fill = "lightpink") +
     geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
     coord_flip() +
     labs(title = "Experiment 1_2: E. coli Log Reduction",
          x = "Species",
          y = "Log Reduction (Log10 Initial - Log10 Final)") +
-    theme_minimal(base_size = 12)
+    theme_minimal(base_size = 12) +
+    theme(panel.grid.minor = element_blank())
 } else {
   plot.new()
   text(0.5, 0.5, "No E. coli data available for Experiment 1_2", cex = 1.2)
 }
 ```
+
+In pure and mixed faeceal samples the fungla growth led to increased E. coli numbers compared to plates without fungal growth. This increase in bacterial concentrations is probably caused by the fungi that makes nutrients (Proteins, lipids and lignocellulose materials) easier available for the bacteria due to enzymatic activity. This speeding up of the degradation process leads to a boost in microbila activity of bacteria present. Due to degradation of amino acids after usage of carbon the pH rises.
+
+The presence of fungi seems to increase bacterial rich ness in generla compared to non-fungal growth samples
 
 # Weight Changes
 
@@ -298,39 +317,23 @@ wet_weight_exp1 <- exp_data %>%
   mutate(wet_weight_percent_change = ((weight_14dpi - weight_0dpi) / weight_0dpi) * 100)
 
 if(nrow(wet_weight_exp1) > 0) {
+  # Add separation lines between species
+  n_species <- length(species_order)
+  separation_lines <- seq(1.5, n_species - 0.5, by = 1)
+  
   ggplot(wet_weight_exp1, aes(x = factor(species, levels = rev(species_order)), y = wet_weight_percent_change)) +
+    geom_vline(xintercept = separation_lines, color = "gray80", linetype = "solid", size = 0.5) +
     geom_boxplot(alpha = 0.7, fill = "lightsteelblue") +
     geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
     coord_flip() +
     labs(title = "Experiment 1_1: Wet Weight Changes",
          x = "Species",
          y = "Wet Weight Change (%)") +
-    theme_minimal(base_size = 12)
+    theme_minimal(base_size = 12) +
+    theme(panel.grid.minor = element_blank())
 } else {
   plot.new()
   text(0.5, 0.5, "No wet weight data available for Experiment 1_1", cex = 1.2)
-}
-```
-
-### Dry Weight Changes
-
-```{r dry-weight-exp1, fig.height=6}
-dry_weight_exp1 <- exp_data %>%
-  filter(experiment == "1_1", !is.na(dry_weight_0dpi), !is.na(dry_weight_14dpi)) %>%
-  mutate(dry_weight_percent_change = ((dry_weight_14dpi - dry_weight_0dpi) / dry_weight_0dpi) * 100)
-
-if(nrow(dry_weight_exp1) > 0) {
-  ggplot(dry_weight_exp1, aes(x = factor(species, levels = rev(species_order)), y = dry_weight_percent_change)) +
-    geom_boxplot(alpha = 0.7, fill = "wheat") +
-    geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
-    coord_flip() +
-    labs(title = "Experiment 1_1: Dry Weight Changes",
-         x = "Species",
-         y = "Dry Weight Change (%)") +
-    theme_minimal(base_size = 12)
-} else {
-  plot.new()
-  text(0.5, 0.5, "No dry weight data available for Experiment 1_1", cex = 1.2)
 }
 ```
 
@@ -344,38 +347,70 @@ wet_weight_exp2 <- exp_data %>%
   mutate(wet_weight_percent_change = ((weight_14dpi - weight_0dpi) / weight_0dpi) * 100)
 
 if(nrow(wet_weight_exp2) > 0) {
+  # Add separation lines between species
+  n_species <- length(species_order)
+  separation_lines <- seq(1.5, n_species - 0.5, by = 1)
+  
   ggplot(wet_weight_exp2, aes(x = factor(species, levels = rev(species_order)), y = wet_weight_percent_change)) +
+    geom_vline(xintercept = separation_lines, color = "gray80", linetype = "solid", size = 0.5) +
     geom_boxplot(alpha = 0.7, fill = "lightsalmon") +
     geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
     coord_flip() +
     labs(title = "Experiment 1_2: Wet Weight Changes",
          x = "Species",
          y = "Wet Weight Change (%)") +
-    theme_minimal(base_size = 12)
+    theme_minimal(base_size = 12) +
+    theme(panel.grid.minor = element_blank())
 } else {
   plot.new()
   text(0.5, 0.5, "No wet weight data available for Experiment 1_2", cex = 1.2)
 }
 ```
 
-### Dry Weight Changes
+Overall samples with fungal growth showed reduced wet weights after 14 days of incubation at 25°C 80% humidity. This weight loss is probably due to the fungal enzymes enabling faster break down and making more nutrients easily available for bacteria and the fungi.
 
-```{r dry-weight-exp2, fig.height=6}
-dry_weight_exp2 <- exp_data %>%
-  filter(experiment == "1_2", !is.na(dry_weight_0dpi), !is.na(dry_weight_14dpi)) %>%
-  mutate(dry_weight_percent_change = ((dry_weight_14dpi - dry_weight_0dpi) / dry_weight_0dpi) * 100)
+What has been achived so far
 
-if(nrow(dry_weight_exp2) > 0) {
-  ggplot(dry_weight_exp2, aes(x = factor(species, levels = rev(species_order)), y = dry_weight_percent_change)) +
-    geom_boxplot(alpha = 0.7, fill = "plum") +
-    geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
-    coord_flip() +
-    labs(title = "Experiment 1_2: Dry Weight Changes",
-         x = "Species",
-         y = "Dry Weight Change (%)") +
-    theme_minimal(base_size = 12)
-} else {
-  plot.new()
-  text(0.5, 0.5, "No dry weight data available for Experiment 1_2", cex = 1.2)
-}
-```
+-   Identified some isolates and strains that did show reliably growth on pure faecal material and some that showed reliable growth on mixed faecal material.
+
+-   Reached faster material degradation progressing faster into the alkaline phase of organic material degradation
+
+-   Fungi increase bacterial concentrations and acitvity
+
+Lessons learned
+
+-   All tested fungi in this setting will lead to the same results at some point carbon becomes rare and growth will stop. degradation of aminoacids will produce ammonia that increases pH to levels that slow down degradation of the fungus because the enzymes denature and are not active anymore. This means also the ligno cellulose degradation will stop or slow down dramatically.
+
+-   The 2:1 wood cips samples have a balanced out C:N ratio but the carbon is locked away in the wood and degradation is to slow to stop the increase of the pH value. Carbon needs to be easily accesible for the fungus to make it thrive, presence of carbon alone is not enough.
+
+-   To keep the fungi and their enzyme active longer "easy" accessible carbon is needed in the bio mass. More of the proteins could then be bound in to fungal biomass instrewad of being degraded by bacteria to ammonia. This could lead to higher production of konidia ( in-case of Trichoderma), become easily degradable biomass for a further composting step or being dried and used as fertilizer.
+
+What are the next goals
+
+-   Trying to create a medium that stays in acidic conditions longer, to keep fungi dominant over bacteria degradation to turn more of the sample into fungal biomass and keep degradation rate high until it is significantly degraded and the pH does not increase but stays in a more neutral range.
+
+    How will it be tested
+
+    -   Wood chips used are resistant to degradation due to the high lignin content and the high material denisity
+
+    -   More easily degradable carbon sources could help keeping the fungus longer active and producing acids that keep the environment acidic for longer
+
+    -   Materials:
+
+        -    Flax straw lower in lignin, pre-treated due to gaining of flax fibres for fabric industry
+
+        -   Cellulose powder no lignin just simple very available form of cellulose, to dense for usage alone would not provide enough aeration
+
+The trial will contain wood chips mixed faeces, flax straw mixed faeces and flax straw and cellulose powder mixed faeces
+
+each treatment will be run in triplicates using 15 grams of faeces in each sampled every 7 days and checked for pH and bacterial concentrations
+
+measure procentual weight loss after each week weight before sampling and after sampling
+
+Expected results are pH is kept lower in both flax straw and flax straw mixed with cellulose powder treatments. Cellulose powder will even stay longer acidic compared to flax straw alone.
+
+Higher weight loss due to degradation of faecal material and faster degradation of the additives
+
+bacterial concentrations might stay more acitve longer due to balanced pH values, acidic conditions might eliminate e coli like in untreated samples.
+
+Goal develop an assay that the fungus can keep the pH down for more than three weeks.
