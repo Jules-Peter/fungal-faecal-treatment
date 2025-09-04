@@ -69,6 +69,12 @@ id_inoc,species,experiment
 68,F15 Faecal Isolate 1,1_1
 69,P. ostreatus v. Floridae,1_1
 70,Sordaria + T. harz,1_1
+71,ctrl,1_1
+72,F40,1_1
+73,T. harzianum T22,1_1
+74,T.gamsii,1_1
+75,T. harz T22 1% cell,1_1
+76,T. harz T22 5% cell,1_1
 1,P. ostreatus v. Floridae,1_2
 2,P. ostreatus v. Floridae,1_2
 3,C. comatus,1_2
@@ -139,3 +145,9 @@ id_inoc,species,experiment
 68,F15 Faecal Isolate 1,1_2
 69,P. ostreatus v. Floridae,1_2
 70,Sordaria + T. harz,1_2
+71,ctrl,1_2
+72,F40,1_2
+73,T. harzianum T22,1_2
+74,T.gamsii,1_2
+75,T. harz T22 1% cell,1_2
+76,T. harz T22 5% cell,1_2

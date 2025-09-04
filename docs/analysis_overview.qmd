@@ -397,9 +397,15 @@ What are the next goals
 
     -   Materials:
 
-        -    Flax straw lower in lignin, pre-treated due to gaining of flax fibres for fabric industry
+        -   Flax straw lower in lignin, pre-treated due to gaining of flax fibres for fabric industry
 
         -   Cellulose powder no lignin just simple very available form of cellulose, to dense for usage alone would not provide enough aeration
+
+    -   Fungal strains used
+
+        -   Sordaria one species
+
+        -   Trichoderma koningii
 
 The trial will contain wood chips mixed faeces, flax straw mixed faeces and flax straw and cellulose powder mixed faeces
 
