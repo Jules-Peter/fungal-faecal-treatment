@@ -14,64 +14,6 @@ editor: visual
 
 # Introduction
 
-Decentralized sanitation is needed in places where sewered toilets cannot be built due to remote locations or where no central treatment plants are available. To meet this critical need, a variety of decentralized sanitation technologies have been developed, each with its own approach to safely managing human waste. A primary challenge for these systems is to effectively treat the excreta to inactivate pathogens, control odors, and manage the final end-product in a sustainable and user-friendly way. These solutions range broadly, from simple pit latrines to more engineered systems that separate different waste streams at the source for distinct treatment. One solution for decentralized sanitation is the Urine Diversion Dry Toilet (UDDT), where faeces and urine are collected in separate chambers. Urine is mostly sterile and can be safely handled (...). The collected faecal material is covered using different additives; commonly used are ash, lime, sawdust, soil, or other lignocellulosic materials to help dry out the material faster and avoid bad odour. The dried faecal mixture relies mostly on desiccation for pathogen inactivation, which requires long storage times for up to 1 year depending on conditions, and rewetting can lead to pathogen reactivation (). Due to desiccation, the collected material will not degrade faecal material in combination with bulking agents leading to accumulation of material, still reminiscent of mixed faecal material rather than finished compost [(Tilley et al., 2014)](https://www.zotero.org/google-docs/?8uSl90). Composting toilets where faecal material is degraded in the collection chamber itself exist. However, in these systems the composting process is hard to control. Material can become too dry for efficient degradation but not dry enough for pathogen inactivation and temperatures to guarantee pathogen inactivation are not reached [(Redlinger et al., 2001)](https://www.zotero.org/google-docs/?S3S9zR).
-
-Degradation of faecal material can result in several deadlock states that significantly slow down or completely halt the degradation process. While drying out is one of them others are, the low C:N ratio of about 8:1. The low C:N ratio can cause high pH \>8 which can lead to toxic ammonia production killing microbes and stopping decomposition and leading to bad odour. Especially at ambient temperature ammonia can be assembled in high concentrations in the substrate.Substrate compression and limited amount of crude fibers leading to dense structure creating anaerobic conditions [(Rose et al., 2015)](https://www.zotero.org/google-docs/?IoOqUg), Slowing down the degradation process. Both C:N ratio and aeration could be corrected by addition of lignocellulose material as bulking agents. However, due to the increased surface and the dried material the water content of the faecal mass can become too low for bacteria which need high water activity to effectively grow [(Ahn et al., 2008; Richard et al., 2002)](https://www.zotero.org/google-docs/?sbpYU7). Furthermore,lignocellulosic materials are recalcitrant against bacterial degradation especially if thermophilic conditions are not reached. Addition of lignocellulose after each defaecation leads to a final substrate mostly consisting of lignocellulose rather than faecal material. The high content of lignocellulose could make the material an ideal substrate for fungal growth. Fungi can have a broad adaptation on water content in the substrate and can efficiently grow at lower aW values and a broad range of pH compared to bacteria. Fungi are known for their strong lignocellulose degrading enzymes that are being used in many industries (...).
-
-Filamentous fungi are an essential part in faecal mass degradation and carbon cycling especially in herbivore dung [(Calaça et al., 2024)](https://www.zotero.org/google-docs/?tzbaqK). A diverse fungal community that grows on dung has been described with certain species entirely dependent on this substrate to reproduce [(Richardson & Watling, 1968)](https://www.zotero.org/google-docs/?2txFvR). Herbivore dung consists of up to 70% of undigested lignocellulosic material and has a nitrogen content of 1.8-3% ([Zhao et al., 2022](https://www.zotero.org/google-docs/?WT7l7t)). Human faeces have a higher Nitrogen content of 5-7% and lower in fibrous material around 25%, but strongly dependent on the diet [(Rose et al., 2015; Zhao et al., 2022)](https://www.zotero.org/google-docs/?STrgFM). Filamentous dung fungi have adapted to use the resistant lignocellulose fraction found in faeces, which explains their preference for herbivore dung. Their adaptation to this substrate, with high Nitrogen content, fast pH changes and high bacterial concentrations could make them a suitable additive to add to composting toilets to increase degradation speed of faecal material. Despite their presence being well described on herbivore dung, actual physiochemical changes and influence on dung inhabiting microbes have rarely been studied. Fungal derived molecules have been used in antibiotics and fungal extracts of many species have been shown potential against a broad range of human pathogenic bacteria [(Hamad et al., 2022; Solomon et al., 2025)](https://www.zotero.org/google-docs/?RkdDUf). However the growth of fungi on human faeces as a direct treatment method in composting toilets has not scientifically been investigated. Within this experiment we tested if filamentous fungi are able to colonize human faecal material mixed with wood chips bulking agent. In order to see if natural specialization is important for their growth possibilities fungi from different ecological niches have been tested. As representatives of dung inhabiting fungi *Sordaria fimicola*, *Coprinopsis* xy, coprinopsis xy2 as dung associated fungi, were tested. *Coprinus comata* a widely cultivated soil inhabiting fungus and indicator of high Nitrogen content (...) in the soil was, *Trichoderma harzianum* and *T. koningii* well known biocontrol agents known for parasitism and their fast and aggressive growth (...), as representatives for wood inhabiting white rot fungi the widely grown mushrooms *G. lucidum* and *P. ostreatus* due to their shown antibacterial properties and worldwide availability. We measured their rate of successful substrate colonization, growth speed and their influence on substrate pH and E. coli concentration and their influence on weight in a two week plate assay.
-
-# Material and Methods
-
-### Fungal strains used
-
-**Cultivable Mushroom isolates**
-
-Strains P. ostreatus, P. ostreatus v. Floridae, C. comatus, G. lucidum were commercially obtained from (Mycogenetics Germany).
-
-Dung inhabiting fungi S. fimicola was isolated from human faecal samples by adding mycelium to a MEA plate.
-
-Coprinopsis species were isolated from horse dung by cutting out a piece of the fruiting body and putting it on the MEA plate with added chloramphenicol.
-
-Storage and inoculum preparation
-
-To maintain fungal cultures during the experimental time every two weeks samples were inoculated to a new MEA plate, inoculated at 25°C.
-
-### Faecal material collection and substrate preparation
-
-Faecal samples from one individual were used throughout the experiment. Faeces were collected using a faecal catcher(Abbexa, Cabmridge ,UK) and transferred into a 3 liter freezing bag (freshstar clic-lock, Galaxus) and stored in an airtight box (Rothobox 3 Liter, Galaxus) and directly put in the fridge at 5°C. The collected faecal samples were stored max 1 day at 5°C.
-
-Sample preparation
-
-Pure faecal samples were weighted and homogenised by kneading in an aseptic freezing bag for approximately 2 min. Pure faecal samples were then transferred into a piping bag and distributed on plates 20±2g per plate. The plates were evenly streaked using a sterile spatula.
-
-For the wood chip mixed samples, beechwood chips (Chipsi, beech wood chips fine, Galaxus ) were added at a 2:1 ratio. The mass was homogenised again by kneading by hand for 2 min. Mixed faecal samples were transferred to plates using a sterile plastic spatula. The mixed solution (15±2g) was added to each plate and evenly distributed.
-
-### Inoculation
-
-Plates were inoculated immediately after preparation using 6mm agar plugs from fungal colonized 14days old MEA plate. The plates were photographed using an iPhone (....) on a pole at fixed distance. As an identifier for each picture, a QR code was placed next to the plate identifying the fungal species, experiment ID, and inoculum ID. Pictures were taken at 0dpi, 7 dpi and 14 dpi. Pictures were analysed using ImageJ (v) to measure the area of the mycelium plot by manually drawing lines around the growth area. The scale was set to 222.09 pixels per cm according to the measurement of a ruler in the same setting. Plates that were fully colonised were set to a calculated max value 0f 63.(...). If the mycelium died, the old value was maintained to keep the maximum spread of the mycelium at 14 dpi. If no growth occurred, the value was set to the original plug value from the 0dpi picture. Visual contaminations were measured in the same way.
-
-Fungal mycelium quality was rated on a scale of 0-5.
-
-0: no mycelium; 1: fully necrotic; 2: partly necrotic; 3: loose mycelium; 4: healthy dense mycelium substrate still visible; 5: very dense mycelium with almost no substrate visible.
-
-Illustrated scale figure
-
-(include example picture of scale here)
-
-### pH measurements
-
-At day 14 dpi, a subsample of each plate was removed and dissolved in dest. water 1:2 (w/v). A pH meter (LGG- ph meter…) was used to measure the pH of the diluted sample.
-
-### E. coli concentration measurements
-
-A sample of approximately 1 g was filled into a 15 ml centrifuge tube (...), and it was dissolved in 5 ml 0.85% NaCl solution. Further dilutions, if needed, were done using 0.85% NaCl in reaction tubes 2 ml (...). After streaking, samples were immediately put back into the fridge in case too high or too low colony counts were reached and repeated the next day. Samples were plated out on TBX chromogenic agar (Roth,(...)) The plates were incubated overnight at 40°C. And blue colonies were counted the next day.
-
-### Data analysis
-
-The data set was analysed using RStudio v2024.04.1 software.
-
-Data pertaining to growth success were filtered by excluding single-replicate data points, retaining only those with three or more biological replicates. Growth was deemed successful when the mycelium covered an area greater than 10 cm2 at 14 days post-inoculation (dpi). Area coverage analysis was filtered to include only data points with at least three biological replicates demonstrating growth greater than 10, thereby excluding poor-growing and non-growing fungi. For E. coli, pH, and weight loss analyses, data were filtered to retain only those with growth greater than 10 at 14 dpi. Control treatments were categorised into two groups: control without fungal contaminant and control with fungal contaminant. Fungal-inoculated plates that did not exhibit growth were pooled into one category, while fungal plates with contamination exceeding 20 were categorised as inoculated but contaminated.
-
 # Data Overview
 
 ## Experimental Design
@@ -102,8 +44,8 @@ The following fungal species were selected based on their known decomposition ca
 
 1.  **Growth Success** (0-5 scale)
     -   0: No visible growth
-    -   1-3: Growth with contamination (varying degrees)
-    -   4-5: Successful growth without contamination
+    -   1: Fully necrotic (not counted as success)
+    -   2-5: Successful growth (varying degrees of health)
     -   Measured at 7 and 14 days post-inoculation (DPI)
 2.  **Growth Area** (mm²)
     -   Quantitative measurement of fungal colony size
@@ -175,18 +117,11 @@ categorize_treatment <- function(data) {
   data %>%
     mutate(
       treatment_category = case_when(
-        species == "ctrl" & growth_status_14dpi == "No growth, no contamination" ~ 
-          "Control: No growth, no contamination",
-        species == "ctrl" & growth_status_14dpi == "Growth, contaminated" ~ 
-          "Control: Growth, contaminated",
-        species != "ctrl" & growth_status_14dpi == "Growth, no contamination" ~ 
-          species,
-        species != "ctrl" & growth_status_14dpi == "Growth, contaminated" ~ 
-          paste0(species, " (contaminated)"),
-        TRUE ~ "Other"
+        species == "ctrl" & (!is.na(contamination_area_14dpi) & contamination_area_14dpi > 10) ~ "Control (contaminated)",
+        species == "ctrl" & (is.na(contamination_area_14dpi) | contamination_area_14dpi <= 10) ~ "Control (clean)",
+        TRUE ~ species
       )
-    ) %>%
-    filter(treatment_category != "Other")
+    )
 }
 
 # Function to add sample and faecal counts to data
@@ -236,6 +171,14 @@ create_summary_table <- function(data, group_var, value_var, caption) {
                   full_width = FALSE)
 }
 
+# Function to create consistent species order (ctrl first, then alphabetical)
+get_species_order <- function(species_vector) {
+  unique_species <- unique(species_vector)
+  ctrl_names <- unique_species[unique_species %in% c("ctrl", "Control", "control")]
+  other_species <- sort(unique_species[!unique_species %in% c("ctrl", "Control", "control")])
+  c(ctrl_names, other_species)
+}
+
 # ============================================
 # DEFINE VISUALIZATION THEMES AND COLORS
 # ============================================
@@ -282,6 +225,100 @@ data_summary <- tribble(
 
 kable(data_summary, caption = "Data Quality Summary") %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
+
+# Create comprehensive overview table by species
+overview_table <- experiment_1_2 %>%
+  group_by(species) %>%
+  summarise(
+    n_total = n(),
+    n_faecal_samples = n_distinct(id_faeces),
+    n_growth_7dpi = sum(growth_description_7dpi > 0, na.rm = TRUE),
+    n_growth_14dpi = sum(growth_description_14dpi > 0, na.rm = TRUE),
+    mean_area_7dpi = round(mean(area_size_7dpi[area_size_7dpi > 0], na.rm = TRUE), 1),
+    mean_area_14dpi = round(mean(area_size_14dpi[area_size_14dpi > 0], na.rm = TRUE), 1),
+    n_contaminated_14dpi = NA,  # growth_status column removed
+    n_ph_measured = sum(!is.na(ph_14dpi)),
+    n_weight_measured = sum(!is.na(weight_percent_change)),
+    n_ecoli_measured = sum(!is.na(ecoli_conc)),
+    .groups = "drop"
+  ) %>%
+  arrange(species)
+
+# Display overview table
+overview_table %>%
+  kable(caption = "Complete Dataset Overview by Species (Before Filtering)",
+        col.names = c("Species", "Total Plates", "Faecal Samples", 
+                      "Growth 7 DPI", "Growth 14 DPI", 
+                      "Mean Area 7 DPI", "Mean Area 14 DPI",
+                      "Contaminated 14 DPI", "pH Data", "Weight Data", "E.coli Data")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
+                full_width = TRUE, font_size = 12) %>%
+  column_spec(1, bold = TRUE) %>%
+  add_header_above(c(" " = 3, "Growth Observations" = 4, "Available Measurements" = 4))
+
+# Create a detailed filtering summary
+filtering_summary <- experiment_1_2 %>%
+  mutate(
+    has_growth_14dpi = area_size_14dpi > 10,
+    has_ph_data = !is.na(ph_14dpi),
+    has_weight_data = !is.na(weight_percent_change),
+    has_ecoli_data = !is.na(ecoli_conc),
+    in_filtered_dataset = id_treatment %in% experiment_1_2_filtered$id_treatment
+  ) %>%
+  group_by(species) %>%
+  summarise(
+    total = n(),
+    passed_growth = sum(has_growth_14dpi, na.rm = TRUE),
+    passed_all_filters = sum(in_filtered_dataset, na.rm = TRUE),
+    retention_rate = round((passed_all_filters / total) * 100, 1),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(retention_rate))
+
+# Display filtering summary
+filtering_summary %>%
+  kable(caption = "Data Retention After Filtering by Species",
+        col.names = c("Species", "Total", "Growth >10cm²", "In Filtered Dataset", "Retention (%)")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE) %>%
+  column_spec(5, bold = TRUE, color = ifelse(filtering_summary$retention_rate < 50, "red", "black"))
+
+# ============================================
+# CREATE SPECIALIZED DATASET FOR pH, WEIGHT, AND E.COLI ANALYSES
+# ============================================
+
+# Filter data for pH, weight loss, and E. coli analyses
+# Keep controls regardless of growth area, but filter fungal species by growth area ≥ 20
+experiment_1_2_analysis <- experiment_1_2_filtered %>%
+  filter(
+    # Keep all controls
+    species == "ctrl" |
+    # Keep fungal species only if they have good growth (area ≥ 20)
+    (species != "ctrl" & !is.na(area_size_14dpi) & area_size_14dpi >= 20)
+  )
+
+# Summary of filtering for analysis dataset
+analysis_filter_summary <- experiment_1_2_filtered %>%
+  mutate(
+    included_in_analysis = case_when(
+      species == "ctrl" ~ "Control",
+      species != "ctrl" & (!is.na(area_size_14dpi) & area_size_14dpi >= 20) ~ "Included",
+      species != "ctrl" & (is.na(area_size_14dpi) | area_size_14dpi < 20) ~ "Excluded",
+      TRUE ~ "Other"
+    )
+  ) %>%
+  count(species, included_in_analysis) %>%
+  arrange(species, included_in_analysis)
+
+# Display analysis filtering summary as a simple table
+analysis_filter_summary %>%
+  kable(caption = "Samples Included in pH/Weight/E.coli Analyses by Category",
+        col.names = c("Species", "Category", "Count")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
+
+cat("\n=== ANALYSIS DATASET SUMMARY ===\n")
+cat("Total samples for analysis:", nrow(experiment_1_2_analysis), "\n")
+cat("Controls included:", sum(experiment_1_2_analysis$species == "ctrl"), "\n")
+cat("Fungal species included:", sum(experiment_1_2_analysis$species != "ctrl"), "\n")
 ```
 
 # Growth Analysis
@@ -317,9 +354,9 @@ growth_success_summary <- growth_success_data %>%
   add_count(species, time_point, wt = n, name = "total") %>%
   mutate(percentage = (n / total) * 100)
 
-# Order species by success rate
+# Order species by success rate (considering >1 as success)
 species_order <- growth_success_summary %>%
-  filter(time_point == "14 DPI", growth_description %in% c(4, 5)) %>%
+  filter(time_point == "14 DPI", growth_description %in% c(2, 3, 4, 5)) %>%
   group_by(species) %>%
   summarise(success_rate = sum(percentage), .groups = "drop") %>%
   arrange(desc(success_rate)) %>%
@@ -383,7 +420,7 @@ growth_success_data %>%
   group_by(species) %>%
   summarise(
     n_total = n(),
-    n_success = sum(growth_description %in% c(4, 5)),
+    n_success = sum(as.numeric(as.character(growth_description)) > 1),
     success_rate = round((n_success / n_total) * 100, 1),
     mean_score = round(mean(as.numeric(as.character(growth_description))), 2),
     .groups = "drop"
@@ -392,6 +429,72 @@ growth_success_data %>%
   kable(caption = "Growth Success Summary at 14 DPI",
         col.names = c("Species", "Total", "Successful", "Success Rate (%)", "Mean Score")) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
+```
+
+## Contamination Analysis
+
+```{r contamination-analysis}
+# ============================================
+# ANALYZE CONTAMINATION RATES BY SPECIES
+# ============================================
+
+# Note: Contamination analysis based on contamination_area measurements
+# instead of growth_status column (which was removed)
+
+contamination_data <- experiment_1_2 %>%
+  filter(!species %in% c("ctrl", "Control", "NA") & !is.na(species))
+
+# Check if contamination area data exists
+if("contamination_area_14dpi" %in% colnames(contamination_data)) {
+  # Calculate contamination rates based on contamination area
+  contamination_summary_14dpi <- contamination_data %>%
+    mutate(
+      is_contaminated_14dpi = !is.na(contamination_area_14dpi) & contamination_area_14dpi > 0
+    ) %>%
+    group_by(species) %>%
+    summarise(
+      n_total = n(),
+      n_contaminated = sum(is_contaminated_14dpi, na.rm = TRUE),
+      contamination_rate = round((n_contaminated / n_total) * 100, 1),
+      .groups = "drop"
+    ) %>%
+    arrange(desc(contamination_rate))
+  
+  # Display contamination summary table
+  contamination_summary_14dpi %>%
+    kable(caption = "Contamination Rates by Species at 14 DPI (based on contamination area)",
+          col.names = c("Species", "Total Plates", "Contaminated", "Contamination Rate (%)")) %>%
+    kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
+  
+  # Create contamination plot
+  if(nrow(contamination_summary_14dpi) > 0 && max(contamination_summary_14dpi$contamination_rate) > 0) {
+    contamination_plot <- contamination_summary_14dpi %>%
+      mutate(species = factor(species, levels = rev(species[order(contamination_rate)]))) %>%
+      ggplot(aes(x = contamination_rate, y = species)) +
+      geom_col(fill = "darkred", alpha = 0.7) +
+      geom_text(aes(label = paste0(n_contaminated, "/", n_total)), 
+                hjust = -0.1, size = 3) +
+      labs(
+        title = "Contamination Rates by Fungal Species at 14 DPI",
+        subtitle = "Numbers show contaminated plates / total plates (based on contamination area)",
+        x = "Contamination Rate (%)",
+        y = "Species"
+      ) +
+      theme_minimal() +
+      theme(
+        axis.text.y = element_text(size = 9),
+        panel.grid.major.y = element_line(color = "grey90"),
+        panel.grid.minor = element_blank()
+      ) +
+      xlim(0, max(contamination_summary_14dpi$contamination_rate) * 1.2)
+    
+    print(contamination_plot)
+  } else {
+    cat("No contamination detected in the dataset.")
+  }
+} else {
+  cat("Contamination area data not available in the dataset.")
+}
 ```
 
 ## Growth Area
@@ -415,24 +518,26 @@ area_data <- experiment_1_2 %>%
   drop_na(area_size) %>%
   filter(area_size > 0)
 
-# Order species by median area at 14 DPI
-area_order <- area_data %>%
-  filter(time_point == "14 DPI") %>%
-  group_by(species) %>%
-  summarise(median_area = median(area_size), .groups = "drop") %>%
-  arrange(desc(median_area)) %>%
-  pull(species)
+# Order species with ctrl first, then alphabetical
+species_order <- get_species_order(area_data$species)
 
 # Prepare data with counts and labels
 area_plot_data <- area_data %>%
   mutate(
-    species = factor(species, levels = rev(area_order)),
+    species = factor(species, levels = species_order),
+    time_point = factor(time_point, levels = c("14 DPI", "7 DPI")),  # 14 DPI first
     species_time = paste0(species, " - ", time_point)
   ) %>%
-  add_count_labels("species_time") %>%
+  add_count_labels("species_time")
+
+# Create custom labels and set the correct order
+area_plot_data <- area_plot_data %>%
   mutate(
-    custom_label = paste0(species, " - ", time_point, " (n=", n_samples, ", f=", n_faecal, ")"),
-    species_time = factor(custom_label, levels = unique(custom_label)[order(species, desc(time_point))])
+    custom_label = paste0(species, " - ", time_point, " (n=", n_samples, ", f=", n_faecal, ")")
+  ) %>%
+  arrange(desc(species), time_point) %>%  # Sort by species (desc for plot) and time
+  mutate(
+    species_time = factor(custom_label, levels = unique(custom_label))
   )
 ```
 
@@ -442,12 +547,13 @@ area_plot_data <- area_data %>%
 # ============================================
 
 area_plot_exp2 <- ggplot(area_plot_data, aes(x = area_size, y = species_time)) +
+  geom_vline(xintercept = 63.62, linetype = "dashed", color = "blue", alpha = 0.7) +
   geom_boxplot(fill = "darkgreen", alpha = 0.6, color = "darkgreen") +
   geom_point(alpha = 0.6, size = 1, color = "darkred", position = position_jitter(height = 0.2)) +
   labs(
     title = "Fungal Growth Area Distribution by Species and Time Point",
     subtitle = "n = number of observations, f = number of faecal samples",
-    x = "Area Size (log scale)",
+    x = expression("Area Size (cm"^2*", log scale)"),
     y = "Species - Time Point"
   ) +
   theme_minimal() +
@@ -477,7 +583,7 @@ area_data %>%
 # ============================================
 
 # Create pH data with treatment categories
-ph_data <- experiment_1_2_filtered %>%
+ph_data <- experiment_1_2_analysis %>%
   filter(!is.na(ph_14dpi)) %>%
   categorize_treatment() %>%
   rename(ph_value = ph_14dpi)
@@ -524,7 +630,7 @@ ph_plot_exp2 <- ggplot(ph_plot_data, aes(x = ph_value, y = treatment_category)) 
 print(ph_plot_exp2)
 
 # Summary statistics
-experiment_1_2_filtered %>%
+experiment_1_2_analysis %>%
   filter(!is.na(ph_14dpi)) %>%
   mutate(ph_change = ph_14dpi - ph_0dpi) %>%
   group_by(species) %>%
@@ -536,7 +642,7 @@ experiment_1_2_filtered %>%
     .groups = "drop"
   ) %>%
   arrange(desc(mean_change)) %>%
-  kable(caption = "pH Changes from 0 to 14 DPI",
+  kable(caption = "pH Changes from 0 to 14 DPI (Growth Area ≥ 20 for fungal species)",
         col.names = c("Species", "n", "Mean pH (0 DPI)", "Mean pH (14 DPI)", "Mean Change")) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
 ```
@@ -549,7 +655,7 @@ experiment_1_2_filtered %>%
 # ============================================
 
 # Create weight data with treatment categories
-weight_data <- experiment_1_2_filtered %>%
+weight_data <- experiment_1_2_analysis %>%
   filter(!is.na(weight_percent_change)) %>%
   categorize_treatment()
 
@@ -590,7 +696,7 @@ weight_change_plot_exp2 <- ggplot(weight_plot_data, aes(x = weight_percent_chang
     axis.text.y = element_text(size = 8),
     panel.grid.major.x = element_line(color = "grey90", size = 0.3)
   ) +
-  scale_x_continuous(breaks = seq(-60, 20, 10))
+  scale_x_continuous(breaks = seq(-60, 20, 2.5))
 
 print(weight_change_plot_exp2)
 ```
@@ -645,9 +751,403 @@ weight_data %>%
     .groups = "drop"
   ) %>%
   arrange(mean_wet_change) %>%
-  kable(caption = "Weight Change Summary by Species",
+  kable(caption = "Weight Change Summary by Species (Growth Area ≥ 20 for fungal species)",
         col.names = c("Species", "n", "Mean Wet Change (%)", "Mean Dry Change (%)")) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
+```
+
+## Statistical Analysis: Control Treatment Comparison
+
+```{r dry-weight-statistics}
+# ============================================
+# MIXED MODEL ANALYSIS OF DRY WEIGHT CHANGE BETWEEN CONTROL TREATMENTS
+# ============================================
+
+# Load required library for mixed models
+library(lme4)
+library(broom.mixed)
+
+# Prepare data for controls only
+control_data <- experiment_1_2_analysis %>%
+  filter(species == "ctrl" & !is.na(dry_weight_percent_change)) %>%
+  categorize_treatment() %>%
+  mutate(
+    # Create binary factor for contamination status
+    contamination_status = case_when(
+      treatment_category == "Control (clean)" ~ "Clean",
+      treatment_category == "Control (contaminated)" ~ "Contaminated"
+    ),
+    contamination_status = factor(contamination_status, levels = c("Clean", "Contaminated"))
+  )
+
+# Check sample sizes
+cat("Sample sizes for control treatments:\n")
+table(control_data$contamination_status)
+cat("\n")
+
+# Descriptive statistics
+control_summary <- control_data %>%
+  group_by(contamination_status) %>%
+  summarise(
+    n = n(),
+    n_faeces_sources = n_distinct(id_faeces),
+    mean_dry_change = round(mean(dry_weight_percent_change, na.rm = TRUE), 2),
+    sd_dry_change = round(sd(dry_weight_percent_change, na.rm = TRUE), 2),
+    median_dry_change = round(median(dry_weight_percent_change, na.rm = TRUE), 2),
+    q25 = round(quantile(dry_weight_percent_change, 0.25, na.rm = TRUE), 2),
+    q75 = round(quantile(dry_weight_percent_change, 0.75, na.rm = TRUE), 2),
+    .groups = "drop"
+  )
+
+print("Descriptive statistics for control treatments:")
+control_summary %>%
+  kable(caption = "Dry Weight Change (%) in Control Treatments",
+        col.names = c("Treatment", "n", "Faecal Sources", "Mean", "SD", "Median", "Q25", "Q75")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
+
+# Fit mixed model with faecal source as random effect
+if(nrow(control_data) > 0 && n_distinct(control_data$contamination_status) == 2) {
+  
+  # Check if we have multiple faecal sources for random effects
+  if(n_distinct(control_data$id_faeces) > 1) {
+    
+    cat("\nFitting mixed model with faecal source as random effect...\n")
+    
+    # Mixed model: dry weight change ~ contamination status + (1|faecal source)
+    mixed_model <- lmer(dry_weight_percent_change ~ contamination_status + (1|id_faeces), 
+                       data = control_data)
+    
+    # Model summary
+    cat("\nMixed Model Results:\n")
+    cat("===================\n")
+    
+    # Extract fixed effects
+    fixed_effects <- tidy(mixed_model, effects = "fixed")
+    cat("\nFixed Effects:\n")
+    print(fixed_effects)
+    
+    # Extract random effects variance
+    random_effects <- tidy(mixed_model, effects = "ran_pars")
+    cat("\nRandom Effects (Variance Components):\n")
+    print(random_effects)
+    
+    # Calculate effect size (difference between treatments)
+    clean_mean <- control_summary$mean_dry_change[control_summary$contamination_status == "Clean"]
+    contaminated_mean <- control_summary$mean_dry_change[control_summary$contamination_status == "Contaminated"]
+    effect_size <- contaminated_mean - clean_mean
+    
+    cat(sprintf("\nEffect Size: %.2f%% difference (Contaminated - Clean)\n", effect_size))
+    
+    # Model diagnostics
+    cat("\nModel Summary:\n")
+    print(summary(mixed_model))
+    
+    # Create results table - check column names first
+    cat("\nColumn names in fixed_effects:\n")
+    print(names(fixed_effects))
+    
+    # Use correct column names based on what's available
+    if("p.value" %in% names(fixed_effects)) {
+      p_col <- "p.value"
+    } else if("pvalue" %in% names(fixed_effects)) {
+      p_col <- "pvalue"
+    } else {
+      # If no p-value column, calculate from t-statistic
+      fixed_effects$p_value_calc <- 2 * pt(abs(fixed_effects$statistic), 
+                                          df = nrow(control_data) - 2, lower.tail = FALSE)
+      p_col <- "p_value_calc"
+    }
+    
+    # Add significance interpretation
+    model_results <- fixed_effects %>%
+      mutate(
+        p_value_interpretation = case_when(
+          !!sym(p_col) < 0.001 ~ "***",
+          !!sym(p_col) < 0.01 ~ "**", 
+          !!sym(p_col) < 0.05 ~ "*",
+          !!sym(p_col) < 0.1 ~ ".",
+          TRUE ~ ""
+        )
+      )
+    
+    # Create table with available columns
+    if("std.error" %in% names(model_results)) {
+      se_col <- "std.error"
+    } else if("std_error" %in% names(model_results)) {
+      se_col <- "std_error"
+    } else {
+      se_col <- NULL
+    }
+    
+    if(!is.null(se_col)) {
+      model_results %>%
+        select(term, estimate, all_of(se_col), statistic, all_of(p_col), p_value_interpretation) %>%
+        kable(caption = "Mixed Model Fixed Effects: Dry Weight Change (%) ~ Contamination Status",
+              col.names = c("Term", "Estimate", "Std. Error", "t-value", "p-value", "Sig."),
+              digits = 4) %>%
+        kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE) %>%
+        footnote(general = "Significance codes: *** p<0.001, ** p<0.01, * p<0.05, . p<0.1")
+    } else {
+      model_results %>%
+        select(term, estimate, statistic, all_of(p_col), p_value_interpretation) %>%
+        kable(caption = "Mixed Model Fixed Effects: Dry Weight Change (%) ~ Contamination Status",
+              col.names = c("Term", "Estimate", "t-value", "p-value", "Sig."),
+              digits = 4) %>%
+        kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE) %>%
+        footnote(general = "Significance codes: *** p<0.001, ** p<0.01, * p<0.05, . p<0.1")
+    }
+    
+  } else {
+    cat("\nOnly one faecal source available - using simple t-test instead of mixed model.\n")
+    
+    # Simple t-test if only one faecal source
+    t_test_result <- t.test(dry_weight_percent_change ~ contamination_status, data = control_data)
+    
+    cat("\nWelch Two Sample t-test Results:\n")
+    print(t_test_result)
+  }
+  
+} else {
+  cat("\nInsufficient data for statistical comparison of control treatments.\n")
+  cat("Need data from both clean and contaminated controls.\n")
+}
+```
+
+## Statistical Analysis: Fungal Species vs Controls
+
+```{r species-vs-control-statistics}
+# ============================================
+# MIXED MODEL ANALYSIS OF DRY WEIGHT CHANGE: EACH SPECIES VS CONTROLS
+# ============================================
+
+# Prepare data for species vs control comparisons
+species_control_data <- experiment_1_2_analysis %>%
+  filter(!is.na(dry_weight_percent_change)) %>%
+  categorize_treatment() %>%
+  mutate(
+    # Create clean control category for comparison
+    species_group = case_when(
+      treatment_category == "Control (clean)" ~ "Control (clean)",
+      TRUE ~ species
+    ),
+    # Keep separate control categories for descriptive stats
+    treatment_group = case_when(
+      treatment_category == "Control (clean)" ~ "Control (clean)",
+      treatment_category == "Control (contaminated)" ~ "Control (contaminated)",
+      TRUE ~ species
+    )
+  )
+
+# Get list of fungal species (exclude controls)
+fungal_species <- species_control_data %>%
+  filter(species != "ctrl") %>%
+  pull(species) %>%
+  unique() %>%
+  sort()
+
+cat("Fungal species to compare against clean controls:\n")
+print(fungal_species)
+cat("\n")
+
+# Descriptive statistics for all groups
+all_groups_summary <- species_control_data %>%
+  group_by(treatment_group) %>%
+  summarise(
+    n = n(),
+    n_faeces_sources = n_distinct(id_faeces),
+    mean_dry_change = round(mean(dry_weight_percent_change, na.rm = TRUE), 2),
+    sd_dry_change = round(sd(dry_weight_percent_change, na.rm = TRUE), 2),
+    median_dry_change = round(median(dry_weight_percent_change, na.rm = TRUE), 2),
+    .groups = "drop"
+  ) %>%
+  arrange(mean_dry_change)
+
+cat("Descriptive statistics for all treatment groups:\n")
+all_groups_summary %>%
+  kable(caption = "Dry Weight Change (%) by Treatment Group",
+        col.names = c("Treatment", "n", "Faecal Sources", "Mean", "SD", "Median")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
+
+# Function to compare each species against controls
+compare_species_to_controls <- function(species_name, data) {
+  
+  cat(sprintf("\n=== ANALYSIS: %s vs Clean Controls ===\n", species_name))
+  
+  # Prepare comparison data
+  comparison_data <- data %>%
+    filter(species_group %in% c("Control (clean)", species_name)) %>%
+    mutate(
+      treatment_factor = factor(species_group, levels = c("Control (clean)", species_name))
+    )
+  
+  # Check sample sizes
+  n_control <- sum(comparison_data$species_group == "Control (clean)")
+  n_species <- sum(comparison_data$species_group == species_name)
+  
+  cat(sprintf("Sample sizes: Clean Control = %d, %s = %d\n", n_control, species_name, n_species))
+  
+  if(n_control > 0 && n_species > 0) {
+    
+    # Calculate descriptive statistics
+    desc_stats <- comparison_data %>%
+      group_by(treatment_factor) %>%
+      summarise(
+        n = n(),
+        mean = round(mean(dry_weight_percent_change, na.rm = TRUE), 2),
+        sd = round(sd(dry_weight_percent_change, na.rm = TRUE), 2),
+        .groups = "drop"
+      )
+    
+    control_mean <- desc_stats$mean[desc_stats$treatment_factor == "Control (clean)"]
+    species_mean <- desc_stats$mean[desc_stats$treatment_factor == species_name]
+    effect_size <- species_mean - control_mean
+    
+    cat(sprintf("Effect size: %.2f%% (Species - Clean Control)\n", effect_size))
+    
+    # Try mixed model if multiple faecal sources, otherwise use t-test
+    n_faeces <- n_distinct(comparison_data$id_faeces)
+    
+    if(n_faeces > 1) {
+      # Mixed model approach
+      tryCatch({
+        mixed_model <- lmer(dry_weight_percent_change ~ treatment_factor + (1|id_faeces), 
+                           data = comparison_data)
+        
+        # Extract results
+        fixed_effects <- tidy(mixed_model, effects = "fixed")
+        
+        # Get p-value
+        if("p.value" %in% names(fixed_effects)) {
+          p_value <- fixed_effects$p.value[2]  # Second row is the treatment effect
+        } else {
+          # Calculate p-value from t-statistic
+          t_stat <- fixed_effects$statistic[2]
+          p_value <- 2 * pt(abs(t_stat), df = nrow(comparison_data) - 2, lower.tail = FALSE)
+        }
+        
+        cat(sprintf("Mixed model p-value: %.4f\n", p_value))
+        
+        return(list(
+          species = species_name,
+          method = "Mixed Model",
+          effect_size = effect_size,
+          p_value = p_value,
+          n_control = n_control,
+          n_species = n_species
+        ))
+        
+      }, error = function(e) {
+        cat("Mixed model failed, using t-test\n")
+        # Fall back to t-test
+        t_result <- t.test(dry_weight_percent_change ~ treatment_factor, data = comparison_data)
+        
+        return(list(
+          species = species_name,
+          method = "t-test",
+          effect_size = effect_size,
+          p_value = t_result$p.value,
+          n_control = n_control,
+          n_species = n_species
+        ))
+      })
+      
+    } else {
+      # Simple t-test
+      t_result <- t.test(dry_weight_percent_change ~ treatment_factor, data = comparison_data)
+      
+      cat(sprintf("t-test p-value: %.4f\n", t_result$p.value))
+      
+      return(list(
+        species = species_name,
+        method = "t-test",
+        effect_size = effect_size,
+        p_value = t_result$p.value,
+        n_control = n_control,
+        n_species = n_species
+      ))
+    }
+    
+  } else {
+    cat("Insufficient data for comparison\n")
+    return(NULL)
+  }
+}
+
+# Run comparisons for all fungal species
+comparison_results <- list()
+
+for(species in fungal_species) {
+  result <- compare_species_to_controls(species, species_control_data)
+  if(!is.null(result)) {
+    comparison_results[[species]] <- result
+  }
+}
+
+# Combine results into a summary table
+if(length(comparison_results) > 0) {
+  
+  results_df <- do.call(rbind, lapply(comparison_results, function(x) {
+    data.frame(
+      Species = x$species,
+      Method = x$method,
+      Effect_Size = x$effect_size,
+      P_Value = x$p_value,
+      n_Control = x$n_control,
+      n_Species = x$n_species,
+      stringsAsFactors = FALSE
+    )
+  }))
+  
+  # Add significance interpretation and adjusted p-values
+  results_df <- results_df %>%
+    mutate(
+      P_Adjusted = p.adjust(P_Value, method = "fdr"),  # False Discovery Rate correction
+      Significance = case_when(
+        P_Adjusted < 0.001 ~ "***",
+        P_Adjusted < 0.01 ~ "**",
+        P_Adjusted < 0.05 ~ "*",
+        P_Adjusted < 0.1 ~ ".",
+        TRUE ~ ""
+      ),
+      Effect_Direction = case_when(
+        Effect_Size > 0 ~ "More weight loss than clean controls",
+        Effect_Size < 0 ~ "Less weight loss than clean controls",
+        TRUE ~ "No difference"
+      )
+    ) %>%
+    arrange(P_Adjusted)
+  
+  cat("\n=== SUMMARY OF ALL SPECIES COMPARISONS ===\n")
+  
+  results_df %>%
+    select(Species, Effect_Size, P_Value, P_Adjusted, Significance, n_Species, Effect_Direction) %>%
+    kable(caption = "Statistical Comparison of Fungal Species vs Clean Controls (Dry Weight Change %)",
+          col.names = c("Species", "Effect Size (%)", "Raw p-value", "Adjusted p-value", "Sig.", "n", "Effect Direction"),
+          digits = 4) %>%
+    kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE) %>%
+    footnote(general = c("Significance codes: *** p<0.001, ** p<0.01, * p<0.05, . p<0.1",
+                        "P-values adjusted using False Discovery Rate (FDR) method",
+                        "Effect size = Species mean - Clean Control mean"))
+  
+  # Identify significant species
+  significant_species <- results_df %>%
+    filter(P_Adjusted < 0.05) %>%
+    arrange(Effect_Size)
+  
+  if(nrow(significant_species) > 0) {
+    cat("\nSpecies with significantly different dry weight changes (FDR < 0.05):\n")
+    for(i in 1:nrow(significant_species)) {
+      row <- significant_species[i,]
+      cat(sprintf("- %s: %.2f%% effect (p = %.4f) - %s\n", 
+                  row$Species, row$Effect_Size, row$P_Adjusted, row$Effect_Direction))
+    }
+  } else {
+    cat("\nNo species showed significantly different dry weight changes after multiple comparison correction.\n")
+  }
+  
+} else {
+  cat("No comparisons could be performed due to insufficient data.\n")
+}
 ```
 
 ## Water Content Analysis
@@ -658,7 +1158,7 @@ weight_data %>%
 # ============================================
 
 # Prepare water content data
-water_data <- experiment_1_2_filtered %>%
+water_data <- experiment_1_2_analysis %>%
   filter(!is.na(water_content_0dpi) & !is.na(water_content_14dpi)) %>%
   mutate(water_content_change = water_content_14dpi - water_content_0dpi) %>%
   categorize_treatment()
@@ -727,8 +1227,8 @@ grid.arrange(water_change_plot, water_timepoint_plot, ncol = 1, heights = c(1, 1
 # ============================================
 
 # Prepare E. coli data
-ecoli_data <- experiment_1_2_filtered %>%
-  filter(!is.na(ecoli_conc) & ecoli_conc >= 0) %>%
+ecoli_data <- experiment_1_2_analysis %>%
+  filter(!is.na(ecoli_conc) & ecoli_conc >= 0 & !is.na(ph_14dpi)) %>%
   mutate(log_ecoli_14dpi = log10(ecoli_conc + 1)) %>%
   categorize_treatment()
 
@@ -784,9 +1284,9 @@ print(ecoli_conc_plot_exp2)
 # ============================================
 
 # Calculate log changes
-ecoli_change_data <- experiment_1_2_filtered %>%
+ecoli_change_data <- experiment_1_2_analysis %>%
   filter(!is.na(ecoli_conc) & ecoli_conc >= 0 & 
-         !is.na(ecoli_conc_mean_0dpi) & ecoli_conc_mean_0dpi > 0) %>%
+         !is.na(ecoli_conc_mean_0dpi) & ecoli_conc_mean_0dpi > 0 & !is.na(ph_14dpi)) %>%
   mutate(
     log_ecoli_0dpi = log10(ecoli_conc_mean_0dpi),
     log_ecoli_14dpi = log10(ecoli_conc + 1),
@@ -848,7 +1348,7 @@ ecoli_change_data %>%
     .groups = "drop"
   ) %>%
   arrange(desc(mean_log_reduction)) %>%
-  kable(caption = "E. coli Log Reduction Summary",
+  kable(caption = "E. coli Log Reduction Summary (Growth Area ≥ 20 for fungal species)",
         col.names = c("Species", "n", "Mean Log Reduction", "% ≥1 log", "% ≥3 log")) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
 ```

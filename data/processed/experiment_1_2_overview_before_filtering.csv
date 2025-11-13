@@ -1,0 +1,248 @@
+"id_treatment","species","growth_description_14dpi","contamination_area_14dpi","ph_14dpi","weight_14dpi","ecoli_14dpi"
+100,"C. comatus",0,63.62,9.04,15.31,390977443.609023
+101,"C. comatus",0,0,5.55,15.32,0
+102,"C. comatus",0,0,5.63,15.65,0
+132,"C. comatus",0,0,5.35,16.29,0
+133,"C. comatus",0,7.591,5.51,16.23,0
+134,"C. comatus",0,0,5.37,15.97,0
+165,"C. comatus",0,63.617,9,14.95,NA
+166,"C. comatus",0,0,5.87,15.03,27259.0361445783
+167,"C. comatus",0,0,5.75,15.57,10000
+198,"C. comatus",NA,NA,NA,15.22,NA
+199,"C. comatus",NA,NA,NA,15.56,NA
+200,"C. comatus",NA,NA,NA,15.5,NA
+216,"C. comatus",NA,NA,NA,NA,NA
+217,"C. comatus",NA,NA,NA,NA,NA
+218,"C. comatus",NA,NA,NA,NA,NA
+106,"Cop1",0,0,5.38,15.59,0
+107,"Cop1",0,8.743,6.94,15.15,0
+108,"Cop1",0,43.92,8.88,15.23,605882352.941177
+138,"Cop1",0,63.617,8.99,15.17,NA
+139,"Cop1",0,23.568,6.84,15.55,422297297.297297
+140,"Cop1",0,63.617,9.03,15.62,NA
+219,"Cop1",NA,NA,NA,NA,NA
+220,"Cop1",NA,NA,NA,NA,NA
+221,"Cop1",NA,NA,NA,NA,NA
+16,"F15 Faecal Isolate 1",5,63.617,8.98,12.89,491596638.655462
+17,"F15 Faecal Isolate 1",5,0,9.08,15.59,1414814814.81481
+18,"F15 Faecal Isolate 1",5,63.617,9.04,15.36,897350993.377483
+37,"F15 Faecal Isolate 1",5,0,8.98,14.53,NA
+38,"F15 Faecal Isolate 1",3,55.758,9,14.78,NA
+39,"F15 Faecal Isolate 1",5,0,8.95,13.17,NA
+66,"F15 Faecal Isolate 1",5,15.678,7.82,14.63,176991150.442478
+67,"F15 Faecal Isolate 1",5,56.615,8.87,14.47,104761904.761905
+68,"F15 Faecal Isolate 1",5,60.443,8.78,15.79,110236220.472441
+19,"F31 Mucor I3",3,44.516,9.02,14.91,671875000
+20,"F31 Mucor I3",4,51.567,9.04,13.23,38815789.4736842
+21,"F31 Mucor I3",4,0,8.94,13.8,NA
+40,"F31 Mucor I3",3,43.806,8.71,15.26,NA
+41,"F31 Mucor I3",3,0,8.95,16.85,NA
+42,"F31 Mucor I3",3,52.95,9.08,15.63,NA
+57,"F31 Mucor I3",4,0,9.02,15.03,640449438.202247
+58,"F31 Mucor I3",5,0,8.7,15.17,241666666.666667
+59,"F31 Mucor I3",4,0,8.6,15.52,4e+08
+49,"F33 Sordaria",4,0,9.03,15.48,NA
+50,"F33 Sordaria",4,0,9.01,15.8,NA
+51,"F33 Sordaria",4,0,9.03,14.93,962566844.919786
+109,"F33 Sordaria",3,0,9.29,13.69,NA
+110,"F33 Sordaria",3,21.199,9.1,15.23,NA
+111,"F33 Sordaria",3,0,9.19,15.18,NA
+204,"F33 Sordaria",NA,NA,8.84,14.92,1894736842.10526
+205,"F33 Sordaria",NA,NA,8.78,15.21,NA
+206,"F33 Sordaria",NA,NA,8.82,15.35,NA
+207,"F33 Sordaria",NA,NA,NA,13.98,NA
+208,"F33 Sordaria",NA,NA,NA,14.98,NA
+209,"F33 Sordaria",NA,NA,NA,15,NA
+7,"F35 Sordaria",3,0,8.48,15.12,NA
+8,"F35 Sordaria",4,0,9.05,15.36,NA
+9,"F35 Sordaria",3,13.039,9.07,16.22,NA
+28,"F35 Sordaria",3,0,9.01,12.14,1487603305.78512
+29,"F35 Sordaria",4,0,9,13.47,1463414634.14634
+30,"F35 Sordaria",3,0,9.05,14.96,NA
+60,"F35 Sordaria",5,0,9.09,14.35,1305263157.89474
+61,"F35 Sordaria",5,0,9.04,15.38,558558558.558558
+62,"F35 Sordaria",5,0,9.05,15.03,685185185.185185
+213,"F35 Sordaria",NA,NA,NA,NA,NA
+214,"F35 Sordaria",NA,NA,NA,NA,NA
+215,"F35 Sordaria",NA,NA,NA,NA,NA
+4,"F36 Sordaria",3,0,8.85,14.11,66101694.9152542
+5,"F36 Sordaria",3,0,8.95,15.16,165625000
+6,"F36 Sordaria",3,0,8.94,14.01,1.6e+09
+25,"F36 Sordaria",4,0,9,15.83,NA
+26,"F36 Sordaria",4,0,9.02,15.19,1468253968.25397
+27,"F36 Sordaria",4,0,8.99,15.65,NA
+112,"F36 Sordaria",3,0,9.17,13.84,NA
+113,"F36 Sordaria",4,0,9.2,14.95,NA
+114,"F36 Sordaria",3,0,9.15,15.68,NA
+115,"F36 Sordaria",3,0,13.75,15.36,NA
+116,"F36 Sordaria",3,6.435,NA,15.62,NA
+13,"F40",0,0,5.57,17.1,0
+14,"F40",0,0,5.54,16.61,0
+15,"F40",0,0,5.53,16.49,1069306930.69307
+34,"F40",5,0,9.03,14.93,2157534.24657534
+35,"F40",0,0,5.92,14.02,0
+36,"F40",5,0,9.22,13.71,6835937.5
+72,"F40",0,26.208,6.18,14.35,0
+73,"F40",0,0,5.49,15.34,0
+74,"F40",0,0,5.61,15.26,0
+222,"F40",NA,NA,NA,NA,NA
+223,"F40",NA,NA,NA,NA,NA
+224,"F40",NA,NA,NA,NA,NA
+97,"G. lucidum",5,14.243,5.91,15.15,1127.81954887218
+98,"G. lucidum",5,0,5.73,15.46,0
+99,"G. lucidum",5,13.954,5.97,15.26,0
+129,"G. lucidum",0,1.157,5.43,15.87,0
+130,"G. lucidum",0,5.297,5.82,15.99,173575129.533679
+131,"G. lucidum",0,12.519,5.64,14.99,1017964071.85629
+159,"G. lucidum",5,0,5.51,14.87,1870.74829931973
+160,"G. lucidum",5,5.66,5.61,15.56,0
+161,"G. lucidum",4,3.77099999999999,5.54,14.89,0
+162,"G. lucidum",5,0,NA,15.01,NA
+163,"G. lucidum",5,0,NA,15.24,NA
+164,"G. lucidum",5,0,NA,15.18,NA
+192,"G. lucidum",NA,NA,8.5,15.38,0
+193,"G. lucidum",NA,NA,8.42,15.3,0
+194,"G. lucidum",NA,NA,8.84,15.28,37337.6623376623
+195,"G. lucidum",NA,NA,NA,15.21,NA
+196,"G. lucidum",NA,NA,NA,15.35,NA
+197,"G. lucidum",NA,NA,NA,15.31,NA
+231,"G. lucidum",NA,NA,NA,NA,NA
+232,"G. lucidum",NA,NA,NA,NA,NA
+233,"G. lucidum",NA,NA,NA,NA,NA
+168,"P. eryngii",0,0,NA,15.4,NA
+169,"P. eryngii",0,63.617,NA,15.03,NA
+170,"P. eryngii",0,32.677,NA,15.14,NA
+171,"P. eryngii",0,2.245,NA,15.29,NA
+172,"P. eryngii",0,0,NA,15.18,NA
+173,"P. eryngii",0,0,NA,15.91,NA
+201,"P. eryngii",NA,NA,NA,15.97,NA
+202,"P. eryngii",NA,NA,NA,14.82,NA
+203,"P. eryngii",NA,NA,NA,15.46,NA
+91,"P. ostreatus",5,0,6.73,15.56,8333.33333333333
+92,"P. ostreatus",5,0,6.25,15.11,117338.709677419
+93,"P. ostreatus",5,63.62,8.96,15.31,NA
+123,"P. ostreatus",0,18.316,5.8,15.76,223602484.47205
+124,"P. ostreatus",0,0,5.31,15.9,0
+125,"P. ostreatus",0,4.226,5.63,15.83,0
+156,"P. ostreatus",5,0,6.03,15.66,12937.0629370629
+157,"P. ostreatus",5,0,5.93,15.29,159090.909090909
+158,"P. ostreatus",5,0,5.87,15.48,1982758.62068966
+189,"P. ostreatus",NA,NA,8.63,15.41,527522.935779816
+190,"P. ostreatus",NA,NA,8.46,15.4,0
+191,"P. ostreatus",NA,NA,8.62,15.34,0
+243,"P. ostreatus",NA,NA,NA,NA,NA
+244,"P. ostreatus",NA,NA,NA,NA,NA
+245,"P. ostreatus",NA,NA,NA,NA,NA
+103,"P. ostreatus columbinus",5,0,6.56,14.93,23437.5
+104,"P. ostreatus columbinus",5,0,6.3,15.03,28800
+105,"P. ostreatus columbinus",5,0,6.43,15.49,1130952.38095238
+135,"P. ostreatus columbinus",0,63.617,6.84,15.06,NA
+136,"P. ostreatus columbinus",0,63.617,8.92,15.1,NA
+137,"P. ostreatus columbinus",0,0,5.32,15.7,0
+150,"P. ostreatus columbinus",5,0,6.74,14.41,2634408.60215054
+151,"P. ostreatus columbinus",5,0,6.34,15.13,68888.8888888889
+152,"P. ostreatus columbinus",5,0,6.63,14.5,392156.862745098
+153,"P. ostreatus columbinus",NA,NA,NA,15.06,NA
+154,"P. ostreatus columbinus",5,0,NA,15.25,NA
+155,"P. ostreatus columbinus",5,0,NA,15.3,NA
+186,"P. ostreatus columbinus",NA,NA,8.58,15.06,0
+187,"P. ostreatus columbinus",NA,NA,8.63,15.29,0
+188,"P. ostreatus columbinus",NA,NA,8.6,15.26,0
+228,"P. ostreatus columbinus",NA,NA,NA,NA,NA
+229,"P. ostreatus columbinus",NA,NA,NA,NA,NA
+230,"P. ostreatus columbinus",NA,NA,NA,NA,NA
+69,"P. ostreatus v.F",4,0,6.23,15.59,128318584.070796
+69,"P. ostreatus v.F",4,0,6.23,15.59,11724.1379310345
+69,"P. ostreatus v.F",4,0,6.23,15.59,0
+88,"P. ostreatus v.F",5,0,6.42,15.11,0
+89,"P. ostreatus v.F",5,0,6.03,15.72,5185.18518518519
+90,"P. ostreatus v.F",5,0,6.32,16.48,0
+120,"P. ostreatus v.F",0,63.617,8.91,14.98,NA
+121,"P. ostreatus v.F",0,63.617,9.04,14.97,NA
+122,"P. ostreatus v.F",0,9.435,5.47,15.7,69306.9306930693
+144,"P. ostreatus v.F",5,0,6.28,14.56,2191.01123595506
+145,"P. ostreatus v.F",4,62.293,8.82,15.1,634920634.920635
+146,"P. ostreatus v.F",5,0,6.62,15.2,24038.4615384615
+147,"P. ostreatus v.F",5,61.297,9.01,14.45,NA
+148,"P. ostreatus v.F",4,57.374,8.83,14.53,1277777777.77778
+149,"P. ostreatus v.F",5,0,6.19,15.45,152631.578947368
+180,"P. ostreatus v.F",NA,NA,8.62,15.38,0
+181,"P. ostreatus v.F",NA,NA,8.64,15.19,0
+182,"P. ostreatus v.F",NA,NA,8.62,15.24,0
+183,"P. ostreatus v.F",NA,NA,NA,15.48,NA
+184,"P. ostreatus v.F",NA,NA,NA,15.66,NA
+185,"P. ostreatus v.F",NA,NA,NA,15.42,NA
+225,"P. ostreatus v.F",NA,NA,NA,NA,NA
+226,"P. ostreatus v.F",NA,NA,NA,NA,NA
+227,"P. ostreatus v.F",NA,NA,NA,NA,NA
+94,"P. pulmonarius",4,63.62,9.01,15,NA
+95,"P. pulmonarius",5,0,9.16,15.63,1969696.96969697
+96,"P. pulmonarius",0,63.62,9.06,15.58,NA
+126,"P. pulmonarius",5,0,7.11,15.92,245454545.454545
+127,"P. pulmonarius",0,32.361,8.72,15.29,100609756.097561
+128,"P. pulmonarius",0,63.617,8.97,15.27,NA
+70,"Sordaria + T. harz",3,0,9.02,14.12,901098901.098901
+46,"T. gamsii",3,0,9.08,16.03,NA
+47,"T. gamsii",3,0,9.04,15.79,NA
+48,"T. gamsii",3,0,9.05,13.9,NA
+78,"T. gamsii",2,0,9.15,14.69,1428571.42857143
+79,"T. gamsii",2,0,9.06,15.24,5e+05
+80,"T. gamsii",2,0,9.08,14.78,56034.4827586207
+240,"T. gamsii",NA,NA,NA,NA,NA
+241,"T. gamsii",NA,NA,NA,NA,NA
+242,"T. gamsii",NA,NA,NA,NA,NA
+81,"T. harz T22 1% cell",2,0,9.06,13.98,1.76e+08
+82,"T. harz T22 5% cell",2,7.054,9.23,13.46,4592592.59259259
+52,"T. harzianum CBS245.93",3,0,9.15,14.03,NA
+53,"T. harzianum CBS245.93",3,0,9.15,14.43,NA
+234,"T. harzianum CBS245.93",NA,NA,NA,NA,NA
+235,"T. harzianum CBS245.93",NA,NA,NA,NA,NA
+236,"T. harzianum CBS245.93",NA,NA,NA,NA,NA
+43,"T. harzianum T22",3,0,9.15,15.65,NA
+44,"T. harzianum T22",3,0,9.09,14.39,NA
+45,"T. harzianum T22",3,0,9.08,15.94,NA
+75,"T. harzianum T22",2,4.729,9.25,13.68,6.5e+07
+76,"T. harzianum T22",2,11.934,9.12,15.54,96774193.5483871
+77,"T. harzianum T22",2,10.342,9.11,16.15,565217.391304348
+237,"T. harzianum T22",NA,NA,NA,NA,NA
+238,"T. harzianum T22",NA,NA,NA,NA,NA
+239,"T. harzianum T22",NA,NA,NA,NA,NA
+10,"T. koningii",3,63.617,8.51,21.19,NA
+11,"T. koningii",3,0,8.72,15.55,NA
+12,"T. koningii",3,0,9.23,15.57,0
+31,"T. koningii",2,0,9.1,14.38,NA
+32,"T. koningii",2,0,9.04,13.23,NA
+33,"T. koningii",2,0,8.95,15.68,NA
+63,"T. koningii",5,0,8.94,15.55,1039215686.27451
+64,"T. koningii",1,0,5.65,15.76,50925925.9259259
+65,"T. koningii",1,0,7.85,15.15,219594594.594595
+1,"ctrl",0,6.679,5.52,14.87,0
+2,"ctrl",0,63.617,8.92,17.81,123893805.309735
+3,"ctrl",0,0,5.53,16.16,0
+22,"ctrl",0,0,6.23,13.74,0
+23,"ctrl",0,0,6,15.32,0
+24,"ctrl",0,0,6.05,14.45,0
+54,"ctrl",0,46.596,9.01,14.75,551724137.931034
+55,"ctrl",0,42.408,8.49,15.49,619047619.047619
+56,"ctrl",0,26.903,8.22,15.44,181102362.204724
+71,"ctrl",0,0,5.28,14.49,0
+83,"ctrl",0,0,5.39,16.36,0
+84,"ctrl",0,0,5.45,15.5,0
+85,"ctrl",0,0,5.41,15.34,0
+86,"ctrl",0,40.014,7.99,15.33,1923076923.07692
+87,"ctrl",0,0,5.46,15.51,0
+117,"ctrl",0,0,5.28,15.79,0
+118,"ctrl",0,21.353,7.37,16.72,0
+119,"ctrl",0,0,5.33,15.09,0
+141,"ctrl",0,0,7.82,15.61,0
+142,"ctrl",0,0,8.05,15.14,0
+143,"ctrl",0,11.952,8.26,15.84,0
+174,"ctrl",NA,NA,8.66,15.59,0
+175,"ctrl",NA,NA,8.05,15.72,0
+176,"ctrl",NA,NA,8.53,15.09,0
+177,"ctrl",NA,NA,NA,15.4,NA
+178,"ctrl",NA,NA,NA,15.42,NA
+179,"ctrl",NA,NA,NA,15.71,NA
+210,"ctrl",NA,NA,NA,NA,NA
+211,"ctrl",NA,NA,NA,NA,NA
+212,"ctrl",NA,NA,NA,NA,NA

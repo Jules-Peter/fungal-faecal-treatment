@@ -16,6 +16,7 @@ bacteria_1_2 <- read.csv("data/raw/bacteria_1_2.csv") %>%
   mutate(ecoli_conc = ecoli_counted * dilution_ecoli / sample_weight) %>%
   select(id_treatment, ecoli_conc)
 
+
 write.csv(bacteria_1_2, "data/processed/bacteria_1_2_processed.csv", row.names = FALSE)
 
 # Process faeces data
@@ -32,6 +33,19 @@ faeces_1_2 <- read.csv("data/raw/faeces_1_2.csv") %>%
   rename(ph_0dpi = ph, ecoli_conc_mean_0dpi = ecoli_conc_mean)
 
 write.csv(faeces_1_2, "data/processed/faeces_1_2_processed.csv", row.names = FALSE)
+
+# Process experiment data - calculate dry weight at 14 DPI only
+experiment_1_2_processed <- read.csv("data/raw/experiment_1_2.csv") %>%
+  mutate(
+    # Calculate dry weight at 14 DPI (water content is in decimal 0-1)
+    dry_weight_14dpi = case_when(
+      !is.na(weight_14dpi) & !is.na(water_content_14dpi) & water_content_14dpi <= 1 ~ 
+        weight_14dpi * (1 - water_content_14dpi),
+      TRUE ~ NA_real_
+    )
+  )
+
+write.csv(experiment_1_2_processed, "data/processed/experiment_1_2_processed.csv", row.names = FALSE)
 
 # Process growth speed data
 growth_speed_1_2 <- read.csv("data/raw/growth_speed_1_2.csv") %>%
@@ -67,8 +81,8 @@ write.csv(growth_speed_1_2, "data/processed/growth_speed_1_2_processed.csv", row
 # JOIN DATA WITH EXPERIMENT TABLE
 # ============================================
 
-# Read main experiment table and inoculum data
-experiment_1_2 <- read.csv("data/raw/experiment_1_2.csv")
+# Read processed experiment table and inoculum data
+experiment_1_2 <- read.csv("data/processed/experiment_1_2_processed.csv")
 inoculum_1_2 <- read.csv("data/raw/inoculum_1_2.csv") %>%
   select(id_inoc, species, production_date)
 
@@ -77,7 +91,64 @@ experiment_1_2_joined <- experiment_1_2 %>%
   left_join(growth_speed_1_2, by = "id_treatment") %>%
   left_join(bacteria_1_2, by = "id_treatment") %>%
   left_join(faeces_1_2, by = "id_faeces") %>%
-  left_join(inoculum_1_2, by = "id_inoc")
+  left_join(inoculum_1_2, by = "id_inoc") %>%
+  # Calculate dry weights and changes after joining
+  mutate(
+    # Calculate dry weight at 0 DPI (water content is in decimal 0-1)
+    dry_weight_0dpi = case_when(
+      !is.na(weight_0dpi) & !is.na(water_content_0dpi) & water_content_0dpi <= 1 ~ 
+        weight_0dpi * (1 - water_content_0dpi),
+      TRUE ~ NA_real_
+    ),
+    # Calculate weight changes
+    dry_weight_change = dry_weight_14dpi - dry_weight_0dpi,
+    dry_weight_percent_change = case_when(
+      !is.na(dry_weight_0dpi) & dry_weight_0dpi > 0 ~ 
+        (dry_weight_change / dry_weight_0dpi) * 100,
+      TRUE ~ NA_real_
+    ),
+    weight_percent_change = case_when(
+      !is.na(weight_0dpi) & weight_0dpi > 0 ~ 
+        ((weight_14dpi - weight_0dpi) / weight_0dpi) * 100,
+      TRUE ~ NA_real_
+    )
+  )
+
+# ============================================
+# CREATE OVERVIEW TABLE BEFORE FILTERING
+# ============================================
+
+# Create overview table with selected columns
+overview_table <- experiment_1_2_joined %>%
+  select(
+    id_treatment, 
+    species, 
+    growth_description_14dpi,
+    contamination_area_14dpi,
+    ph_14dpi,
+    weight_14dpi,
+    ecoli_conc
+  ) %>%
+  rename(
+    ecoli_14dpi = ecoli_conc  # Rename for clarity
+  ) %>%
+  arrange(species, id_treatment)
+
+# Save overview table
+write.csv(overview_table, "data/processed/experiment_1_2_overview_before_filtering.csv", row.names = FALSE)
+
+# Print summary of overview table
+cat("\n=== OVERVIEW TABLE SUMMARY (Before Filtering) ===\n")
+cat("Total rows in joined dataset:", nrow(overview_table), "\n")
+cat("Unique species:", n_distinct(overview_table$species), "\n")
+cat("\nSpecies counts:\n")
+print(table(overview_table$species))
+cat("\nMissing data summary:\n")
+cat("  Missing growth_description_14dpi:", sum(is.na(overview_table$growth_description_14dpi)), "\n")
+cat("  Missing contamination_area_14dpi:", sum(is.na(overview_table$contamination_area_14dpi)), "\n")
+cat("  Missing ph_14dpi:", sum(is.na(overview_table$ph_14dpi)), "\n")
+cat("  Missing weight_14dpi:", sum(is.na(overview_table$weight_14dpi)), "\n")
+cat("  Missing ecoli_14dpi:", sum(is.na(overview_table$ecoli_14dpi)), "\n")
 
 # ============================================
 # FILTER BY SELECTED SPECIES
@@ -100,50 +171,10 @@ selected_species <- c(
   "ctrl"
 )
 
-# Filter and add calculated columns
+# Filter by selected species and exclude treatments with missing area_size_14dpi
 experiment_1_2_filtered <- experiment_1_2_joined %>%
   filter(species %in% selected_species) %>%
-  mutate(
-    # Classify growth status at 14 DPI
-    growth_status_14dpi = case_when(
-      # No growth if area < 15
-      is.na(area_size_14dpi) | area_size_14dpi < 15 ~ case_when(
-        is.na(contamination_area_14dpi) | contamination_area_14dpi < 10 ~ "No growth, no contamination",
-        contamination_area_14dpi >= 10 ~ "No growth, contaminated"
-      ),
-      # Growth present (area >= 15)
-      area_size_14dpi >= 15 ~ case_when(
-        is.na(contamination_area_14dpi) | contamination_area_14dpi < area_size_14dpi ~ "Growth, no contamination",
-        contamination_area_14dpi >= area_size_14dpi ~ "Growth, contaminated"
-      ),
-      TRUE ~ "Other"
-    ),
-    
-    # Calculate dry weights (water content is in decimal form 0-1)
-    dry_weight_0dpi = case_when(
-      !is.na(weight_0dpi) & !is.na(water_content_0dpi) & water_content_0dpi < 1 ~ 
-        weight_0dpi * (1 - water_content_0dpi),
-      TRUE ~ NA_real_
-    ),
-    dry_weight_14dpi = case_when(
-      !is.na(weight_14dpi) & !is.na(water_content_14dpi) & water_content_14dpi < 1 ~ 
-        weight_14dpi * (1 - water_content_14dpi),
-      TRUE ~ NA_real_
-    ),
-    
-    # Calculate weight changes
-    dry_weight_change = dry_weight_14dpi - dry_weight_0dpi,
-    dry_weight_percent_change = case_when(
-      !is.na(dry_weight_0dpi) & dry_weight_0dpi > 0 ~ 
-        (dry_weight_change / dry_weight_0dpi) * 100,
-      TRUE ~ NA_real_
-    ),
-    weight_percent_change = case_when(
-      !is.na(weight_0dpi) & weight_0dpi > 0 ~ 
-        ((weight_14dpi - weight_0dpi) / weight_0dpi) * 100,
-      TRUE ~ NA_real_
-    )
-  )
+  filter(!is.na(area_size_14dpi))
 
 # Save the full filtered dataset
 write.csv(experiment_1_2_filtered, "data/processed/experiment_1_2_joined.csv", row.names = FALSE)
@@ -152,22 +183,9 @@ write.csv(experiment_1_2_filtered, "data/processed/experiment_1_2_joined.csv", r
 # CREATE SPECIALIZED DATASET FOR ANALYSIS
 # ============================================
 
-# Filter for pH/weight/E.coli analyses
-# Keep controls that didn't grow AND fungal species that did grow
-experiment_1_2_analysis <- experiment_1_2_filtered %>%
-  filter(
-    # Controls: keep those without successful fungal growth
-    (species == "ctrl" & growth_status_14dpi %in% c(
-      "No growth, no contamination", 
-      "No growth, contaminated", 
-      "Growth, contaminated"
-    )) |
-    # Fungal species: keep only those with growth
-    (species != "ctrl" & growth_status_14dpi %in% c(
-      "Growth, no contamination", 
-      "Growth, contaminated"
-    ))
-  )
+# For now, use the filtered dataset as the analysis dataset
+# (You may want to add specific filtering criteria based on growth area or other metrics)
+experiment_1_2_analysis <- experiment_1_2_filtered
 
 # Save the analysis dataset
 write.csv(experiment_1_2_analysis, "data/processed/experiment_1_2_ph_weight_ecoli.csv", row.names = FALSE)
@@ -179,8 +197,8 @@ write.csv(experiment_1_2_analysis, "data/processed/experiment_1_2_ph_weight_ecol
 cat("\n=== DATA PROCESSING SUMMARY ===\n")
 cat("Total samples after species filtering:", nrow(experiment_1_2_filtered), "\n")
 cat("Samples in analysis dataset:", nrow(experiment_1_2_analysis), "\n")
-cat("\nSamples by growth status (analysis dataset):\n")
-print(table(experiment_1_2_analysis$growth_status_14dpi, experiment_1_2_analysis$species))
+cat("\nSamples by species (analysis dataset):\n")
+print(table(experiment_1_2_analysis$species))
 
 # Check missing data
 cat("\n=== MISSING DATA SUMMARY ===\n")
