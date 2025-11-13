@@ -10,7 +10,12 @@
       "Bash(grep:*)",
       "Bash(cut:*)",
       "Bash(rm:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(git add:*)",
+      "Bash(git push:*)",
+      "Bash(find:*)",
+      "Bash(cp:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": []
   }

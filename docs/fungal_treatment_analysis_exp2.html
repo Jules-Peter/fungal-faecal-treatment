@@ -1,0 +1,2084 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.52">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Analysis Report">
+<meta name="dcterms.date" content="2025-11-13">
+
+<title>Fungal Treatment of Faecal Material: Experiment 1_2 Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="fungal_treatment_analysis_exp2_files/libs/clipboard/clipboard.min.js"></script>
+<script src="fungal_treatment_analysis_exp2_files/libs/quarto-html/quarto.js"></script>
+<script src="fungal_treatment_analysis_exp2_files/libs/quarto-html/popper.min.js"></script>
+<script src="fungal_treatment_analysis_exp2_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="fungal_treatment_analysis_exp2_files/libs/quarto-html/anchor.min.js"></script>
+<link href="fungal_treatment_analysis_exp2_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="fungal_treatment_analysis_exp2_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="fungal_treatment_analysis_exp2_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="fungal_treatment_analysis_exp2_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="fungal_treatment_analysis_exp2_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="fungal_treatment_analysis_exp2_files/libs/kePrint-0.0.1/kePrint.js"></script>
+
+<link href="fungal_treatment_analysis_exp2_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#material-and-methods" id="toc-material-and-methods" class="nav-link" data-scroll-target="#material-and-methods">Material and Methods</a>
+  <ul class="collapse">
+  <li><a href="#fungal-strains-used" id="toc-fungal-strains-used" class="nav-link" data-scroll-target="#fungal-strains-used">Fungal strains used</a></li>
+  <li><a href="#faecal-material-collection-and-substrate-preparation" id="toc-faecal-material-collection-and-substrate-preparation" class="nav-link" data-scroll-target="#faecal-material-collection-and-substrate-preparation">Faecal material collection and substrate preparation</a></li>
+  <li><a href="#inoculation" id="toc-inoculation" class="nav-link" data-scroll-target="#inoculation">Inoculation</a></li>
+  <li><a href="#ph-measurements" id="toc-ph-measurements" class="nav-link" data-scroll-target="#ph-measurements">pH measurements</a></li>
+  <li><a href="#e.-coli-concentration-measurements" id="toc-e.-coli-concentration-measurements" class="nav-link" data-scroll-target="#e.-coli-concentration-measurements">E. coli concentration measurements</a></li>
+  <li><a href="#data-analysis" id="toc-data-analysis" class="nav-link" data-scroll-target="#data-analysis">Data analysis</a></li>
+  </ul></li>
+  <li><a href="#data-overview" id="toc-data-overview" class="nav-link" data-scroll-target="#data-overview">Data Overview</a>
+  <ul class="collapse">
+  <li><a href="#experimental-design" id="toc-experimental-design" class="nav-link" data-scroll-target="#experimental-design">Experimental Design</a>
+  <ul class="collapse">
+  <li><a href="#fungal-species-tested" id="toc-fungal-species-tested" class="nav-link" data-scroll-target="#fungal-species-tested">Fungal Species Tested</a></li>
+  <li><a href="#measurements-and-variables" id="toc-measurements-and-variables" class="nav-link" data-scroll-target="#measurements-and-variables">Measurements and Variables</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#growth-analysis" id="toc-growth-analysis" class="nav-link" data-scroll-target="#growth-analysis">Growth Analysis</a>
+  <ul class="collapse">
+  <li><a href="#growth-success" id="toc-growth-success" class="nav-link" data-scroll-target="#growth-success">Growth Success</a></li>
+  <li><a href="#growth-area" id="toc-growth-area" class="nav-link" data-scroll-target="#growth-area">Growth Area</a></li>
+  <li><a href="#ph-analysis" id="toc-ph-analysis" class="nav-link" data-scroll-target="#ph-analysis">pH Analysis</a></li>
+  <li><a href="#weight-change-analysis" id="toc-weight-change-analysis" class="nav-link" data-scroll-target="#weight-change-analysis">Weight Change Analysis</a></li>
+  <li><a href="#dry-weight-change-analysis" id="toc-dry-weight-change-analysis" class="nav-link" data-scroll-target="#dry-weight-change-analysis">Dry Weight Change Analysis</a></li>
+  <li><a href="#water-content-analysis" id="toc-water-content-analysis" class="nav-link" data-scroll-target="#water-content-analysis">Water Content Analysis</a></li>
+  <li><a href="#e.-coli-concentration-analysis" id="toc-e.-coli-concentration-analysis" class="nav-link" data-scroll-target="#e.-coli-concentration-analysis">E. coli Concentration Analysis</a></li>
+  <li><a href="#e.-coli-log-change-analysis" id="toc-e.-coli-log-change-analysis" class="nav-link" data-scroll-target="#e.-coli-log-change-analysis">E. coli Log Change Analysis</a></li>
+  <li><a href="#relationship-between-initial-faecal-parameters-and-growth-success-p.-ostreatus-vs-g.-lucidum" id="toc-relationship-between-initial-faecal-parameters-and-growth-success-p.-ostreatus-vs-g.-lucidum" class="nav-link" data-scroll-target="#relationship-between-initial-faecal-parameters-and-growth-success-p.-ostreatus-vs-g.-lucidum">Relationship Between Initial Faecal Parameters and Growth Success: P. ostreatus vs G. lucidum</a></li>
+  </ul></li>
+  <li><a href="#summary-and-conclusions" id="toc-summary-and-conclusions" class="nav-link" data-scroll-target="#summary-and-conclusions">Summary and Conclusions</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Fungal Treatment of Faecal Material: Experiment 1_2 Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Analysis Report </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 13, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Decentralized sanitation is needed in places where sewered toilets cannot be built due to remote locations or where no central treatment plants are available. To meet this critical need, a variety of decentralized sanitation technologies have been developed, each with its own approach to safely managing human waste. A primary challenge for these systems is to effectively treat the excreta to inactivate pathogens, control odors, and manage the final end-product in a sustainable and user-friendly way. These solutions range broadly, from simple pit latrines to more engineered systems that separate different waste streams at the source for distinct treatment. One solution for decentralized sanitation is the Urine Diversion Dry Toilet (UDDT), where faeces and urine are collected in separate chambers. Urine is mostly sterile and can be safely handled (…). The collected faecal material is covered using different additives; commonly used are ash, lime, sawdust, soil, or other lignocellulosic materials to help dry out the material faster and avoid bad odour. The dried faecal mixture relies mostly on desiccation for pathogen inactivation, which requires long storage times for up to 1 year depending on conditions, and rewetting can lead to pathogen reactivation (). Due to desiccation, the collected material will not degrade faecal material in combination with bulking agents leading to accumulation of material, still reminiscent of mixed faecal material rather than finished compost <a href="https://www.zotero.org/google-docs/?8uSl90">(Tilley et al., 2014)</a>. Composting toilets where faecal material is degraded in the collection chamber itself exist. However, in these systems the composting process is hard to control. Material can become too dry for efficient degradation but not dry enough for pathogen inactivation and temperatures to guarantee pathogen inactivation are not reached <a href="https://www.zotero.org/google-docs/?S3S9zR">(Redlinger et al., 2001)</a>.</p>
+<p>Degradation of faecal material can result in several deadlock states that significantly slow down or completely halt the degradation process. While drying out is one of them others are, the low C:N ratio of about 8:1. The low C:N ratio can cause high pH &gt;8 which can lead to toxic ammonia production killing microbes and stopping decomposition and leading to bad odour. Especially at ambient temperature ammonia can be assembled in high concentrations in the substrate.Substrate compression and limited amount of crude fibers leading to dense structure creating anaerobic conditions <a href="https://www.zotero.org/google-docs/?IoOqUg">(Rose et al., 2015)</a>, Slowing down the degradation process. Both C:N ratio and aeration could be corrected by addition of lignocellulose material as bulking agents. However, due to the increased surface and the dried material the water content of the faecal mass can become too low for bacteria which need high water activity to effectively grow <a href="https://www.zotero.org/google-docs/?sbpYU7">(Ahn et al., 2008; Richard et al., 2002)</a>. Furthermore,lignocellulosic materials are recalcitrant against bacterial degradation especially if thermophilic conditions are not reached. Addition of lignocellulose after each defaecation leads to a final substrate mostly consisting of lignocellulose rather than faecal material. The high content of lignocellulose could make the material an ideal substrate for fungal growth. Fungi can have a broad adaptation on water content in the substrate and can efficiently grow at lower aW values and a broad range of pH compared to bacteria. Fungi are known for their strong lignocellulose degrading enzymes that are being used in many industries (…).</p>
+<p>Filamentous fungi are an essential part in faecal mass degradation and carbon cycling especially in herbivore dung <a href="https://www.zotero.org/google-docs/?tzbaqK">(Calaça et al., 2024)</a>. A diverse fungal community that grows on dung has been described with certain species entirely dependent on this substrate to reproduce <a href="https://www.zotero.org/google-docs/?2txFvR">(Richardson &amp; Watling, 1968)</a>. Herbivore dung consists of up to 70% of undigested lignocellulosic material and has a nitrogen content of 1.8-3% (<a href="https://www.zotero.org/google-docs/?WT7l7t">Zhao et al., 2022</a>). Human faeces have a higher Nitrogen content of 5-7% and lower in fibrous material around 25%, but strongly dependent on the diet <a href="https://www.zotero.org/google-docs/?STrgFM">(Rose et al., 2015; Zhao et al., 2022)</a>. Filamentous dung fungi have adapted to use the resistant lignocellulose fraction found in faeces, which explains their preference for herbivore dung. Their adaptation to this substrate, with high Nitrogen content, fast pH changes and high bacterial concentrations could make them a suitable additive to add to composting toilets to increase degradation speed of faecal material. Despite their presence being well described on herbivore dung, actual physiochemical changes and influence on dung inhabiting microbes have rarely been studied. Fungal derived molecules have been used in antibiotics and fungal extracts of many species have been shown potential against a broad range of human pathogenic bacteria <a href="https://www.zotero.org/google-docs/?RkdDUf">(Hamad et al., 2022; Solomon et al., 2025)</a>. However the growth of fungi on human faeces as a direct treatment method in composting toilets has not scientifically been investigated. Within this experiment we tested if filamentous fungi are able to colonize human faecal material mixed with wood chips bulking agent. In order to see if natural specialization is important for their growth possibilities fungi from different ecological niches have been tested. As representatives of dung inhabiting fungi <em>Sordaria fimicola</em>, <em>Coprinopsis</em> xy, coprinopsis xy2 as dung associated fungi, were tested. <em>Coprinus comata</em> a widely cultivated soil inhabiting fungus and indicator of high Nitrogen content (…) in the soil was, <em>Trichoderma harzianum</em> and <em>T. koningii</em> well known biocontrol agents known for parasitism and their fast and aggressive growth (…), as representatives for wood inhabiting white rot fungi the widely grown mushrooms <em>G. lucidum</em> and <em>P. ostreatus</em> due to their shown antibacterial properties and worldwide availability. We measured their rate of successful substrate colonization, growth speed and their influence on substrate pH and E. coli concentration and their influence on weight in a two week plate assay.</p>
+</section>
+<section id="material-and-methods" class="level1">
+<h1>Material and Methods</h1>
+<section id="fungal-strains-used" class="level3">
+<h3 class="anchored" data-anchor-id="fungal-strains-used">Fungal strains used</h3>
+<p><strong>Cultivable Mushroom isolates</strong></p>
+<p>Strains P. ostreatus, P. ostreatus v. Floridae, C. comatus, G. lucidum were commercially obtained from (Mycogenetics Germany).</p>
+<p>Dung inhabiting fungi S. fimicola was isolated from human faecal samples by adding mycelium to a MEA plate.</p>
+<p>Coprinopsis species were isolated from horse dung by cutting out a piece of the fruiting body and putting it on the MEA plate with added chloramphenicol.</p>
+<p>Storage and inoculum preparation</p>
+<p>To maintain fungal cultures during the experimental time every two weeks samples were inoculated to a new MEA plate, inoculated at 25°C.</p>
+</section>
+<section id="faecal-material-collection-and-substrate-preparation" class="level3">
+<h3 class="anchored" data-anchor-id="faecal-material-collection-and-substrate-preparation">Faecal material collection and substrate preparation</h3>
+<p>Faecal samples from one individual were used throughout the experiment. Faeces were collected using a faecal catcher(Abbexa, Cabmridge ,UK) and transferred into a 3 liter freezing bag (freshstar clic-lock, Galaxus) and stored in an airtight box (Rothobox 3 Liter, Galaxus) and directly put in the fridge at 5°C. The collected faecal samples were stored max 1 day at 5°C.</p>
+<p>Sample preparation</p>
+<p>Pure faecal samples were weighted and homogenised by kneading in an aseptic freezing bag for approximately 2 min. Pure faecal samples were then transferred into a piping bag and distributed on plates 20±2g per plate. The plates were evenly streaked using a sterile spatula.</p>
+<p>For the wood chip mixed samples, beechwood chips (Chipsi, beech wood chips fine, Galaxus ) were added at a 2:1 ratio. The mass was homogenised again by kneading by hand for 2 min. Mixed faecal samples were transferred to plates using a sterile plastic spatula. The mixed solution (15±2g) was added to each plate and evenly distributed.</p>
+</section>
+<section id="inoculation" class="level3">
+<h3 class="anchored" data-anchor-id="inoculation">Inoculation</h3>
+<p>Plates were inoculated immediately after preparation using 6mm agar plugs from fungal colonized 14days old MEA plate. The plates were photographed using an iPhone (….) on a pole at fixed distance. As an identifier for each picture, a QR code was placed next to the plate identifying the fungal species, experiment ID, and inoculum ID. Pictures were taken at 0dpi, 7 dpi and 14 dpi. Pictures were analysed using ImageJ (v) to measure the area of the mycelium plot by manually drawing lines around the growth area. The scale was set to 222.09 pixels per cm according to the measurement of a ruler in the same setting. Plates that were fully colonised were set to a calculated max value 0f 63.(…). If the mycelium died, the old value was maintained to keep the maximum spread of the mycelium at 14 dpi. If no growth occurred, the value was set to the original plug value from the 0dpi picture. Visual contaminations were measured in the same way.</p>
+<p>Fungal mycelium quality was rated on a scale of 0-5.</p>
+<p>0: no mycelium; 1: fully necrotic; 2: partly necrotic; 3: loose mycelium; 4: healthy dense mycelium substrate still visible; 5: very dense mycelium with almost no substrate visible.</p>
+<p>Illustrated scale figure</p>
+<p>(include example picture of scale here)</p>
+</section>
+<section id="ph-measurements" class="level3">
+<h3 class="anchored" data-anchor-id="ph-measurements">pH measurements</h3>
+<p>At day 14 dpi, a subsample of each plate was removed and dissolved in dest. water 1:2 (w/v). A pH meter (LGG- ph meter…) was used to measure the pH of the diluted sample.</p>
+</section>
+<section id="e.-coli-concentration-measurements" class="level3">
+<h3 class="anchored" data-anchor-id="e.-coli-concentration-measurements">E. coli concentration measurements</h3>
+<p>A sample of approximately 1 g was filled into a 15 ml centrifuge tube (…), and it was dissolved in 5 ml 0.85% NaCl solution. Further dilutions, if needed, were done using 0.85% NaCl in reaction tubes 2 ml (…). After streaking, samples were immediately put back into the fridge in case too high or too low colony counts were reached and repeated the next day. Samples were plated out on TBX chromogenic agar (Roth,(…)) The plates were incubated overnight at 40°C. And blue colonies were counted the next day.</p>
+</section>
+<section id="data-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="data-analysis">Data analysis</h3>
+<p>The data set was analysed using RStudio v2024.04.1 software.</p>
+<p>Data pertaining to growth success were filtered by excluding single-replicate data points, retaining only those with three or more biological replicates. Growth was deemed successful when the mycelium covered an area greater than 10 cm2 at 14 days post-inoculation (dpi). Area coverage analysis was filtered to include only data points with at least three biological replicates demonstrating growth greater than 10, thereby excluding poor-growing and non-growing fungi. For E. coli, pH, and weight loss analyses, data were filtered to retain only those with growth greater than 10 at 14 dpi. Control treatments were categorised into two groups: control without fungal contaminant and control with fungal contaminant. Fungal-inoculated plates that did not exhibit growth were pooled into one category, while fungal plates with contamination exceeding 20 were categorised as inoculated but contaminated.</p>
+</section>
+</section>
+<section id="data-overview" class="level1">
+<h1>Data Overview</h1>
+<section id="experimental-design" class="level2">
+<h2 class="anchored" data-anchor-id="experimental-design">Experimental Design</h2>
+<p>This study evaluates the effectiveness of various fungal species in treating faecal material over a 14-day period. This analysis focuses specifically on Experiment 1_2, which provides the most complete dataset for comprehensive analysis.</p>
+<section id="fungal-species-tested" class="level3">
+<h3 class="anchored" data-anchor-id="fungal-species-tested">Fungal Species Tested</h3>
+<p>The following fungal species were selected based on their known decomposition capabilities and potential for faecal treatment applications:</p>
+<ul>
+<li><strong>F35 Sordaria</strong> - A saprophytic ascomycete known for cellulose degradation</li>
+<li><strong>G. lucidum</strong> - Medicinal mushroom with lignolytic enzymes</li>
+<li><strong>P. ostreatus columbinus</strong> - Oyster mushroom variant with strong decomposition activity</li>
+<li><strong>P. ostreatus</strong> - Common oyster mushroom with strong lignolytic activity</li>
+<li><strong>P. ostreatus v.F</strong> - Florida variant of oyster mushroom</li>
+<li><strong>F40</strong> - Fungal isolate with potential decomposition capabilities</li>
+<li><strong>F15 Faecal isolate 1</strong> - Indigenous isolate adapted to faecal substrate</li>
+<li><strong>F31 Mucor spp I3</strong> - Zygomycete with rapid growth characteristics</li>
+<li><strong>T. harzianum CBS245.93</strong> - Commercial biocontrol strain</li>
+<li><strong>T. harzianum T22</strong> - Well-characterized agricultural strain</li>
+<li><strong>T. koningii</strong> - Trichoderma species with cellulase production</li>
+<li><strong>Coprinus comata</strong> - Coprophilic mushroom naturally occurring on dung</li>
+<li><strong>Control (ctrl)</strong> - Untreated faecal material for baseline comparison</li>
+</ul>
+</section>
+<section id="measurements-and-variables" class="level3">
+<h3 class="anchored" data-anchor-id="measurements-and-variables">Measurements and Variables</h3>
+<section id="primary-response-variables" class="level4">
+<h4 class="anchored" data-anchor-id="primary-response-variables">Primary Response Variables</h4>
+<ol type="1">
+<li><strong>Growth Success</strong> (0-5 scale)
+<ul>
+<li>0: No visible growth</li>
+<li>1-3: Growth with contamination (varying degrees)</li>
+<li>4-5: Successful growth without contamination</li>
+<li>Measured at 7 and 14 days post-inoculation (DPI)</li>
+</ul></li>
+<li><strong>Growth Area</strong> (mm²)
+<ul>
+<li>Quantitative measurement of fungal colony size</li>
+<li>Measured for samples showing successful growth</li>
+<li>Log-transformed for statistical analysis due to exponential growth patterns</li>
+</ul></li>
+<li><strong>Weight Change</strong> (%)
+<ul>
+<li>Percentage change from initial weight (0 DPI) to final weight (14 DPI)</li>
+<li>Calculated as: ((weight₁₄ - weight₀) / weight₀) × 100</li>
+<li>Negative values indicate decomposition/mass loss</li>
+</ul></li>
+<li><strong>Dry Weight Change</strong> (g and %)
+<ul>
+<li>Calculated using water content measurements</li>
+<li>Dry weight₀ = weight₀ × (1 - water_content₀/100)</li>
+<li>Dry weight₁₄ = weight₁₄ × (1 - water_content₁₄/100)</li>
+<li>More accurate measure of actual biomass decomposition</li>
+</ul></li>
+<li><strong>pH Changes</strong>
+<ul>
+<li>pH measured at baseline (0 DPI from faecal samples) and 14 DPI</li>
+<li>Important indicator of decomposition processes and microbial activity</li>
+</ul></li>
+<li><strong>E. coli Concentration</strong> (CFU/g)
+<ul>
+<li>Bacterial load measured via plate counts with serial dilutions</li>
+<li>Log₁₀ transformed for analysis due to exponential nature of bacterial growth</li>
+<li>Key indicator of pathogen reduction efficacy</li>
+</ul></li>
+<li><strong>E. coli Log Reduction</strong>
+<ul>
+<li>Calculated as: log₁₀(baseline) - log₁₀(14 DPI)</li>
+<li>Positive values indicate bacterial reduction</li>
+<li>Standard metric for antimicrobial efficacy assessment</li>
+</ul></li>
+</ol>
+</section>
+<section id="experimental-structure" class="level4">
+<h4 class="anchored" data-anchor-id="experimental-structure">Experimental Structure</h4>
+<ul>
+<li><strong>Replicates</strong>: Multiple technical replicates per species per experiment</li>
+<li><strong>Faecal Samples</strong>: Multiple different faecal source materials (biological replicates)</li>
+<li><strong>Time Points</strong>: Measurements at 0, 7, and 14 days post-inoculation</li>
+<li><strong>Controls</strong>: Untreated samples for comparison across all metrics</li>
+</ul>
+</section>
+<section id="data-filtering-and-quality-control" class="level4">
+<h4 class="anchored" data-anchor-id="data-filtering-and-quality-control">Data Filtering and Quality Control</h4>
+<p>For statistical analyses, samples were filtered based on growth success categories:</p>
+<ul>
+<li><strong>Controls</strong>: Only “no growth/no contamination” and “growth/contaminated” samples included</li>
+<li><strong>Fungal Treatments</strong>: Only samples with successful growth (with or without contamination) included</li>
+<li><strong>Exclusions</strong>: Samples with technical failures, missing measurements, or extreme outliers</li>
+</ul>
+<p>This filtering ensures that comparisons are made between functionally equivalent sample types and reduces bias from experimental artifacts.</p>
+</section>
+<section id="statistical-considerations" class="level4">
+<h4 class="anchored" data-anchor-id="statistical-considerations">Statistical Considerations</h4>
+<ul>
+<li><strong>Mixed-effects models</strong> account for multiple measurements from the same faecal samples</li>
+<li><strong>Log transformations</strong> applied to microbial data and growth measurements</li>
+<li><strong>Non-parametric methods</strong> used when data distributions violate normality assumptions</li>
+<li><strong>Multiple comparison corrections</strong> applied for post-hoc tests</li>
+<li><strong>Effect sizes</strong> reported alongside p-values for practical significance assessment</li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+<section id="growth-analysis" class="level1">
+<h1>Growth Analysis</h1>
+<section id="growth-success" class="level2">
+<h2 class="anchored" data-anchor-id="growth-success">Growth Success</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># PREPARE GROWTH SUCCESS DATA</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform growth data to long format</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>growth_success_data <span class="ot">&lt;-</span> experiment_1_2 <span class="sc">%&gt;%</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id_treatment, species, growth_description_7dpi, growth_description_14dpi) <span class="sc">%&gt;%</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">matches</span>(<span class="st">"growth_description_</span><span class="sc">\\</span><span class="st">d+dpi"</span>),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"time_point"</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"growth_description"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_pattern =</span> <span class="st">"growth_description_(</span><span class="sc">\\</span><span class="st">d+)dpi"</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_point =</span> <span class="fu">paste0</span>(time_point, <span class="st">" DPI"</span>),</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">growth_description =</span> <span class="fu">factor</span>(growth_description),</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">experiment =</span> <span class="st">"Experiment 1_2"</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(growth_description) <span class="sc">%&gt;%</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Filter out Control and NA species</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>species <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"ctrl"</span>, <span class="st">"Control"</span>, <span class="st">"NA"</span>) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(species))</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate success proportions</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>growth_success_summary <span class="ot">&lt;-</span> growth_success_data <span class="sc">%&gt;%</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(species, time_point, growth_description) <span class="sc">%&gt;%</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_count</span>(species, time_point, <span class="at">wt =</span> n, <span class="at">name =</span> <span class="st">"total"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percentage =</span> (n <span class="sc">/</span> total) <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Order species by success rate</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>species_order <span class="ot">&lt;-</span> growth_success_summary <span class="sc">%&gt;%</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time_point <span class="sc">==</span> <span class="st">"14 DPI"</span>, growth_description <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">success_rate =</span> <span class="fu">sum</span>(percentage), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(success_rate)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(species)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>growth_success_summary <span class="ot">&lt;-</span> growth_success_summary <span class="sc">%&gt;%</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">species =</span> <span class="fu">factor</span>(species, <span class="at">levels =</span> species_order))</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate replicate counts</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>replicate_info <span class="ot">&lt;-</span> growth_success_data <span class="sc">%&gt;%</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(species, time_point, <span class="at">name =</span> <span class="st">"n_replicates"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"n="</span>, n_replicates),</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">percentage =</span> <span class="dv">101</span>  <span class="co"># Position above bars</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CREATE GROWTH SUCCESS PLOT (PRESERVING ORIGINAL AESTHETICS)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>plot_exp2 <span class="ot">&lt;-</span> growth_success_summary <span class="sc">%&gt;%</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> time_point, <span class="at">y =</span> percentage, <span class="at">fill =</span> <span class="fu">as.character</span>(growth_description))) <span class="sc">+</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"stack"</span>) <span class="sc">+</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> replicate_info, </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> time_point, <span class="at">y =</span> percentage, <span class="at">label =</span> label),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, <span class="at">size =</span> <span class="fl">2.5</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> species, <span class="at">ncol =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"#d73027"</span>, </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"#fc8d59"</span>, </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"2"</span> <span class="ot">=</span> <span class="st">"#fee090"</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"3"</span> <span class="ot">=</span> <span class="st">"#e0f3f8"</span>, </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"4"</span> <span class="ot">=</span> <span class="st">"#91bfdb"</span>, </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"5"</span> <span class="ot">=</span> <span class="st">"#4575b4"</span>),</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                    <span class="at">name =</span> <span class="st">"Growth Description"</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"0: No growth"</span>,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"1: Fully necrotic"</span>,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"2"</span> <span class="ot">=</span> <span class="st">"2: Partly necrotic"</span>,</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"3"</span> <span class="ot">=</span> <span class="st">"3: Loose mycelium"</span>,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"4"</span> <span class="ot">=</span> <span class="st">"4: Healthy dense"</span>,</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"5"</span> <span class="ot">=</span> <span class="st">"5: Very dense"</span>)) <span class="sc">+</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Fungal Growth Success Over Time - Experiment 1_2"</span>,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Growth description scale: 0 (no growth) to 5 (very dense mycelium)"</span>,</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Time Point"</span>,</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Percentage of Samples"</span>) <span class="sc">+</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"lines"</span>)) <span class="sc">+</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">105</span>)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(plot_exp2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 4 rows containing missing values or values outside the scale range
+(`geom_col()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fungal_treatment_analysis_exp2_files/figure-html/growth-success-plot-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary statistics</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>growth_success_data <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time_point <span class="sc">==</span> <span class="st">"14 DPI"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_total =</span> <span class="fu">n</span>(),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_success =</span> <span class="fu">sum</span>(growth_description <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>)),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">success_rate =</span> <span class="fu">round</span>((n_success <span class="sc">/</span> n_total) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_score =</span> <span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">as.numeric</span>(<span class="fu">as.character</span>(growth_description))), <span class="dv">2</span>),</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(success_rate)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Growth Success Summary at 14 DPI"</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Species"</span>, <span class="st">"Total"</span>, <span class="st">"Successful"</span>, <span class="st">"Success Rate (%)"</span>, <span class="st">"Mean Score"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in attr(x, "align"): 'xfun::attr()' ist veraltet.
+Benutzen Sie stattdessen 'xfun::attr2()'
+Siehe help("Deprecated")</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in attr(x, "align"): 'xfun::attr()' ist veraltet.
+Benutzen Sie stattdessen 'xfun::attr2()'
+Siehe help("Deprecated")</code></pre>
+</div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Growth Success Summary at 14 DPI</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Species</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Total</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Successful</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Success Rate (%)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mean Score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">P. ostreatus v.F</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">80.0</td>
+<td style="text-align: right;">3.67</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">G. lucidum</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">75.0</td>
+<td style="text-align: right;">3.67</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P. ostreatus columbinus</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">72.7</td>
+<td style="text-align: right;">3.64</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P. ostreatus</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">66.7</td>
+<td style="text-align: right;">3.33</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F35 Sordaria</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">55.6</td>
+<td style="text-align: right;">3.89</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F40</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">22.2</td>
+<td style="text-align: right;">1.11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">T. koningii</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11.1</td>
+<td style="text-align: right;">2.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">T. harzianum CBS245.93</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">3.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">T. harzianum T22</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">2.50</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="growth-area" class="level2">
+<h2 class="anchored" data-anchor-id="growth-area">Growth Area</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># PREPARE AND ANALYZE GROWTH AREA DATA</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform area data to long format</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>area_data <span class="ot">&lt;-</span> experiment_1_2 <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(area_size_14dpi <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id_treatment, species, area_size_7dpi, area_size_14dpi, id_faeces) <span class="sc">%&gt;%</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">matches</span>(<span class="st">"area_size_</span><span class="sc">\\</span><span class="st">d+dpi"</span>),</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"time_point"</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"area_size"</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_pattern =</span> <span class="st">"area_size_(</span><span class="sc">\\</span><span class="st">d+)dpi"</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_point =</span> <span class="fu">paste0</span>(time_point, <span class="st">" DPI"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(area_size) <span class="sc">%&gt;%</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(area_size <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Order species by median area at 14 DPI</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>area_order <span class="ot">&lt;-</span> area_data <span class="sc">%&gt;%</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time_point <span class="sc">==</span> <span class="st">"14 DPI"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_area =</span> <span class="fu">median</span>(area_size), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(median_area)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(species)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare data with counts and labels</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>area_plot_data <span class="ot">&lt;-</span> area_data <span class="sc">%&gt;%</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">species =</span> <span class="fu">factor</span>(species, <span class="at">levels =</span> <span class="fu">rev</span>(area_order)),</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">species_time =</span> <span class="fu">paste0</span>(species, <span class="st">" - "</span>, time_point)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_count_labels</span>(<span class="st">"species_time"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">custom_label =</span> <span class="fu">paste0</span>(species, <span class="st">" - "</span>, time_point, <span class="st">" (n="</span>, n_samples, <span class="st">", f="</span>, n_faecal, <span class="st">")"</span>),</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">species_time =</span> <span class="fu">factor</span>(custom_label, <span class="at">levels =</span> <span class="fu">unique</span>(custom_label)[<span class="fu">order</span>(species, <span class="fu">desc</span>(time_point))])</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CREATE AREA PLOT (PRESERVING ORIGINAL AESTHETICS)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>area_plot_exp2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(area_plot_data, <span class="fu">aes</span>(<span class="at">x =</span> area_size, <span class="at">y =</span> species_time)) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">color =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"darkred"</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">height =</span> <span class="fl">0.2</span>)) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Fungal Growth Area Distribution by Species and Time Point"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"n = number of observations, f = number of faecal samples"</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Area Size (log scale)"</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Species - Time Point"</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>, <span class="at">lineheight =</span> <span class="fl">0.8</span>),</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>),</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="fl">5.5</span>, <span class="at">r =</span> <span class="fl">5.5</span>, <span class="at">b =</span> <span class="fl">5.5</span>, <span class="at">l =</span> <span class="fl">5.5</span>, <span class="at">unit =</span> <span class="st">"pt"</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">1000</span>, <span class="dv">10000</span>),</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">labels =</span> comma)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(area_plot_exp2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fungal_treatment_analysis_exp2_files/figure-html/area-plot-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary statistics</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>area_data <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time_point <span class="sc">==</span> <span class="st">"14 DPI"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">create_summary_table</span>(<span class="st">"species"</span>, <span class="st">"area_size"</span>, <span class="st">"Growth Area Summary at 14 DPI (mm²)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in attr(x, "align"): 'xfun::attr()' ist veraltet.
+Benutzen Sie stattdessen 'xfun::attr2()'
+Siehe help("Deprecated")
+Warning in attr(x, "align"): 'xfun::attr()' ist veraltet.
+Benutzen Sie stattdessen 'xfun::attr2()'
+Siehe help("Deprecated")</code></pre>
+</div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Growth Area Summary at 14 DPI (mm²)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Species</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mean</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SD</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Median</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Min</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">F35 Sordaria</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">63.62</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">63.62</td>
+<td style="text-align: right;">63.62</td>
+<td style="text-align: right;">63.62</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F40</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">14.71</td>
+<td style="text-align: right;">27.73</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">63.62</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">G. lucidum</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">44.38</td>
+<td style="text-align: right;">26.84</td>
+<td style="text-align: right;">56.64</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">63.62</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P. ostreatus</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">28.11</td>
+<td style="text-align: right;">27.98</td>
+<td style="text-align: right;">27.13</td>
+<td style="text-align: right;">0.74</td>
+<td style="text-align: right;">63.62</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P. ostreatus columbinus</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">38.29</td>
+<td style="text-align: right;">26.80</td>
+<td style="text-align: right;">51.41</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: right;">63.62</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P. ostreatus v.F</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">33.14</td>
+<td style="text-align: right;">27.32</td>
+<td style="text-align: right;">41.53</td>
+<td style="text-align: right;">0.78</td>
+<td style="text-align: right;">63.62</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">T. harzianum CBS245.93</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">63.62</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">63.62</td>
+<td style="text-align: right;">63.62</td>
+<td style="text-align: right;">63.62</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">T. harzianum T22</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">51.24</td>
+<td style="text-align: right;">7.16</td>
+<td style="text-align: right;">48.78</td>
+<td style="text-align: right;">44.38</td>
+<td style="text-align: right;">63.62</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">T. koningii</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">44.09</td>
+<td style="text-align: right;">29.30</td>
+<td style="text-align: right;">63.62</td>
+<td style="text-align: right;">3.18</td>
+<td style="text-align: right;">63.62</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctrl</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">0.71</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.69</td>
+<td style="text-align: right;">0.63</td>
+<td style="text-align: right;">0.92</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="ph-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="ph-analysis">pH Analysis</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># PREPARE pH DATA WITH OPTIMIZED PIPELINE</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create pH data with treatment categories</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>ph_data <span class="ot">&lt;-</span> experiment_1_2_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(ph_14dpi)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">categorize_treatment</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">ph_value =</span> ph_14dpi)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate ordering</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>ph_order <span class="ot">&lt;-</span> ph_data <span class="sc">%&gt;%</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment_category) <span class="sc">%&gt;%</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_ph =</span> <span class="fu">median</span>(ph_value), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(median_ph) <span class="sc">%&gt;%</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(treatment_category)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare plot data with labels</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>ph_plot_data <span class="ot">&lt;-</span> ph_data <span class="sc">%&gt;%</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">treatment_category =</span> <span class="fu">factor</span>(treatment_category, <span class="at">levels =</span> <span class="fu">rev</span>(ph_order))) <span class="sc">%&gt;%</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_count_labels</span>()</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Create and apply custom labels</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>ph_labels <span class="ot">&lt;-</span> <span class="fu">create_count_labels</span>(ph_plot_data)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>ph_plot_data <span class="ot">&lt;-</span> <span class="fu">apply_custom_labels</span>(ph_plot_data, ph_labels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CREATE pH PLOT (PRESERVING ORIGINAL AESTHETICS)</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>ph_plot_exp2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ph_plot_data, <span class="fu">aes</span>(<span class="at">x =</span> ph_value, <span class="at">y =</span> treatment_category)) <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">7</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray40"</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"#B2182B"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">height =</span> <span class="fl">0.2</span>)) <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"pH Distribution at 14 DPI by Treatment"</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Dashed line indicates neutral pH (7.0); n = number of samples, f = number of faecal sources"</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"pH Value"</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Treatment Category"</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_publication</span>() <span class="sc">+</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">size =</span> <span class="fl">0.3</span>)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">4</span>, <span class="dv">10</span>, <span class="fl">0.5</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.
+ℹ Please use the `linewidth` argument instead.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
+ℹ Please use the `linewidth` argument instead.</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ph_plot_exp2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fungal_treatment_analysis_exp2_files/figure-html/ph-plot-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary statistics</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>experiment_1_2_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(ph_14dpi)) <span class="sc">%&gt;%</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ph_change =</span> ph_14dpi <span class="sc">-</span> ph_0dpi) <span class="sc">%&gt;%</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_initial =</span> <span class="fu">round</span>(<span class="fu">mean</span>(ph_0dpi, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_final =</span> <span class="fu">round</span>(<span class="fu">mean</span>(ph_14dpi, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_change =</span> <span class="fu">round</span>(<span class="fu">mean</span>(ph_change, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(mean_change)) <span class="sc">%&gt;%</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"pH Changes from 0 to 14 DPI"</span>,</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Species"</span>, <span class="st">"n"</span>, <span class="st">"Mean pH (0 DPI)"</span>, <span class="st">"Mean pH (14 DPI)"</span>, <span class="st">"Mean Change"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in attr(x, "align"): 'xfun::attr()' ist veraltet.
+Benutzen Sie stattdessen 'xfun::attr2()'
+Siehe help("Deprecated")</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in attr(x, "align"): 'xfun::attr()' ist veraltet.
+Benutzen Sie stattdessen 'xfun::attr2()'
+Siehe help("Deprecated")</code></pre>
+</div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<caption>pH Changes from 0 to 14 DPI</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Species</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mean pH (0 DPI)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mean pH (14 DPI)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mean Change</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">T. harzianum CBS245.93</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6.80</td>
+<td style="text-align: right;">9.15</td>
+<td style="text-align: right;">2.35</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F40</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6.80</td>
+<td style="text-align: right;">9.12</td>
+<td style="text-align: right;">2.33</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">T. harzianum T22</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6.81</td>
+<td style="text-align: right;">9.13</td>
+<td style="text-align: right;">2.32</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F35 Sordaria</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">6.72</td>
+<td style="text-align: right;">8.98</td>
+<td style="text-align: right;">2.26</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">T. koningii</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6.73</td>
+<td style="text-align: right;">9.00</td>
+<td style="text-align: right;">2.26</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctrl</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">6.55</td>
+<td style="text-align: right;">6.93</td>
+<td style="text-align: right;">0.38</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P. ostreatus columbinus</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6.53</td>
+<td style="text-align: right;">6.50</td>
+<td style="text-align: right;">-0.03</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P. ostreatus v.F</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">6.60</td>
+<td style="text-align: right;">6.28</td>
+<td style="text-align: right;">-0.31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P. ostreatus</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">6.55</td>
+<td style="text-align: right;">6.16</td>
+<td style="text-align: right;">-0.38</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">G. lucidum</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6.53</td>
+<td style="text-align: right;">5.71</td>
+<td style="text-align: right;">-0.82</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="weight-change-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="weight-change-analysis">Weight Change Analysis</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># PREPARE WEIGHT CHANGE DATA</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create weight data with treatment categories</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>weight_data <span class="ot">&lt;-</span> experiment_1_2_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(weight_percent_change)) <span class="sc">%&gt;%</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">categorize_treatment</span>()</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate ordering</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>weight_order <span class="ot">&lt;-</span> weight_data <span class="sc">%&gt;%</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment_category) <span class="sc">%&gt;%</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_change =</span> <span class="fu">median</span>(weight_percent_change), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(median_change) <span class="sc">%&gt;%</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(treatment_category)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare plot data</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>weight_plot_data <span class="ot">&lt;-</span> weight_data <span class="sc">%&gt;%</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">treatment_category =</span> <span class="fu">factor</span>(treatment_category, <span class="at">levels =</span> <span class="fu">rev</span>(weight_order))) <span class="sc">%&gt;%</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_count_labels</span>()</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Create and apply labels</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>weight_labels <span class="ot">&lt;-</span> <span class="fu">create_count_labels</span>(weight_plot_data)</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>weight_plot_data <span class="ot">&lt;-</span> <span class="fu">apply_custom_labels</span>(weight_plot_data, weight_labels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CREATE WEIGHT CHANGE PLOT (PRESERVING ORIGINAL AESTHETICS)</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>weight_change_plot_exp2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(weight_plot_data, <span class="fu">aes</span>(<span class="at">x =</span> weight_percent_change, <span class="at">y =</span> treatment_category)) <span class="sc">+</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray40"</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"#FF7F00"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">height =</span> <span class="fl">0.2</span>)) <span class="sc">+</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Weight Change (%) at 14 DPI by Treatment"</span>,</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Negative values indicate weight loss; n = number of samples, f = number of faecal sources"</span>,</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Weight Change (%)"</span>,</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Treatment Category"</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_publication</span>() <span class="sc">+</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">size =</span> <span class="fl">0.3</span>)</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">60</span>, <span class="dv">20</span>, <span class="dv">10</span>))</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(weight_change_plot_exp2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fungal_treatment_analysis_exp2_files/figure-html/weight-plot-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="dry-weight-change-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="dry-weight-change-analysis">Dry Weight Change Analysis</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ANALYZE DRY WEIGHT CHANGES</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare dry weight data</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>dry_weight_data <span class="ot">&lt;-</span> weight_data <span class="sc">%&gt;%</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(dry_weight_percent_change))</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Use same ordering as weight change</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>dry_weight_plot_data <span class="ot">&lt;-</span> dry_weight_data <span class="sc">%&gt;%</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">treatment_category =</span> <span class="fu">factor</span>(treatment_category, <span class="at">levels =</span> <span class="fu">rev</span>(weight_order))) <span class="sc">%&gt;%</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_count_labels</span>()</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Create and apply labels</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>dry_weight_labels <span class="ot">&lt;-</span> <span class="fu">create_count_labels</span>(dry_weight_plot_data)</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>dry_weight_plot_data <span class="ot">&lt;-</span> <span class="fu">apply_custom_labels</span>(dry_weight_plot_data, dry_weight_labels)</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create plot (PRESERVING ORIGINAL AESTHETICS)</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>dry_weight_change_plot_exp2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dry_weight_plot_data, <span class="fu">aes</span>(<span class="at">x =</span> dry_weight_percent_change, <span class="at">y =</span> treatment_category)) <span class="sc">+</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray40"</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"#984EA3"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">height =</span> <span class="fl">0.2</span>)) <span class="sc">+</span></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Dry Weight Change (%) at 14 DPI by Treatment"</span>,</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Negative values indicate dry matter loss; n = number of samples, f = number of faecal sources"</span>,</span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Dry Weight Change (%)"</span>,</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Treatment Category"</span></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_publication</span>() <span class="sc">+</span></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">size =</span> <span class="fl">0.3</span>)</span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">100</span>, <span class="dv">50</span>, <span class="dv">10</span>))</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dry_weight_change_plot_exp2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fungal_treatment_analysis_exp2_files/figure-html/dry-weight-analysis-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combined weight summary</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>weight_data <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_wet_change =</span> <span class="fu">round</span>(<span class="fu">mean</span>(weight_percent_change, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>),</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_dry_change =</span> <span class="fu">round</span>(<span class="fu">mean</span>(dry_weight_percent_change, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>),</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(mean_wet_change) <span class="sc">%&gt;%</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Weight Change Summary by Species"</span>,</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Species"</span>, <span class="st">"n"</span>, <span class="st">"Mean Wet Change (%)"</span>, <span class="st">"Mean Dry Change (%)"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in attr(x, "align"): 'xfun::attr()' ist veraltet.
+Benutzen Sie stattdessen 'xfun::attr2()'
+Siehe help("Deprecated")
+Warning in attr(x, "align"): 'xfun::attr()' ist veraltet.
+Benutzen Sie stattdessen 'xfun::attr2()'
+Siehe help("Deprecated")</code></pre>
+</div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Weight Change Summary by Species</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Species</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mean Wet Change (%)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mean Dry Change (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">F35 Sordaria</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">-5.3</td>
+<td style="text-align: right;">-7.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P. ostreatus columbinus</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">-4.0</td>
+<td style="text-align: right;">0.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">T. harzianum T22</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">-3.8</td>
+<td style="text-align: right;">-5.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">T. harzianum CBS245.93</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">-3.7</td>
+<td style="text-align: right;">-9.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">T. koningii</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">-3.5</td>
+<td style="text-align: right;">-4.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">G. lucidum</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">-3.1</td>
+<td style="text-align: right;">-2.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P. ostreatus v.F</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">-3.1</td>
+<td style="text-align: right;">-2.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P. ostreatus</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">-2.9</td>
+<td style="text-align: right;">-3.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F40</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">-2.7</td>
+<td style="text-align: right;">-5.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctrl</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">-1.9</td>
+<td style="text-align: right;">-0.3</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="water-content-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="water-content-analysis">Water Content Analysis</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ANALYZE WATER CONTENT CHANGES</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare water content data</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>water_data <span class="ot">&lt;-</span> experiment_1_2_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(water_content_0dpi) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(water_content_14dpi)) <span class="sc">%&gt;%</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">water_content_change =</span> water_content_14dpi <span class="sc">-</span> water_content_0dpi) <span class="sc">%&gt;%</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">categorize_treatment</span>()</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create long format for time comparison</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>water_long <span class="ot">&lt;-</span> water_data <span class="sc">%&gt;%</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id_treatment, treatment_category, water_content_0dpi, water_content_14dpi) <span class="sc">%&gt;%</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(water_content_0dpi, water_content_14dpi),</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"time_point"</span>,</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"water_content"</span>,</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_pattern =</span> <span class="st">"water_content_(</span><span class="sc">\\</span><span class="st">d+)dpi"</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_point =</span> <span class="fu">paste0</span>(<span class="fu">str_extract</span>(time_point, <span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>), <span class="st">" DPI"</span>))</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate ordering</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>water_order <span class="ot">&lt;-</span> water_data <span class="sc">%&gt;%</span></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment_category) <span class="sc">%&gt;%</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_change =</span> <span class="fu">median</span>(water_content_change, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(median_change) <span class="sc">%&gt;%</span></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(treatment_category)</span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>water_data <span class="ot">&lt;-</span> water_data <span class="sc">%&gt;%</span></span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">treatment_category =</span> <span class="fu">factor</span>(treatment_category, <span class="at">levels =</span> <span class="fu">rev</span>(water_order)))</span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Create plots (PRESERVING ORIGINAL AESTHETICS)</span></span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>water_change_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(water_data, <span class="fu">aes</span>(<span class="at">x =</span> water_content_change, <span class="at">y =</span> treatment_category)) <span class="sc">+</span></span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray40"</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"#4DAF4A"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">height =</span> <span class="fl">0.2</span>)) <span class="sc">+</span></span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"A) Water Content Change from 0 to 14 DPI"</span>,</span>
+<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Positive values indicate moisture gain"</span>,</span>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Water Content Change (%)"</span>,</span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Treatment Category"</span></span>
+<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_publication</span>() <span class="sc">+</span></span>
+<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>))</span>
+<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a>water_timepoint_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(water_long, <span class="fu">aes</span>(<span class="at">x =</span> time_point, <span class="at">y =</span> water_content, <span class="at">fill =</span> treatment_category)) <span class="sc">+</span></span>
+<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.8</span>)) <span class="sc">+</span></span>
+<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"B) Water Content Distribution at 0 and 14 DPI"</span>,</span>
+<span id="cb25-50"><a href="#cb25-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Comparison of initial and final water content"</span>,</span>
+<span id="cb25-51"><a href="#cb25-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Time Point"</span>,</span>
+<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Water Content (%)"</span></span>
+<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_publication</span>() <span class="sc">+</span></span>
+<span id="cb25-55"><a href="#cb25-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb25-56"><a href="#cb25-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
+<span id="cb25-57"><a href="#cb25-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb25-58"><a href="#cb25-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>)</span>
+<span id="cb25-59"><a href="#cb25-59" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-60"><a href="#cb25-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set3"</span>)</span>
+<span id="cb25-61"><a href="#cb25-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-62"><a href="#cb25-62" aria-hidden="true" tabindex="-1"></a><span class="co"># Display both plots (PRESERVING ORIGINAL AESTHETICS)</span></span>
+<span id="cb25-63"><a href="#cb25-63" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
+<span id="cb25-64"><a href="#cb25-64" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(water_change_plot, water_timepoint_plot, <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">heights =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">1.2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fungal_treatment_analysis_exp2_files/figure-html/water-content-analysis-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="e.-coli-concentration-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="e.-coli-concentration-analysis">E. coli Concentration Analysis</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ANALYZE E. COLI CONCENTRATIONS</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare E. coli data</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>ecoli_data <span class="ot">&lt;-</span> experiment_1_2_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(ecoli_conc) <span class="sc">&amp;</span> ecoli_conc <span class="sc">&gt;=</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log_ecoli_14dpi =</span> <span class="fu">log10</span>(ecoli_conc <span class="sc">+</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">categorize_treatment</span>()</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate ordering</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>ecoli_order <span class="ot">&lt;-</span> ecoli_data <span class="sc">%&gt;%</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment_category) <span class="sc">%&gt;%</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_ecoli =</span> <span class="fu">median</span>(log_ecoli_14dpi), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(median_ecoli) <span class="sc">%&gt;%</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(treatment_category)</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare plot data</span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>ecoli_plot_data <span class="ot">&lt;-</span> ecoli_data <span class="sc">%&gt;%</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">treatment_category =</span> <span class="fu">factor</span>(treatment_category, <span class="at">levels =</span> <span class="fu">rev</span>(ecoli_order)),</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">ecoli_concentration_plot =</span> log_ecoli_14dpi</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_count_labels</span>()</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Create and apply labels</span></span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>ecoli_labels <span class="ot">&lt;-</span> <span class="fu">create_count_labels</span>(ecoli_plot_data)</span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>ecoli_plot_data <span class="ot">&lt;-</span> <span class="fu">apply_custom_labels</span>(ecoli_plot_data, ecoli_labels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CREATE E. COLI CONCENTRATION PLOT (PRESERVING ORIGINAL AESTHETICS)</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>ecoli_conc_plot_exp2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ecoli_plot_data, <span class="fu">aes</span>(<span class="at">x =</span> ecoli_concentration_plot, <span class="at">y =</span> treatment_category)) <span class="sc">+</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"#B2182B"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">height =</span> <span class="fl">0.2</span>)) <span class="sc">+</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"E. coli Concentration at 14 DPI by Treatment"</span>,</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Log10 scale; n = number of samples, f = number of faecal sources"</span>,</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"E. coli Concentration (log10 CFU/g + 1)"</span>,</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Treatment Category"</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_publication</span>() <span class="sc">+</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">size =</span> <span class="fl">0.3</span>)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ecoli_conc_plot_exp2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fungal_treatment_analysis_exp2_files/figure-html/ecoli-concentration-plot-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="e.-coli-log-change-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="e.-coli-log-change-analysis">E. coli Log Change Analysis</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ANALYZE E. COLI LOG CHANGES</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate log changes</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>ecoli_change_data <span class="ot">&lt;-</span> experiment_1_2_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(ecoli_conc) <span class="sc">&amp;</span> ecoli_conc <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> </span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(ecoli_conc_mean_0dpi) <span class="sc">&amp;</span> ecoli_conc_mean_0dpi <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_ecoli_0dpi =</span> <span class="fu">log10</span>(ecoli_conc_mean_0dpi),</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_ecoli_14dpi =</span> <span class="fu">log10</span>(ecoli_conc <span class="sc">+</span> <span class="dv">1</span>),</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">ecoli_log_change =</span> log_ecoli_14dpi <span class="sc">-</span> log_ecoli_0dpi</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">categorize_treatment</span>()</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate ordering</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>ecoli_change_order <span class="ot">&lt;-</span> ecoli_change_data <span class="sc">%&gt;%</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment_category) <span class="sc">%&gt;%</span></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_change =</span> <span class="fu">median</span>(ecoli_log_change), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(median_change) <span class="sc">%&gt;%</span></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(treatment_category)</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare plot data</span></span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>ecoli_change_plot_data <span class="ot">&lt;-</span> ecoli_change_data <span class="sc">%&gt;%</span></span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">treatment_category =</span> <span class="fu">factor</span>(treatment_category, <span class="at">levels =</span> <span class="fu">rev</span>(ecoli_change_order))) <span class="sc">%&gt;%</span></span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_count_labels</span>()</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Create and apply labels</span></span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>ecoli_change_labels <span class="ot">&lt;-</span> <span class="fu">create_count_labels</span>(ecoli_change_plot_data)</span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>ecoli_change_plot_data <span class="ot">&lt;-</span> <span class="fu">apply_custom_labels</span>(ecoli_change_plot_data, ecoli_change_labels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CREATE E. COLI LOG CHANGE PLOT (PRESERVING ORIGINAL AESTHETICS)</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>ecoli_log_change_plot_exp2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ecoli_change_plot_data, <span class="fu">aes</span>(<span class="at">x =</span> ecoli_log_change, <span class="at">y =</span> treatment_category)) <span class="sc">+</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray40"</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">color =</span> <span class="st">"darkgreen"</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">color =</span> <span class="st">"darkgreen"</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"#2166AC"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">height =</span> <span class="fl">0.2</span>)) <span class="sc">+</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"E. coli Log Change from 0 to 14 DPI"</span>,</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Negative values indicate bacterial reduction; dotted lines at 1 and 3 log reduction"</span>,</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Log10 Change in E. coli Concentration"</span>,</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Treatment Category"</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_publication</span>() <span class="sc">+</span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">size =</span> <span class="fl">0.3</span>)</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">8</span>, <span class="dv">2</span>, <span class="dv">1</span>))</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ecoli_log_change_plot_exp2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fungal_treatment_analysis_exp2_files/figure-html/ecoli-log-change-plot-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary statistics</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>ecoli_change_data <span class="sc">%&gt;%</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_log_reduction =</span> <span class="fu">round</span>(<span class="fu">mean</span>(<span class="sc">-</span>ecoli_log_change, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_1log =</span> <span class="fu">round</span>(<span class="fu">sum</span>(ecoli_log_change <span class="sc">&lt;=</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">/</span> <span class="fu">n</span>() <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>),</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_3log =</span> <span class="fu">round</span>(<span class="fu">sum</span>(ecoli_log_change <span class="sc">&lt;=</span> <span class="sc">-</span><span class="dv">3</span>) <span class="sc">/</span> <span class="fu">n</span>() <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>),</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(mean_log_reduction)) <span class="sc">%&gt;%</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"E. coli Log Reduction Summary"</span>,</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Species"</span>, <span class="st">"n"</span>, <span class="st">"Mean Log Reduction"</span>, <span class="st">"% ≥1 log"</span>, <span class="st">"% ≥3 log"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in attr(x, "align"): 'xfun::attr()' ist veraltet.
+Benutzen Sie stattdessen 'xfun::attr2()'
+Siehe help("Deprecated")
+Warning in attr(x, "align"): 'xfun::attr()' ist veraltet.
+Benutzen Sie stattdessen 'xfun::attr2()'
+Siehe help("Deprecated")</code></pre>
+</div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<caption>E. coli Log Reduction Summary</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Species</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mean Log Reduction</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">% ≥1 log</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">% ≥3 log</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ctrl</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">5.64</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">G. lucidum</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">4.20</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">66.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P. ostreatus v.F</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2.22</td>
+<td style="text-align: right;">66.7</td>
+<td style="text-align: right;">33.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">T. koningii</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">50.0</td>
+<td style="text-align: right;">50.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P. ostreatus</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">40.0</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P. ostreatus columbinus</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">-0.03</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F40</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">-1.01</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">T. harzianum T22</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-1.34</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F35 Sordaria</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">-3.33</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="relationship-between-initial-faecal-parameters-and-growth-success-p.-ostreatus-vs-g.-lucidum" class="level2">
+<h2 class="anchored" data-anchor-id="relationship-between-initial-faecal-parameters-and-growth-success-p.-ostreatus-vs-g.-lucidum">Relationship Between Initial Faecal Parameters and Growth Success: P. ostreatus vs G. lucidum</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ANALYZE FAECAL PARAMETERS VS GROWTH SUCCESS</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Focus on two key species</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>growth_faecal_data <span class="ot">&lt;-</span> experiment_1_2 <span class="sc">%&gt;%</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"P. ostreatus columbinus"</span>, <span class="st">"G. lucidum"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(area_size_14dpi)) <span class="sc">%&gt;%</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">growth_success_binary =</span> <span class="fu">factor</span>(<span class="fu">ifelse</span>(area_size_14dpi <span class="sc">&gt;</span> <span class="dv">10</span>, <span class="st">"1"</span>, <span class="st">"0"</span>), <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>)),</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_ecoli_0dpi =</span> <span class="fu">log10</span>(ecoli_conc_mean_0dpi <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary by species and growth</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>growth_faecal_data <span class="sc">%&gt;%</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species, growth_success_binary) <span class="sc">%&gt;%</span></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_ph =</span> <span class="fu">round</span>(<span class="fu">mean</span>(ph_0dpi, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_water =</span> <span class="fu">round</span>(<span class="fu">mean</span>(water_content_0dpi, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>),</span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_log_ecoli =</span> <span class="fu">round</span>(<span class="fu">mean</span>(log_ecoli_0dpi, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Initial Faecal Parameters by Species and Growth Outcome"</span>,</span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Species"</span>, <span class="st">"Growth Success"</span>, <span class="st">"n"</span>, <span class="st">"Mean pH"</span>, <span class="st">"Mean Water %"</span>, <span class="st">"Mean Log E.coli"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in attr(x, "align"): 'xfun::attr()' ist veraltet.
+Benutzen Sie stattdessen 'xfun::attr2()'
+Siehe help("Deprecated")
+Warning in attr(x, "align"): 'xfun::attr()' ist veraltet.
+Benutzen Sie stattdessen 'xfun::attr2()'
+Siehe help("Deprecated")</code></pre>
+</div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Initial Faecal Parameters by Species and Growth Outcome</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Species</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Growth Success</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mean pH</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mean Water %</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mean Log E.coli</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">G. lucidum</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">6.25</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">6.58</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">G. lucidum</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">6.56</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">5.23</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P. ostreatus columbinus</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">6.25</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">6.58</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P. ostreatus columbinus</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">6.55</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">5.24</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CREATE COMPARISON PLOTS (PRESERVING ORIGINAL AESTHETICS)</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="co"># pH plot</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>ph_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(growth_faecal_data, <span class="fu">aes</span>(<span class="at">x =</span> growth_success_binary, <span class="at">y =</span> ph_0dpi, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.8</span>)) <span class="sc">+</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> species), <span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">size =</span> <span class="fl">1.5</span>, </span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">position =</span> <span class="fu">position_jitterdodge</span>(<span class="at">jitter.width =</span> <span class="fl">0.2</span>, <span class="at">dodge.width =</span> <span class="fl">0.8</span>)) <span class="sc">+</span></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"A) Initial pH vs Growth Success by Species"</span>,</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"P. ostreatus vs G. lucidum comparison"</span>,</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Growth Outcome"</span>,</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"pH at 0 DPI"</span>,</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Species"</span>,</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Species"</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_publication</span>() <span class="sc">+</span></span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> species_colors) <span class="sc">+</span></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> species_colors) <span class="sc">+</span></span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"No Growth</span><span class="sc">\n</span><span class="st">(≤10 mm²)"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"Growth</span><span class="sc">\n</span><span class="st">(&gt;10 mm²)"</span>))</span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Water content plot</span></span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>water_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(growth_faecal_data, <span class="fu">aes</span>(<span class="at">x =</span> growth_success_binary, <span class="at">y =</span> water_content_0dpi, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.8</span>)) <span class="sc">+</span></span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> species), <span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">size =</span> <span class="fl">1.5</span>,</span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>             <span class="at">position =</span> <span class="fu">position_jitterdodge</span>(<span class="at">jitter.width =</span> <span class="fl">0.2</span>, <span class="at">dodge.width =</span> <span class="fl">0.8</span>)) <span class="sc">+</span></span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"B) Initial Water Content vs Growth Success by Species"</span>,</span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"P. ostreatus vs G. lucidum comparison"</span>,</span>
+<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Growth Outcome"</span>,</span>
+<span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Water Content at 0 DPI (%)"</span>,</span>
+<span id="cb34-33"><a href="#cb34-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Species"</span>,</span>
+<span id="cb34-34"><a href="#cb34-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Species"</span></span>
+<span id="cb34-35"><a href="#cb34-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb34-36"><a href="#cb34-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_publication</span>() <span class="sc">+</span></span>
+<span id="cb34-37"><a href="#cb34-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> species_colors) <span class="sc">+</span></span>
+<span id="cb34-38"><a href="#cb34-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> species_colors) <span class="sc">+</span></span>
+<span id="cb34-39"><a href="#cb34-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"No Growth</span><span class="sc">\n</span><span class="st">(≤10 mm²)"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"Growth</span><span class="sc">\n</span><span class="st">(&gt;10 mm²)"</span>))</span>
+<span id="cb34-40"><a href="#cb34-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-41"><a href="#cb34-41" aria-hidden="true" tabindex="-1"></a><span class="co"># E. coli plot</span></span>
+<span id="cb34-42"><a href="#cb34-42" aria-hidden="true" tabindex="-1"></a>ecoli_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(growth_faecal_data, <span class="fu">aes</span>(<span class="at">x =</span> growth_success_binary, <span class="at">y =</span> log_ecoli_0dpi, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb34-43"><a href="#cb34-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.8</span>)) <span class="sc">+</span></span>
+<span id="cb34-44"><a href="#cb34-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> species), <span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">size =</span> <span class="fl">1.5</span>,</span>
+<span id="cb34-45"><a href="#cb34-45" aria-hidden="true" tabindex="-1"></a>             <span class="at">position =</span> <span class="fu">position_jitterdodge</span>(<span class="at">jitter.width =</span> <span class="fl">0.2</span>, <span class="at">dodge.width =</span> <span class="fl">0.8</span>)) <span class="sc">+</span></span>
+<span id="cb34-46"><a href="#cb34-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb34-47"><a href="#cb34-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"C) Initial E. coli Concentration vs Growth Success by Species"</span>,</span>
+<span id="cb34-48"><a href="#cb34-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"P. ostreatus vs G. lucidum comparison"</span>,</span>
+<span id="cb34-49"><a href="#cb34-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Growth Outcome"</span>,</span>
+<span id="cb34-50"><a href="#cb34-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Log10(E. coli CFU/g + 1)"</span>,</span>
+<span id="cb34-51"><a href="#cb34-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Species"</span>,</span>
+<span id="cb34-52"><a href="#cb34-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Species"</span></span>
+<span id="cb34-53"><a href="#cb34-53" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb34-54"><a href="#cb34-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_publication</span>() <span class="sc">+</span></span>
+<span id="cb34-55"><a href="#cb34-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> species_colors) <span class="sc">+</span></span>
+<span id="cb34-56"><a href="#cb34-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> species_colors) <span class="sc">+</span></span>
+<span id="cb34-57"><a href="#cb34-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"No Growth</span><span class="sc">\n</span><span class="st">(≤10 mm²)"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"Growth</span><span class="sc">\n</span><span class="st">(&gt;10 mm²)"</span>))</span>
+<span id="cb34-58"><a href="#cb34-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-59"><a href="#cb34-59" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine plots (PRESERVING ORIGINAL AESTHETICS)</span></span>
+<span id="cb34-60"><a href="#cb34-60" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
+<span id="cb34-61"><a href="#cb34-61" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(ph_plot, water_plot, ecoli_plot, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fungal_treatment_analysis_exp2_files/figure-html/faecal-growth-plots-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="summary-and-conclusions" class="level1">
+<h1>Summary and Conclusions</h1>
+<p>This analysis of Experiment 1_2 reveals important insights into the effectiveness of various fungal species for treating faecal material:</p>
+<ol type="1">
+<li><p><strong>Growth Success</strong>: Several species showed consistent growth on the faecal substrate, with P. ostreatus variants and G. lucidum demonstrating particularly robust colonization.</p></li>
+<li><p><strong>pH Changes</strong>: Fungal treatments generally increased pH levels compared to controls, which may influence pathogen survival and decomposition processes.</p></li>
+<li><p><strong>Weight Reduction</strong>: Most fungal treatments resulted in significant weight loss, indicating active decomposition of the faecal material.</p></li>
+<li><p><strong>E. coli Reduction</strong>: Several fungal species achieved substantial reductions in E. coli concentrations, with some achieving &gt;3 log reductions, meeting sanitation standards.</p></li>
+<li><p><strong>Species-Specific Effects</strong>: P. ostreatus columbinus and G. lucidum showed different sensitivities to initial faecal parameters, suggesting species-specific optimization may be beneficial.</p></li>
+</ol>
+<p>These findings support the potential use of selected fungal species as biological treatment agents for decentralized sanitation systems.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

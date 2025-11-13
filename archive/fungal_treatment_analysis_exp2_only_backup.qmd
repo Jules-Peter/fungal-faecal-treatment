@@ -1,0 +1,1911 @@
+---
+title: "Fungal Treatment of Faecal Material: Experiment 1_2 Analysis"
+author: "Analysis Report"
+date: "`r Sys.Date()`"
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    theme: cosmo
+    cache: true
+editor: visual
+---
+
+# Introduction
+
+This document presents the analysis of fungal treatment effects on faecal material from Experiment 1_2, examining growth patterns, bacterial concentrations, and treatment efficacy.
+
+# Data Overview
+
+## Experimental Design
+
+This study evaluates the effectiveness of various fungal species in treating faecal material over a 14-day period. This analysis focuses specifically on Experiment 1_2, which provides the most complete dataset for comprehensive analysis.
+
+### Fungal Species Tested
+
+The following fungal species were selected based on their known decomposition capabilities and potential for faecal treatment applications:
+
+-   **F35 Sordaria** - A saprophytic ascomycete known for cellulose degradation
+-   **G. lucidum** - Medicinal mushroom with lignolytic enzymes
+-   **P. ostreatus columbinus** - Oyster mushroom variant with strong decomposition activity
+-   **F15 Faecal isolate 1** - Indigenous isolate adapted to faecal substrate
+-   **F31 Mucor spp I3** - Zygomycete with rapid growth characteristics
+-   **T. harzianum CBS245.93** - Commercial biocontrol strain
+-   **T. harzianum T22** - Well-characterized agricultural strain
+-   **T. koningii** - Trichoderma species with cellulase production
+-   **Coprinus comata** - Coprophilic mushroom naturally occurring on dung
+-   **Control (ctrl)** - Untreated faecal material for baseline comparison
+
+### Measurements and Variables
+
+#### Primary Response Variables
+
+1.  **Growth Success** (0-5 scale)
+    -   0: No visible growth
+    -   1-3: Growth with contamination (varying degrees)
+    -   4-5: Successful growth without contamination
+    -   Measured at 7 and 14 days post-inoculation (DPI)
+2.  **Growth Area** (mm²)
+    -   Quantitative measurement of fungal colony size
+    -   Measured for samples showing successful growth
+    -   Log-transformed for statistical analysis due to exponential growth patterns
+3.  **Weight Change** (%)
+    -   Percentage change from initial weight (0 DPI) to final weight (14 DPI)
+    -   Calculated as: ((weight₁₄ - weight₀) / weight₀) × 100
+    -   Negative values indicate decomposition/mass loss
+4.  **Dry Weight Change** (g and %)
+    -   Calculated using water content measurements
+    -   Dry weight₀ = weight₀ × (1 - water_content₀/100)
+    -   Dry weight₁₄ = weight₁₄ × (1 - water_content₁₄/100)
+    -   More accurate measure of actual biomass decomposition
+5.  **pH Changes**
+    -   pH measured at baseline (0 DPI from faecal samples) and 14 DPI
+    -   Important indicator of decomposition processes and microbial activity
+6.  **E. coli Concentration** (CFU/g)
+    -   Bacterial load measured via plate counts with serial dilutions
+    -   Log₁₀ transformed for analysis due to exponential nature of bacterial growth
+    -   Key indicator of pathogen reduction efficacy
+7.  **E. coli Log Reduction**
+    -   Calculated as: log₁₀(baseline) - log₁₀(14 DPI)
+    -   Positive values indicate bacterial reduction
+    -   Standard metric for antimicrobial efficacy assessment
+
+#### Experimental Structure
+
+-   **Replicates**: Multiple technical replicates per species per experiment
+-   **Faecal Samples**: Multiple different faecal source materials (biological replicates)
+-   **Time Points**: Measurements at 0, 7, and 14 days post-inoculation
+-   **Controls**: Untreated samples for comparison across all metrics
+
+#### Data Filtering and Quality Control
+
+For statistical analyses, samples were filtered based on growth success categories:
+
+-   **Controls**: Only "no growth/no contamination" and "growth/contaminated" samples included
+-   **Fungal Treatments**: Only samples with successful growth (with or without contamination) included
+-   **Exclusions**: Samples with technical failures, missing measurements, or extreme outliers
+
+This filtering ensures that comparisons are made between functionally equivalent sample types and reduces bias from experimental artifacts.
+
+#### Statistical Considerations
+
+-   **Mixed-effects models** account for multiple measurements from the same faecal samples
+-   **Log transformations** applied to microbial data and growth measurements
+-   **Non-parametric methods** used when data distributions violate normality assumptions
+-   **Multiple comparison corrections** applied for post-hoc tests
+-   **Effect sizes** reported alongside p-values for practical significance assessment
+
+# Growth Analysis
+
+## Growth Success
+
+```{r setup, include=FALSE, warning=FALSE}
+# Load required libraries
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(RColorBrewer)
+library(scales)
+library(ggtext)
+library(kableExtra)
+
+# Define professional color palettes
+# For experiments comparison
+
+# For treatment categories (using colorblind-friendly palette)
+treatment_colors <- c(
+  "Control: No growth, no contamination" = "#000000",
+  "Control: No growth, contaminated" = "#666666", 
+  "Control: Growth, no contamination" = "#999999",
+  "Control: Growth, contaminated" = "#CCCCCC",
+  "No growth, no contamination" = "#E69F00",
+  "No growth, contaminated" = "#56B4E9",
+  "Growth, contaminated" = "#009E73",
+  "Growth, no contamination" = "#F0E442"
+)
+
+# Define theme for publication
+theme_publication <- function() {
+  theme_minimal(base_size = 10) +
+  theme(
+    axis.title = element_text(size = 11, face = "bold"),
+    axis.text = element_text(size = 9, color = "black"),
+    axis.text.y = element_text(size = 9, lineheight = 0.8),
+    plot.title = element_text(size = 12, face = "bold", hjust = 0),
+    plot.subtitle = element_text(size = 10, hjust = 0, color = "gray30"),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(color = "grey90", size = 0.3),
+    panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+    plot.margin = margin(t = 10, r = 10, b = 10, l = 10, unit = "pt"),
+    legend.title = element_text(size = 10, face = "bold"),
+    legend.text = element_text(size = 9)
+  )
+}
+
+# Load the datasets
+# Original dataset for growth success analysis (Experiment 1_2 only)
+experiment_1_2 <- read.csv("../data/processed/experiment_1_2_joined.csv")
+
+# Specialized filtered dataset for pH, weight change, and E.coli analysis (Experiment 1_2 only)
+experiment_1_2_filtered <- read.csv("../data/processed/experiment_1_2_ph_weight_ecoli.csv")
+```
+
+```{r data-prep, include=FALSE, warning=FALSE}
+# Note: Species filtering is now done in the data processing step
+# The dataset already contains only the selected species
+
+# Prepare data for experiment 1_2 only (excluding controls)
+growth_success_data <- experiment_1_2 %>%
+  filter(species != "ctrl") %>%
+  select(id_treatment, species, growth_description_7dpi, growth_description_14dpi) %>%
+  pivot_longer(cols = c(growth_description_7dpi, growth_description_14dpi),
+               names_to = "time_point",
+               values_to = "growth_description") %>%
+  mutate(
+    time_point = case_when(
+      time_point == "growth_description_7dpi" ~ "7 DPI",
+      time_point == "growth_description_14dpi" ~ "14 DPI"
+    ),
+    growth_description = as.factor(growth_description),
+    experiment = "Experiment 1_2"
+  ) %>%
+  filter(!is.na(growth_description))
+
+# Create complete grid to ensure all species appear 
+unique_species <- unique(growth_success_data$species)
+
+complete_grid <- expand_grid(
+  experiment = "Experiment 1_2",
+  species = unique_species,
+  time_point = c("7 DPI", "14 DPI"),
+  growth_description = factor(0:5)
+)
+
+# Calculate percentages and replicate information
+growth_success_summary <- growth_success_data %>%
+  group_by(experiment, species, time_point, growth_description) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(experiment, species, time_point) %>%
+  mutate(
+    total = sum(count),
+    percentage = (count / total) * 100
+  ) %>%
+  ungroup() %>%
+  # Join with complete grid to include missing combinations
+  right_join(complete_grid, by = c("experiment", "species", "time_point", "growth_description")) %>%
+  mutate(
+    count = replace_na(count, 0),
+    total = replace_na(total, 0),
+    percentage = replace_na(percentage, 0)
+  )
+
+# Calculate replicate and faecal sample information
+replicate_info <- growth_success_data %>%
+  group_by(experiment, species, time_point) %>%
+  summarise(
+    n_replicates = n(),
+    n_faecal_samples = n_distinct(experiment_1_2$id_faeces[match(id_treatment, experiment_1_2$id_treatment)], na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    label = paste0("n=", n_replicates, "\nf=", n_faecal_samples)
+  )
+
+# Add replicate info to summary
+growth_success_summary <- growth_success_summary %>%
+  left_join(replicate_info, by = c("experiment", "species", "time_point"))
+```
+
+```{r growth-success-plot, warning=FALSE}
+# Define terrain2 colors for growth descriptions (reversed so 5 is green)
+terrain2_colors <- rev(terrain.colors(6, alpha = 1))
+custom_colors <- setNames(terrain2_colors, as.character(0:5))
+
+# Define descriptive labels for growth descriptions
+growth_labels <- c(
+  "0" = "No growth",
+  "1" = "Full necrotic", 
+  "2" = "Partly necrotic",
+  "3" = "Loose mycelium net",
+  "4" = "Dense mycelium net", 
+  "5" = "Thick mycelium mat with aerial mycelium"
+)
+
+# Filter out rows where total is 0 (no data) to avoid empty bars
+# and ensure proper ordering of time points
+plot_data <- growth_success_summary %>%
+  filter(total > 0) %>%
+  mutate(time_point = factor(time_point, levels = c("7 DPI", "14 DPI")))
+
+# Create plot for Experiment 1_2 only
+plot_data <- plot_data
+replicate_info <- replicate_info
+
+plot_exp2 <- plot_data %>%
+  ggplot(aes(x = time_point, y = percentage, fill = as.character(growth_description))) +
+  geom_col(position = "stack") +
+  geom_text(data = replicate_info, 
+            aes(x = time_point, y = 105, label = label), 
+            inherit.aes = FALSE, size = 2.5, vjust = 0) +
+  facet_grid(~ species, scales = "free_y", switch = "x") +
+  labs(
+    title = "Experiment 1_2: Growth Success by Species and Time Point",
+    subtitle = "n = number of replicates, f = number of faecal samples",
+    x = "Species",
+    y = "Percentage (%)",
+    fill = "Growth Description"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 0.5, size = 7),
+    axis.text.y = element_text(size = 8),
+    legend.position = "right",
+    strip.text.x = element_text(size = 7, angle = 45, hjust = 0.4, margin = margin(t = 2, b = 0)),
+    strip.placement = "outside",
+    panel.spacing.x = unit(0.2, "lines"),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank()
+  ) +
+  scale_fill_manual(values = custom_colors, labels = growth_labels, na.value = "white") +
+  scale_y_continuous(limits = c(0, 110), breaks = c(0, 25, 50, 75, 100), labels = c("0", "25", "50", "75", "100")) +
+  guides(fill = guide_legend(ncol = 1))
+
+# Display the plot
+print(plot_exp2)
+```
+
+## Growth Area
+
+```{r growth-area-data, include=FALSE}
+# Prepare area size data for Experiment 1_2 only
+# Get unique species from the dataset
+unique_species <- unique(experiment_1_2$species)
+
+area_data <- experiment_1_2 %>%
+  select(id_treatment, species, area_size_7dpi, area_size_14dpi) %>%
+  pivot_longer(cols = c(area_size_7dpi, area_size_14dpi),
+               names_to = "time_point",
+               values_to = "area_size") %>%
+  mutate(
+    time_point = case_when(
+      time_point == "area_size_7dpi" ~ "7 DPI",
+      time_point == "area_size_14dpi" ~ "14 DPI"
+    ),
+    experiment = "Experiment 1_2",
+    species_time = paste(species, time_point, sep = " - ")
+  ) %>%
+  filter(!is.na(area_size) & area_size > 1)
+
+# Create ordered factor for species_time to control y-axis order
+create_species_time_factor <- function(data, unique_species) {
+  species_time_levels <- c()
+  species_time_labels <- c()
+  
+  for (species in unique_species) {
+    # Add levels for this species
+    level_7dpi <- paste(species, "7 DPI", sep = " - ")
+    level_14dpi <- paste(species, "14 DPI", sep = " - ")
+    
+    species_time_levels <- c(species_time_levels, level_7dpi, level_14dpi)
+    
+    # Create labels: species name for 7 DPI, just time point for 14 DPI
+    label_7dpi <- paste(species, "7 DPI")
+    label_14dpi <- "14 DPI"
+    
+    species_time_labels <- c(species_time_labels, label_7dpi, label_14dpi)
+  }
+  
+  # Create factor with proper levels and labels
+  data$species_time <- factor(data$species_time, levels = rev(species_time_levels))
+  
+  # Create named vector for labels
+  label_mapping <- setNames(rev(species_time_labels), rev(species_time_levels))
+  
+  return(data)
+}
+
+area_data <- create_species_time_factor(area_data, unique_species)
+
+# Calculate sample size information for area data
+area_sample_info <- area_data %>%
+  group_by(species, time_point) %>%
+  summarise(
+    n_observations = n(),
+    n_faecal_samples = n_distinct(case_when(
+      !is.na(id_treatment) ~ experiment_1_2$id_faeces[match(id_treatment, experiment_1_2$id_treatment)]
+    ), na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    species_time = paste(species, time_point, sep = " - "),
+    sample_label = paste0("n=", n_observations, ", f=", n_faecal_samples)
+  )
+```
+
+```{r growth-area-plots}
+# Create custom y-axis labels with sample info on second line
+area_labels <- area_sample_info %>%
+  arrange(match(species_time, levels(area_data$species_time))) %>%
+  mutate(custom_label = paste0(species_time, "\n", sample_label)) %>%
+  pull(custom_label)
+
+area_plot_1_1 <- ggplot(area_data, aes(x = area_size, y = species_time)) +
+  geom_boxplot(fill = "steelblue", alpha = 0.6, color = "steelblue") +
+  geom_point(alpha = 0.6, size = 1, color = "darkblue", position = position_jitter(height = 0.2)) +
+  labs(
+    subtitle = "n = number of observations, f = number of faecal samples",
+    x = "Area Size (log scale)",
+    y = "Species - Time Point"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.y = element_text(size = 7, lineheight = 0.8),
+    axis.text.x = element_text(size = 8),
+    panel.grid.major.y = element_line(color = "grey90"),
+    panel.grid.minor = element_blank(),
+    plot.margin = margin(t = 5.5, r = 5.5, b = 5.5, l = 5.5, unit = "pt")
+  ) +
+  scale_x_continuous(trans = "log10") +
+  scale_y_discrete(labels = area_labels)
+
+# Create custom y-axis labels with sample info on second line
+area_labels <- area_sample_info %>%
+  arrange(match(species_time, levels(area_data$species_time))) %>%
+  mutate(custom_label = paste0(species_time, "\n", sample_label)) %>%
+  pull(custom_label)
+
+# Create box plot for Experiment 1_2
+area_plot_exp2 <- ggplot(area_data, aes(x = area_size, y = species_time)) +
+  geom_boxplot(fill = "darkgreen", alpha = 0.6, color = "darkgreen") +
+  geom_point(alpha = 0.6, size = 1, color = "darkred", position = position_jitter(height = 0.2)) +
+  labs(
+    title = "Experiment 1_2: Fungal Growth Area Distribution by Species and Time Point",
+    subtitle = "n = number of observations, f = number of faecal samples",
+    x = "Area Size (log scale)",
+    y = "Species - Time Point"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.y = element_text(size = 7, lineheight = 0.8),
+    axis.text.x = element_text(size = 8),
+    panel.grid.major.y = element_line(color = "grey90"),
+    panel.grid.minor = element_blank(),
+    plot.margin = margin(t = 5.5, r = 5.5, b = 5.5, l = 5.5, unit = "pt")
+  ) +
+  scale_x_continuous(trans = "log10") +
+  scale_y_discrete(labels = area_labels)
+
+# Display the plot
+print(area_plot_exp2)
+```
+
+## pH Analysis
+
+```{r ph-data, include=FALSE}
+# Prepare pH data for Experiment 1_2 (14 DPI only)
+# Using the specialized filtered datasets
+
+ph_data <- experiment_1_2_filtered %>%
+  select(id_treatment, species, ph_14dpi, growth_status_14dpi) %>%
+  mutate(
+    time_point = "14 DPI",
+    ph_value = ph_14dpi,
+    # Create treatment category from growth status and species
+    treatment_category = case_when(
+      species == "ctrl" ~ paste("Control:", growth_status_14dpi),
+      growth_status_14dpi == "Growth, no contamination" ~ species,  # Keep species name for growth without contamination
+      TRUE ~ growth_status_14dpi
+    )
+  ) %>%
+  filter(!is.na(ph_value))
+
+ph_data <- experiment_1_2_filtered %>%
+  select(id_treatment, species, ph_14dpi, growth_status_14dpi) %>%
+  mutate(
+    time_point = "14 DPI",
+    experiment = "Experiment 1_2",
+    ph_value = ph_14dpi,
+    # Create treatment category from growth status and species
+    treatment_category = case_when(
+      species == "ctrl" ~ paste("Control:", growth_status_14dpi),
+      growth_status_14dpi == "Growth, no contamination" ~ species,  # Keep species name for growth without contamination
+      TRUE ~ growth_status_14dpi
+    )
+  ) %>%
+  filter(!is.na(ph_value))
+
+# Create factor with categories in desired order based on growth status
+fixed_categories <- c(
+  "Control: No growth, no contamination",
+  "Control: No growth, contaminated", 
+  "Control: Growth, no contamination",
+  "Control: Growth, contaminated",
+  "No growth, no contamination",
+  "No growth, contaminated",
+  "Growth, contaminated"
+)
+
+# Get individual species with growth and no contamination
+species_with_growth_1_1 <- unique(ph_data$treatment_category[!ph_data$treatment_category %in% fixed_categories])
+species_with_growth_1_2 <- unique(ph_data$treatment_category[!ph_data$treatment_category %in% fixed_categories])
+
+# Create category levels including individual species names for growth without contamination
+category_levels_1_1 <- c(fixed_categories[fixed_categories %in% unique(ph_data$treatment_category)], 
+                         sort(species_with_growth_1_1))
+category_levels_1_2 <- c(fixed_categories[fixed_categories %in% unique(ph_data$treatment_category)], 
+                         sort(species_with_growth_1_2))
+
+ph_data$treatment_category <- factor(ph_data$treatment_category, levels = rev(category_levels_1_1))
+ph_data$treatment_category <- factor(ph_data$treatment_category, levels = rev(category_levels_1_2))
+
+# Calculate sample size information for pH data by category
+ph_sample_info <- ph_data %>%
+  group_by(treatment_category) %>%
+  summarise(
+    n_observations = n(),
+    n_faecal_samples = n_distinct(case_when(
+      !is.na(id_treatment) ~ experiment_1_2$id_faeces[match(id_treatment, experiment_1_2$id_treatment)]
+    ), na.rm = TRUE),
+    n_species = n_distinct(species),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    sample_label = paste0("n=", n_observations, ", f=", n_faecal_samples, ", s=", n_species)
+  )
+
+ph_sample_info <- ph_data %>%
+  group_by(treatment_category) %>%
+  summarise(
+    n_observations = n(),
+    n_faecal_samples = n_distinct(case_when(
+      !is.na(id_treatment) ~ experiment_1_2$id_faeces[match(id_treatment, experiment_1_2$id_treatment)]
+    ), na.rm = TRUE),
+    n_species = n_distinct(species),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    sample_label = paste0("n=", n_observations, ", f=", n_faecal_samples, ", s=", n_species)
+  )
+```
+
+```{r ph-plots, fig.width=8, fig.height=6}
+# Create custom y-axis labels with sample info on second line
+# Format species names in italics
+ph_labels <- ph_sample_info %>%
+  arrange(match(treatment_category, levels(ph_data$treatment_category))) %>%
+  mutate(
+    # Format treatment category with italics for species names
+    formatted_category = case_when(
+      grepl("F15", treatment_category) ~ gsub("F15 Faecal isolate 1", "*F15* Faecal isolate 1", treatment_category),
+      grepl("F31", treatment_category) ~ gsub("F31 Mucor spp I3", "*F31 Mucor* spp. I3", treatment_category),
+      grepl("F35", treatment_category) ~ gsub("F35 Sordaria", "*F35 Sordaria*", treatment_category),
+      grepl("T\\. harzianum", treatment_category) ~ gsub("T\\. harzianum", "*T. harzianum*", treatment_category),
+      TRUE ~ treatment_category
+    ),
+    custom_label = paste0(formatted_category, "\n(n=", n_observations, ", f=", n_faecal_samples, ")")
+  ) %>%
+  pull(custom_label)
+
+ph_plot_1_1 <- ggplot(ph_data, aes(x = ph_value, y = treatment_category)) +
+  # Add reference line for neutral pH
+  geom_vline(xintercept = 7, linetype = "dashed", color = "gray40", size = 0.5, alpha = 0.5) +
+  # Box plots with professional colors
+  geom_boxplot(fill = "#2166AC", alpha = 0.7, color = "black", size = 0.5, outlier.shape = NA) +
+  # Individual points
+  geom_point(alpha = 0.6, size = 1.5, color = "black", position = position_jitter(height = 0.2)) +
+  # Labels
+  labs(
+    title = "A) pH distribution by treatment category (14 DPI) - Experiment 1",
+    x = "pH value",
+    y = NULL
+  ) +
+  # Apply publication theme
+  theme_publication() +
+  theme(
+    axis.text.y = element_markdown(size = 8, lineheight = 0.9),
+    plot.title = element_text(size = 11, face = "bold")
+  ) +
+  scale_x_continuous(
+    limits = c(5, 10), 
+    breaks = c(5, 6, 7, 8, 9, 10),
+    labels = c("5", "6", "7\n(neutral)", "8", "9", "10")
+  ) +
+  scale_y_discrete(labels = ph_labels)
+
+# Create custom y-axis labels with sample info on second line
+ph_labels <- ph_sample_info %>%
+  arrange(match(treatment_category, levels(ph_data$treatment_category))) %>%
+  mutate(
+    # Format treatment category with italics for species names
+    formatted_category = case_when(
+      grepl("F35", treatment_category) ~ gsub("F35 Sordaria", "*F35 Sordaria*", treatment_category),
+      grepl("F40", treatment_category) ~ gsub("F40", "*F40*", treatment_category),
+      grepl("G\\. lucidum", treatment_category) ~ gsub("G\\. lucidum", "*G. lucidum*", treatment_category),
+      grepl("P\\. ostreatus columbinus", treatment_category) ~ gsub("P\\. ostreatus columbinus", "*P. ostreatus* columbinus", treatment_category),
+      grepl("P\\. ostreatus", treatment_category) & !grepl("columbinus", treatment_category) ~ gsub("P\\. ostreatus", "*P. ostreatus*", treatment_category),
+      grepl("T\\. harzianum", treatment_category) ~ gsub("T\\. harzianum", "*T. harzianum*", treatment_category),
+      grepl("T\\. koningii", treatment_category) ~ gsub("T\\. koningii", "*T. koningii*", treatment_category),
+      TRUE ~ treatment_category
+    ),
+    custom_label = paste0(formatted_category, "\n(n=", n_observations, ", f=", n_faecal_samples, ")")
+  ) %>%
+  pull(custom_label)
+
+# Create box plot for pH - Experiment 1_2
+ph_plot_exp2 <- ggplot(ph_data, aes(x = ph_value, y = treatment_category)) +
+  # Add reference line for neutral pH
+  geom_vline(xintercept = 7, linetype = "dashed", color = "gray40", size = 0.5, alpha = 0.5) +
+  # Box plots with professional colors
+  geom_boxplot(fill = "#B2182B", alpha = 0.7, color = "black", size = 0.5, outlier.shape = NA) +
+  # Individual points
+  geom_point(alpha = 0.6, size = 1.5, color = "black", position = position_jitter(height = 0.2)) +
+  # Labels
+  labs(
+    title = "B) pH distribution by treatment category (14 DPI) - Experiment 2",
+    x = "pH value",
+    y = NULL
+  ) +
+  # Apply publication theme
+  theme_publication() +
+  theme(
+    axis.text.y = element_markdown(size = 8, lineheight = 0.9),
+    plot.title = element_text(size = 11, face = "bold")
+  ) +
+  scale_x_continuous(
+    limits = c(5, 10), 
+    breaks = c(5, 6, 7, 8, 9, 10),
+    labels = c("5", "6", "7\n(neutral)", "8", "9", "10")
+  ) +
+  scale_y_discrete(labels = ph_labels)
+
+# Display the pH plot
+print(ph_plot_exp2)
+```
+
+### pH Analysis Summary Statistics
+
+```{r ph-stats-table}
+# Create summary statistics for pH
+ph_stats <- ph_data %>%
+  group_by(treatment_category) %>%
+  summarise(
+    n = n(),
+    mean = round(mean(ph_14dpi, na.rm = TRUE), 2),
+    median = round(median(ph_14dpi, na.rm = TRUE), 2),
+    sd = round(sd(ph_14dpi, na.rm = TRUE), 2),
+    min = round(min(ph_14dpi, na.rm = TRUE), 2),
+    max = round(max(ph_14dpi, na.rm = TRUE), 2),
+    q25 = round(quantile(ph_14dpi, 0.25, na.rm = TRUE), 2),
+    q75 = round(quantile(ph_14dpi, 0.75, na.rm = TRUE), 2),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    iqr = q75 - q25,
+    ph_category = case_when(
+      mean < 7 ~ "Acidic",
+      mean == 7 ~ "Neutral", 
+      mean > 7 ~ "Basic"
+    )
+  )
+
+ph_stats <- ph_data %>%
+  group_by(treatment_category) %>%
+  summarise(
+    n = n(),
+    mean = round(mean(ph_14dpi, na.rm = TRUE), 2),
+    median = round(median(ph_14dpi, na.rm = TRUE), 2),
+    sd = round(sd(ph_14dpi, na.rm = TRUE), 2),
+    min = round(min(ph_14dpi, na.rm = TRUE), 2),
+    max = round(max(ph_14dpi, na.rm = TRUE), 2),
+    q25 = round(quantile(ph_14dpi, 0.25, na.rm = TRUE), 2),
+    q75 = round(quantile(ph_14dpi, 0.75, na.rm = TRUE), 2),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    iqr = q75 - q25,
+    ph_category = case_when(
+      mean < 7 ~ "Acidic",
+      mean == 7 ~ "Neutral", 
+      mean > 7 ~ "Basic"
+    )
+  )
+
+kable(ph_stats,
+      col.names = c("Treatment Category", "N", "Mean", "Median", "SD", 
+                    "Min", "Max", "Q25", "Q75", "IQR", "pH Category"),
+      align = c("l", rep("c", 10))) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE) %>%
+  add_header_above(c(" " = 2, "Central Tendency" = 2, "Variability" = 1, 
+                     "Range" = 2, "Quartiles" = 3, "Classification" = 1)) %>%
+  footnote(general = "pH scale: <7 = acidic, 7 = neutral, >7 = basic/alkaline")
+
+# Create formatted table for Experiment 1_2
+kable(ph_stats,
+      caption = "Table 6: pH Statistics for Experiment 1_2 at 14 DPI",
+      col.names = c("Treatment Category", "N", "Mean", "Median", "SD", 
+                    "Min", "Max", "Q25", "Q75", "IQR", "pH Category"),
+      align = c("l", rep("c", 10))) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE) %>%
+  add_header_above(c(" " = 2, "Central Tendency" = 2, "Variability" = 1, 
+                     "Range" = 2, "Quartiles" = 3, "Classification" = 1)) %>%
+  footnote(general = "pH scale: <7 = acidic, 7 = neutral, >7 = basic/alkaline")
+
+```
+
+## Weight Change Analysis
+
+```{r weight-change-data, include=FALSE}
+# Use the specialized filtered datasets for weight change analysis
+weight_change_data <- experiment_1_2_filtered %>%
+  select(id_treatment, species, weight_percent_change, growth_status_14dpi) %>%
+  mutate(
+    time_point = "14 DPI",
+    # Convert negative weight change to positive (weight loss as positive decomposition)
+    weight_percent_change = abs(weight_percent_change),
+    # Create treatment category from growth status and species
+    treatment_category = case_when(
+      species == "ctrl" ~ paste("Control:", growth_status_14dpi),
+      growth_status_14dpi == "Growth, no contamination" ~ species,  # Keep species name for growth without contamination
+      TRUE ~ growth_status_14dpi
+    )
+  ) %>%
+  filter(!is.na(weight_percent_change))
+
+weight_change_data <- experiment_1_2_filtered %>%
+  select(id_treatment, species, weight_percent_change, growth_status_14dpi) %>%
+  mutate(
+    time_point = "14 DPI",
+    experiment = "Experiment 1_2",
+    # Convert negative weight change to positive (weight loss as positive decomposition)
+    weight_percent_change = abs(weight_percent_change),
+    # Create treatment category from growth status and species
+    treatment_category = case_when(
+      species == "ctrl" ~ paste("Control:", growth_status_14dpi),
+      growth_status_14dpi == "Growth, no contamination" ~ species,  # Keep species name for growth without contamination
+      TRUE ~ growth_status_14dpi
+    )
+  ) %>%
+  filter(!is.na(weight_percent_change))
+
+# Create factor with categories in desired order based on growth status
+# Get individual species with growth and no contamination for weight change data
+weight_species_with_growth_1_1 <- unique(weight_change_data$treatment_category[!weight_change_data$treatment_category %in% fixed_categories])
+weight_species_with_growth_1_2 <- unique(weight_change_data$treatment_category[!weight_change_data$treatment_category %in% fixed_categories])
+
+# Create category levels including individual species names for growth without contamination
+weight_category_levels_1_1 <- c(fixed_categories[fixed_categories %in% unique(weight_change_data$treatment_category)], 
+                                sort(weight_species_with_growth_1_1))
+weight_category_levels_1_2 <- c(fixed_categories[fixed_categories %in% unique(weight_change_data$treatment_category)], 
+                                sort(weight_species_with_growth_1_2))
+
+weight_change_data$treatment_category <- factor(weight_change_data$treatment_category, levels = rev(weight_category_levels_1_1))
+weight_change_data$treatment_category <- factor(weight_change_data$treatment_category, levels = rev(weight_category_levels_1_2))
+
+# Calculate sample size information for weight change data by category
+weight_sample_info <- weight_change_data %>%
+  group_by(treatment_category) %>%
+  summarise(
+    n_observations = n(),
+    n_faecal_samples = n_distinct(case_when(
+      !is.na(id_treatment) ~ experiment_1_2$id_faeces[match(id_treatment, experiment_1_2$id_treatment)]
+    ), na.rm = TRUE),
+    n_species = n_distinct(species),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    sample_label = paste0("n=", n_observations, ", f=", n_faecal_samples, ", s=", n_species)
+  )
+
+weight_sample_info <- weight_change_data %>%
+  group_by(treatment_category) %>%
+  summarise(
+    n_observations = n(),
+    n_faecal_samples = n_distinct(case_when(
+      !is.na(id_treatment) ~ experiment_1_2$id_faeces[match(id_treatment, experiment_1_2$id_treatment)]
+    ), na.rm = TRUE),
+    n_species = n_distinct(species),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    sample_label = paste0("n=", n_observations, ", f=", n_faecal_samples, ", s=", n_species)
+  )
+```
+
+```{r weight-change-plots, fig.width=8, fig.height=6}
+# Create custom y-axis labels with sample info on second line
+# Format species names in italics
+weight_labels <- weight_sample_info %>%
+  arrange(match(treatment_category, levels(weight_change_data$treatment_category))) %>%
+  mutate(
+    # Format treatment category with italics for species names
+    formatted_category = case_when(
+      grepl("F15", treatment_category) ~ gsub("F15 Faecal isolate 1", "*F15* Faecal isolate 1", treatment_category),
+      grepl("F31", treatment_category) ~ gsub("F31 Mucor spp I3", "*F31 Mucor* spp. I3", treatment_category),
+      grepl("F35", treatment_category) ~ gsub("F35 Sordaria", "*F35 Sordaria*", treatment_category),
+      grepl("T\\. harzianum", treatment_category) ~ gsub("T\\. harzianum", "*T. harzianum*", treatment_category),
+      TRUE ~ treatment_category
+    ),
+    custom_label = paste0(formatted_category, "\n(n=", n_observations, ", f=", n_faecal_samples, ")")
+  ) %>%
+  pull(custom_label)
+
+weight_change_plot_1_1 <- ggplot(weight_change_data, aes(x = weight_percent_change, y = treatment_category)) +
+  # Add reference line at 0% change
+  geom_vline(xintercept = 0, linetype = "dashed", color = "gray40", size = 0.5, alpha = 0.5) +
+  # Box plots with professional colors
+  geom_boxplot(fill = "#2166AC", alpha = 0.7, color = "black", size = 0.5, outlier.shape = NA) +
+  # Individual points
+  geom_point(alpha = 0.6, size = 1.5, color = "black", position = position_jitter(height = 0.2)) +
+  # Labels
+  labs(
+    title = "A) Weight loss distribution by treatment category (14 DPI) - Experiment 1",
+    x = "Weight loss (%)",
+    y = NULL
+  ) +
+  # Apply publication theme
+  theme_publication() +
+  theme(
+    axis.text.y = element_markdown(size = 8, lineheight = 0.9),
+    plot.title = element_text(size = 11, face = "bold")
+  ) +
+  scale_x_continuous(limits = c(0, max(weight_change_data$weight_percent_change) * 1.1)) +
+  scale_y_discrete(labels = weight_labels)
+
+# Create custom y-axis labels with sample info on second line
+# Format species names in italics
+weight_labels <- weight_sample_info %>%
+  arrange(match(treatment_category, levels(weight_change_data$treatment_category))) %>%
+  mutate(
+    # Format treatment category with italics for species names
+    formatted_category = case_when(
+      grepl("F35", treatment_category) ~ gsub("F35 Sordaria", "*F35 Sordaria*", treatment_category),
+      grepl("F40", treatment_category) ~ gsub("F40", "*F40*", treatment_category),
+      grepl("G\\. lucidum", treatment_category) ~ gsub("G\\. lucidum", "*G. lucidum*", treatment_category),
+      grepl("P\\. ostreatus columbinus", treatment_category) ~ gsub("P\\. ostreatus columbinus", "*P. ostreatus* columbinus", treatment_category),
+      grepl("P\\. ostreatus", treatment_category) & !grepl("columbinus", treatment_category) ~ gsub("P\\. ostreatus", "*P. ostreatus*", treatment_category),
+      grepl("T\\. harzianum", treatment_category) ~ gsub("T\\. harzianum", "*T. harzianum*", treatment_category),
+      grepl("T\\. koningii", treatment_category) ~ gsub("T\\. koningii", "*T. koningii*", treatment_category),
+      TRUE ~ treatment_category
+    ),
+    custom_label = paste0(formatted_category, "\n(n=", n_observations, ", f=", n_faecal_samples, ")")
+  ) %>%
+  pull(custom_label)
+
+# Create box plot for weight change - Experiment 1_2
+weight_change_plot_exp2 <- ggplot(weight_change_data, aes(x = weight_percent_change, y = treatment_category)) +
+  # Add reference line at 0% change
+  geom_vline(xintercept = 0, linetype = "dashed", color = "gray40", size = 0.5, alpha = 0.5) +
+  # Box plots with professional colors
+  geom_boxplot(fill = "#B2182B", alpha = 0.7, color = "black", size = 0.5, outlier.shape = NA) +
+  # Individual points
+  geom_point(alpha = 0.6, size = 1.5, color = "black", position = position_jitter(height = 0.2)) +
+  # Labels
+  labs(
+    title = "B) Weight loss distribution by treatment category (14 DPI) - Experiment 2",
+    x = "Weight loss (%)",
+    y = NULL
+  ) +
+  # Apply publication theme
+  theme_publication() +
+  theme(
+    axis.text.y = element_markdown(size = 8, lineheight = 0.9),
+    plot.title = element_text(size = 11, face = "bold")
+  ) +
+  scale_x_continuous(limits = c(0, max(weight_change_data$weight_percent_change) * 1.1)) +
+  scale_y_discrete(labels = weight_labels)
+
+# Display the weight change plot
+print(weight_change_plot_exp2)
+```
+
+## E. coli Concentration Analysis
+
+```{r ecoli-conc-data, include=FALSE}
+# Prepare E. coli concentration data for Experiment 1_2 (14 DPI only)
+# Using the specialized filtered datasets
+
+ecoli_conc_data <- experiment_1_2_filtered %>%
+  select(id_treatment, species, ecoli_conc, growth_status_14dpi) %>%
+  mutate(
+    time_point = "14 DPI",
+    # Keep actual values including zeros
+    ecoli_concentration = ecoli_conc,
+    # For plotting on log scale, add 1 to all values (will subtract in axis labels)
+    ecoli_concentration_plot = ecoli_conc + 1,
+    # Create treatment category from growth status and species
+    treatment_category = case_when(
+      species == "ctrl" ~ paste("Control:", growth_status_14dpi),
+      growth_status_14dpi == "Growth, no contamination" ~ species,  # Keep species name for growth without contamination
+      TRUE ~ growth_status_14dpi
+    )
+  ) %>%
+  filter(!is.na(ecoli_concentration) & ecoli_concentration >= 0)
+
+ecoli_conc_data <- experiment_1_2_filtered %>%
+  select(id_treatment, species, ecoli_conc, growth_status_14dpi) %>%
+  mutate(
+    time_point = "14 DPI",
+    experiment = "Experiment 1_2",
+    # Keep actual values including zeros
+    ecoli_concentration = ecoli_conc,
+    # For plotting on log scale, add 1 to all values (will subtract in axis labels)
+    ecoli_concentration_plot = ecoli_conc + 1,
+    # Create treatment category from growth status and species
+    treatment_category = case_when(
+      species == "ctrl" ~ paste("Control:", growth_status_14dpi),
+      growth_status_14dpi == "Growth, no contamination" ~ species,  # Keep species name for growth without contamination
+      TRUE ~ growth_status_14dpi
+    )
+  ) %>%
+  filter(!is.na(ecoli_concentration) & ecoli_concentration >= 0)
+
+# Create factor with categories in desired order based on growth status
+# Get individual species with growth and no contamination for E. coli data
+ecoli_species_with_growth_1_1 <- unique(ecoli_conc_data$treatment_category[!ecoli_conc_data$treatment_category %in% fixed_categories])
+ecoli_species_with_growth_1_2 <- unique(ecoli_conc_data$treatment_category[!ecoli_conc_data$treatment_category %in% fixed_categories])
+
+# Create category levels including individual species names for growth without contamination
+ecoli_category_levels_1_1 <- c(fixed_categories[fixed_categories %in% unique(ecoli_conc_data$treatment_category)], 
+                               sort(ecoli_species_with_growth_1_1))
+ecoli_category_levels_1_2 <- c(fixed_categories[fixed_categories %in% unique(ecoli_conc_data$treatment_category)], 
+                               sort(ecoli_species_with_growth_1_2))
+
+ecoli_conc_data$treatment_category <- factor(ecoli_conc_data$treatment_category, levels = rev(ecoli_category_levels_1_1))
+ecoli_conc_data$treatment_category <- factor(ecoli_conc_data$treatment_category, levels = rev(ecoli_category_levels_1_2))
+
+# Calculate sample size information for E. coli concentration data by category
+ecoli_conc_sample_info <- ecoli_conc_data %>%
+  group_by(treatment_category) %>%
+  summarise(
+    n_observations = n(),
+    n_faecal_samples = n_distinct(case_when(
+      !is.na(id_treatment) ~ experiment_1_2$id_faeces[match(id_treatment, experiment_1_2$id_treatment)]
+    ), na.rm = TRUE),
+    n_species = n_distinct(species),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    sample_label = paste0("n=", n_observations, ", f=", n_faecal_samples, ", s=", n_species)
+  )
+
+ecoli_conc_sample_info <- ecoli_conc_data %>%
+  group_by(treatment_category) %>%
+  summarise(
+    n_observations = n(),
+    n_faecal_samples = n_distinct(case_when(
+      !is.na(id_treatment) ~ experiment_1_2$id_faeces[match(id_treatment, experiment_1_2$id_treatment)]
+    ), na.rm = TRUE),
+    n_species = n_distinct(species),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    sample_label = paste0("n=", n_observations, ", f=", n_faecal_samples, ", s=", n_species)
+  )
+```
+
+```{r ecoli-conc-plots, fig.width=8, fig.height=6}
+# Create custom y-axis labels with sample info on second line
+# Format species names in italics
+ecoli_conc_labels <- ecoli_conc_sample_info %>%
+  arrange(match(treatment_category, levels(ecoli_conc_data$treatment_category))) %>%
+  mutate(
+    # Format treatment category with italics for species names
+    formatted_category = case_when(
+      grepl("F15", treatment_category) ~ gsub("F15 Faecal isolate 1", "*F15* Faecal isolate 1", treatment_category),
+      grepl("F31", treatment_category) ~ gsub("F31 Mucor spp I3", "*F31 Mucor* spp. I3", treatment_category),
+      grepl("F35", treatment_category) ~ gsub("F35 Sordaria", "*F35 Sordaria*", treatment_category),
+      grepl("T\\. harzianum", treatment_category) ~ gsub("T\\. harzianum", "*T. harzianum*", treatment_category),
+      TRUE ~ treatment_category
+    ),
+    custom_label = paste0(formatted_category, "\n(n=", n_observations, ", f=", n_faecal_samples, ")")
+  ) %>%
+  pull(custom_label)
+
+ecoli_conc_plot_1_1 <- ggplot(ecoli_conc_data, aes(x = ecoli_concentration_plot, y = treatment_category)) +
+  # Box plots with professional colors
+  geom_boxplot(fill = "#2166AC", alpha = 0.7, color = "black", size = 0.5, outlier.shape = NA) +
+  # Individual points
+  geom_point(alpha = 0.6, size = 1.5, color = "black", position = position_jitter(height = 0.2)) +
+  # Labels
+  labs(
+    title = "A) *E. coli* concentration by treatment category (14 DPI) - Experiment 1",
+    x = "*E. coli* concentration (CFU/g, log scale)",
+    y = NULL
+  ) +
+  # Apply publication theme
+  theme_publication() +
+  theme(
+    axis.text.y = element_markdown(size = 8, lineheight = 0.9),
+    plot.title = element_markdown(size = 11, face = "bold"),
+    axis.title.x = element_markdown(size = 11, face = "bold")
+  ) +
+  scale_x_continuous(trans = "log10") +
+  scale_y_discrete(labels = ecoli_conc_labels)
+
+# Create custom y-axis labels with sample info on second line
+# Format species names in italics
+ecoli_conc_labels <- ecoli_conc_sample_info %>%
+  arrange(match(treatment_category, levels(ecoli_conc_data$treatment_category))) %>%
+  mutate(
+    # Format treatment category with italics for species names
+    formatted_category = case_when(
+      grepl("F35", treatment_category) ~ gsub("F35 Sordaria", "*F35 Sordaria*", treatment_category),
+      grepl("F40", treatment_category) ~ gsub("F40", "*F40*", treatment_category),
+      grepl("G\\. lucidum", treatment_category) ~ gsub("G\\. lucidum", "*G. lucidum*", treatment_category),
+      grepl("P\\. ostreatus columbinus", treatment_category) ~ gsub("P\\. ostreatus columbinus", "*P. ostreatus* columbinus", treatment_category),
+      grepl("P\\. ostreatus", treatment_category) & !grepl("columbinus", treatment_category) ~ gsub("P\\. ostreatus", "*P. ostreatus*", treatment_category),
+      grepl("T\\. harzianum", treatment_category) ~ gsub("T\\. harzianum", "*T. harzianum*", treatment_category),
+      grepl("T\\. koningii", treatment_category) ~ gsub("T\\. koningii", "*T. koningii*", treatment_category),
+      TRUE ~ treatment_category
+    ),
+    custom_label = paste0(formatted_category, "\n(n=", n_observations, ", f=", n_faecal_samples, ")")
+  ) %>%
+  pull(custom_label)
+
+# Create box plot for E. coli concentration - Experiment 1_2
+ecoli_conc_plot_exp2 <- ggplot(ecoli_conc_data, aes(x = ecoli_concentration_plot, y = treatment_category)) +
+  # Box plots with professional colors
+  geom_boxplot(fill = "#B2182B", alpha = 0.7, color = "black", size = 0.5, outlier.shape = NA) +
+  # Individual points
+  geom_point(alpha = 0.6, size = 1.5, color = "black", position = position_jitter(height = 0.2)) +
+  # Labels
+  labs(
+    title = "B) *E. coli* concentration by treatment category (14 DPI) - Experiment 2",
+    x = "*E. coli* concentration (CFU/g, log scale)",
+    y = NULL
+  ) +
+  # Apply publication theme
+  theme_publication() +
+  theme(
+    axis.text.y = element_markdown(size = 8, lineheight = 0.9),
+    plot.title = element_markdown(size = 11, face = "bold"),
+    axis.title.x = element_markdown(size = 11, face = "bold")
+  ) +
+  scale_x_continuous(trans = "log10") +
+  scale_y_discrete(labels = ecoli_conc_labels)
+
+# Display the E. coli concentration plot
+print(ecoli_conc_plot_exp2)
+```
+
+### E. coli Concentration Summary Statistics
+
+```{r ecoli-conc-stats-table}
+# Create summary statistics for E. coli concentration
+ecoli_conc_stats <- ecoli_conc_data %>%
+  group_by(treatment_category) %>%
+  summarise(
+    n = n(),
+    mean_log = round(mean(log10(ecoli_concentration_plot), na.rm = TRUE), 2),
+    median_log = round(median(log10(ecoli_concentration_plot), na.rm = TRUE), 2),
+    sd_log = round(sd(log10(ecoli_concentration_plot), na.rm = TRUE), 2),
+    min_log = round(min(log10(ecoli_concentration_plot), na.rm = TRUE), 2),
+    max_log = round(max(log10(ecoli_concentration_plot), na.rm = TRUE), 2),
+    geometric_mean = round(exp(mean(log(ecoli_concentration_plot), na.rm = TRUE)), 0),
+    q25_log = round(quantile(log10(ecoli_concentration_plot), 0.25, na.rm = TRUE), 2),
+    q75_log = round(quantile(log10(ecoli_concentration_plot), 0.75, na.rm = TRUE), 2),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    iqr_log = q75_log - q25_log,
+    contamination_level = case_when(
+      mean_log < 4 ~ "Low",
+      mean_log < 6 ~ "Moderate",
+      mean_log >= 6 ~ "High"
+    )
+  )
+
+ecoli_conc_stats <- ecoli_conc_data %>%
+  group_by(treatment_category) %>%
+  summarise(
+    n = n(),
+    mean_log = round(mean(log10(ecoli_concentration_plot), na.rm = TRUE), 2),
+    median_log = round(median(log10(ecoli_concentration_plot), na.rm = TRUE), 2),
+    sd_log = round(sd(log10(ecoli_concentration_plot), na.rm = TRUE), 2),
+    min_log = round(min(log10(ecoli_concentration_plot), na.rm = TRUE), 2),
+    max_log = round(max(log10(ecoli_concentration_plot), na.rm = TRUE), 2),
+    geometric_mean = round(exp(mean(log(ecoli_concentration_plot), na.rm = TRUE)), 0),
+    q25_log = round(quantile(log10(ecoli_concentration_plot), 0.25, na.rm = TRUE), 2),
+    q75_log = round(quantile(log10(ecoli_concentration_plot), 0.75, na.rm = TRUE), 2),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    iqr_log = q75_log - q25_log,
+    contamination_level = case_when(
+      mean_log < 4 ~ "Low",
+      mean_log < 6 ~ "Moderate",
+      mean_log >= 6 ~ "High"
+    )
+  )
+
+kable(ecoli_conc_stats,
+      col.names = c("Treatment Category", "N", "Mean Log", "Median Log", "SD Log", 
+                    "Min Log", "Max Log", "Geom. Mean", "Q25 Log", "Q75 Log", "IQR Log", "Contam. Level"),
+      align = c("l", rep("c", 11))) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE) %>%
+  add_header_above(c(" " = 2, "Log10 Statistics" = 7, "Quartiles" = 2, "Classification" = 1)) %>%
+  footnote(general = "Log10 scale concentrations in CFU/g; Geometric mean in original CFU/g units; Contamination level based on log10 CFU/g: <4 = Low, 4-6 = Moderate, ≥6 = High")
+
+# Create formatted table for Experiment 1_2
+kable(ecoli_conc_stats,
+      caption = "Table 10: E. coli Concentration Statistics for Experiment 1_2 at 14 DPI",
+      col.names = c("Treatment Category", "N", "Mean Log", "Median Log", "SD Log", 
+                    "Min Log", "Max Log", "Geom. Mean", "Q25 Log", "Q75 Log", "IQR Log", "Contam. Level"),
+      align = c("l", rep("c", 11))) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE) %>%
+  add_header_above(c(" " = 2, "Log10 Statistics" = 7, "Quartiles" = 2, "Classification" = 1)) %>%
+  footnote(general = "Log10 scale concentrations in CFU/g; Geometric mean in original CFU/g units; Contamination level based on log10 CFU/g: <4 = Low, 4-6 = Moderate, ≥6 = High")
+
+# Statistical analysis - ANOVA for E. coli concentration differences
+cat("\n### Statistical Analysis: E. coli Concentration Differences\n\n")
+
+ecoli_anova_1_1 <- aov(log10(ecoli_concentration_plot) ~ treatment_category, data = ecoli_conc_data)
+print(summary(ecoli_anova_1_1))
+cat("\n")
+
+# Test for Experiment 1_2
+ecoli_anova_1_2 <- aov(log10(ecoli_concentration_plot) ~ treatment_category, data = ecoli_conc_data)
+cat("**Experiment 1_2 ANOVA Results (Log10 transformed):**\n")
+print(summary(ecoli_anova_1_2))
+cat("\n")
+
+# Post-hoc tests if significant
+if(summary(ecoli_anova_1_1)[[1]][["Pr(>F)"]][1] < 0.05) {
+  print(TukeyHSD(ecoli_anova_1_1))
+  cat("\n")
+}
+
+if(summary(ecoli_anova_1_2)[[1]][["Pr(>F)"]][1] < 0.05) {
+  cat("**Experiment 1_2 Tukey HSD Post-hoc Test:**\n")
+  print(TukeyHSD(ecoli_anova_1_2))
+  cat("\n")
+}
+```
+
+## E. coli Log Change Analysis
+
+```{r ecoli-log-change-data, include=FALSE}
+# Prepare E. coli log change data for Experiment 1_2 (14 DPI only)
+# Calculate log change as log10(baseline) - log10(14dpi) where positive values = reduction
+# Using the specialized filtered datasets
+
+ecoli_log_change_data <- experiment_1_2_filtered %>%
+  select(id_treatment, species, ecoli_conc, ecoli_conc_mean_0dpi, growth_status_14dpi) %>%
+  mutate(
+    time_point = "14 DPI",
+    # Replace 0 values with 1 for log calculation
+    ecoli_conc_adj = case_when(
+      ecoli_conc == 0 ~ 1,
+      TRUE ~ ecoli_conc
+    ),
+    ecoli_conc_mean_0dpi_adj = case_when(
+      ecoli_conc_mean_0dpi == 0 ~ 1,
+      TRUE ~ ecoli_conc_mean_0dpi
+    ),
+    ecoli_log_change = log10(ecoli_conc_mean_0dpi_adj) - log10(ecoli_conc_adj),
+    # Create treatment category from growth status and species
+    treatment_category = case_when(
+      species == "ctrl" ~ paste("Control:", growth_status_14dpi),
+      growth_status_14dpi == "Growth, no contamination" ~ species,  # Keep species name for growth without contamination
+      TRUE ~ growth_status_14dpi
+    )
+  ) %>%
+  filter(!is.na(ecoli_log_change) & !is.infinite(ecoli_log_change))
+
+ecoli_log_change_data <- experiment_1_2_filtered %>%
+  select(id_treatment, species, ecoli_conc, ecoli_conc_mean_0dpi, growth_status_14dpi) %>%
+  mutate(
+    time_point = "14 DPI",
+    experiment = "Experiment 1_2",
+    # Replace 0 values with 1 for log calculation
+    ecoli_conc_adj = case_when(
+      ecoli_conc == 0 ~ 1,
+      TRUE ~ ecoli_conc
+    ),
+    ecoli_conc_mean_0dpi_adj = case_when(
+      ecoli_conc_mean_0dpi == 0 ~ 1,
+      TRUE ~ ecoli_conc_mean_0dpi
+    ),
+    ecoli_log_change = log10(ecoli_conc_mean_0dpi_adj) - log10(ecoli_conc_adj),
+    # Create treatment category from growth status and species
+    treatment_category = case_when(
+      species == "ctrl" ~ paste("Control:", growth_status_14dpi),
+      growth_status_14dpi == "Growth, no contamination" ~ species,  # Keep species name for growth without contamination
+      TRUE ~ growth_status_14dpi
+    )
+  ) %>%
+  filter(!is.na(ecoli_log_change) & !is.infinite(ecoli_log_change))
+
+# Create factor with categories in desired order based on growth status
+# Get individual species with growth and no contamination for E. coli log change data
+ecoli_log_species_with_growth_1_1 <- unique(ecoli_log_change_data$treatment_category[!ecoli_log_change_data$treatment_category %in% fixed_categories])
+ecoli_log_species_with_growth_1_2 <- unique(ecoli_log_change_data$treatment_category[!ecoli_log_change_data$treatment_category %in% fixed_categories])
+
+# Create category levels including individual species names for growth without contamination
+ecoli_log_category_levels_1_1 <- c(fixed_categories[fixed_categories %in% unique(ecoli_log_change_data$treatment_category)], 
+                                   sort(ecoli_log_species_with_growth_1_1))
+ecoli_log_category_levels_1_2 <- c(fixed_categories[fixed_categories %in% unique(ecoli_log_change_data$treatment_category)], 
+                                   sort(ecoli_log_species_with_growth_1_2))
+
+ecoli_log_change_data$treatment_category <- factor(ecoli_log_change_data$treatment_category, levels = rev(ecoli_log_category_levels_1_1))
+ecoli_log_change_data$treatment_category <- factor(ecoli_log_change_data$treatment_category, levels = rev(ecoli_log_category_levels_1_2))
+
+# Calculate sample size information for E. coli log change data by category
+ecoli_log_change_sample_info <- ecoli_log_change_data %>%
+  group_by(treatment_category) %>%
+  summarise(
+    n_observations = n(),
+    n_faecal_samples = n_distinct(case_when(
+      !is.na(id_treatment) ~ experiment_1_2$id_faeces[match(id_treatment, experiment_1_2$id_treatment)]
+    ), na.rm = TRUE),
+    n_species = n_distinct(species),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    sample_label = paste0("n=", n_observations, ", f=", n_faecal_samples, ", s=", n_species)
+  )
+
+ecoli_log_change_sample_info <- ecoli_log_change_data %>%
+  group_by(treatment_category) %>%
+  summarise(
+    n_observations = n(),
+    n_faecal_samples = n_distinct(case_when(
+      !is.na(id_treatment) ~ experiment_1_2$id_faeces[match(id_treatment, experiment_1_2$id_treatment)]
+    ), na.rm = TRUE),
+    n_species = n_distinct(species),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    sample_label = paste0("n=", n_observations, ", f=", n_faecal_samples, ", s=", n_species)
+  )
+```
+
+```{r ecoli-log-change-plots, fig.width=8, fig.height=6}
+# Create custom y-axis labels with sample info on second line
+# Format species names in italics
+ecoli_log_change_labels <- ecoli_log_change_sample_info %>%
+  arrange(match(treatment_category, levels(ecoli_log_change_data$treatment_category))) %>%
+  mutate(
+    # Format treatment category with italics for species names
+    formatted_category = case_when(
+      grepl("F15", treatment_category) ~ gsub("F15 Faecal isolate 1", "*F15* Faecal isolate 1", treatment_category),
+      grepl("F31", treatment_category) ~ gsub("F31 Mucor spp I3", "*F31 Mucor* spp. I3", treatment_category),
+      grepl("F35", treatment_category) ~ gsub("F35 Sordaria", "*F35 Sordaria*", treatment_category),
+      grepl("T\\. harzianum", treatment_category) ~ gsub("T\\. harzianum", "*T. harzianum*", treatment_category),
+      TRUE ~ treatment_category
+    ),
+    custom_label = paste0(formatted_category, "\n(n=", n_observations, ", f=", n_faecal_samples, ")")
+  ) %>%
+  pull(custom_label)
+
+ecoli_log_change_plot_1_1 <- ggplot(ecoli_log_change_data, aes(x = ecoli_log_change, y = treatment_category)) +
+  # Add reference line at 0 (no change)
+  geom_vline(xintercept = 0, linetype = "dashed", color = "gray40", size = 0.5, alpha = 0.5) +
+  # Box plots with professional colors
+  geom_boxplot(fill = "#2166AC", alpha = 0.7, color = "black", size = 0.5, outlier.shape = NA) +
+  # Individual points
+  geom_point(alpha = 0.6, size = 1.5, color = "black", position = position_jitter(height = 0.2)) +
+  # Labels
+  labs(
+    title = "A) *E. coli* log reduction by treatment category (14 DPI) - Experiment 1",
+    x = "*E. coli* log reduction (log₁₀ CFU/g)",
+    y = NULL
+  ) +
+  # Apply publication theme
+  theme_publication() +
+  theme(
+    axis.text.y = element_markdown(size = 8, lineheight = 0.9),
+    plot.title = element_markdown(size = 11, face = "bold"),
+    axis.title.x = element_markdown(size = 11, face = "bold")
+  ) +
+  scale_y_discrete(labels = ecoli_log_change_labels)
+
+# Create custom y-axis labels with sample info on second line
+# Format species names in italics
+ecoli_log_change_labels <- ecoli_log_change_sample_info %>%
+  arrange(match(treatment_category, levels(ecoli_log_change_data$treatment_category))) %>%
+  mutate(
+    # Format treatment category with italics for species names
+    formatted_category = case_when(
+      grepl("F35", treatment_category) ~ gsub("F35 Sordaria", "*F35 Sordaria*", treatment_category),
+      grepl("F40", treatment_category) ~ gsub("F40", "*F40*", treatment_category),
+      grepl("G\\. lucidum", treatment_category) ~ gsub("G\\. lucidum", "*G. lucidum*", treatment_category),
+      grepl("P\\. ostreatus columbinus", treatment_category) ~ gsub("P\\. ostreatus columbinus", "*P. ostreatus* columbinus", treatment_category),
+      grepl("P\\. ostreatus", treatment_category) & !grepl("columbinus", treatment_category) ~ gsub("P\\. ostreatus", "*P. ostreatus*", treatment_category),
+      grepl("T\\. harzianum", treatment_category) ~ gsub("T\\. harzianum", "*T. harzianum*", treatment_category),
+      grepl("T\\. koningii", treatment_category) ~ gsub("T\\. koningii", "*T. koningii*", treatment_category),
+      TRUE ~ treatment_category
+    ),
+    custom_label = paste0(formatted_category, "\n(n=", n_observations, ", f=", n_faecal_samples, ")")
+  ) %>%
+  pull(custom_label)
+
+# Create box plot for E. coli log change - Experiment 1_2
+ecoli_log_change_plot_exp2 <- ggplot(ecoli_log_change_data, aes(x = ecoli_log_change, y = treatment_category)) +
+  # Add reference line at 0 (no change)
+  geom_vline(xintercept = 0, linetype = "dashed", color = "gray40", size = 0.5, alpha = 0.5) +
+  # Box plots with professional colors
+  geom_boxplot(fill = "#B2182B", alpha = 0.7, color = "black", size = 0.5, outlier.shape = NA) +
+  # Individual points
+  geom_point(alpha = 0.6, size = 1.5, color = "black", position = position_jitter(height = 0.2)) +
+  # Labels
+  labs(
+    title = "B) *E. coli* log reduction by treatment category (14 DPI) - Experiment 2",
+    x = "*E. coli* log reduction (log₁₀ CFU/g)",
+    y = NULL
+  ) +
+  # Apply publication theme
+  theme_publication() +
+  theme(
+    axis.text.y = element_markdown(size = 8, lineheight = 0.9),
+    plot.title = element_markdown(size = 11, face = "bold"),
+    axis.title.x = element_markdown(size = 11, face = "bold")
+  ) +
+  scale_y_discrete(labels = ecoli_log_change_labels)
+
+# Display the E. coli log change plot
+print(ecoli_log_change_plot_exp2)
+```
+
+### E. coli Log Reduction Summary Statistics
+
+```{r ecoli-log-change-stats-table}
+# Create summary statistics for E. coli log reduction
+ecoli_log_stats <- ecoli_log_change_data %>%
+  group_by(treatment_category) %>%
+  summarise(
+    n = n(),
+    mean = round(mean(ecoli_log_change, na.rm = TRUE), 2),
+    median = round(median(ecoli_log_change, na.rm = TRUE), 2),
+    sd = round(sd(ecoli_log_change, na.rm = TRUE), 2),
+    min = round(min(ecoli_log_change, na.rm = TRUE), 2),
+    max = round(max(ecoli_log_change, na.rm = TRUE), 2),
+    q25 = round(quantile(ecoli_log_change, 0.25, na.rm = TRUE), 2),
+    q75 = round(quantile(ecoli_log_change, 0.75, na.rm = TRUE), 2),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    iqr = q75 - q25,
+    efficacy = case_when(
+      mean < 1 ~ "Low",
+      mean < 3 ~ "Moderate",
+      mean >= 3 ~ "High"
+    )
+  )
+
+ecoli_log_stats <- ecoli_log_change_data %>%
+  group_by(treatment_category) %>%
+  summarise(
+    n = n(),
+    mean = round(mean(ecoli_log_change, na.rm = TRUE), 2),
+    median = round(median(ecoli_log_change, na.rm = TRUE), 2),
+    sd = round(sd(ecoli_log_change, na.rm = TRUE), 2),
+    min = round(min(ecoli_log_change, na.rm = TRUE), 2),
+    max = round(max(ecoli_log_change, na.rm = TRUE), 2),
+    q25 = round(quantile(ecoli_log_change, 0.25, na.rm = TRUE), 2),
+    q75 = round(quantile(ecoli_log_change, 0.75, na.rm = TRUE), 2),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    iqr = q75 - q25,
+    efficacy = case_when(
+      mean < 1 ~ "Low",
+      mean < 3 ~ "Moderate",
+      mean >= 3 ~ "High"
+    )
+  )
+
+kable(ecoli_log_stats,
+      col.names = c("Treatment Category", "N", "Mean", "Median", "SD", 
+                    "Min", "Max", "Q25", "Q75", "IQR", "Efficacy"),
+      align = c("l", rep("c", 10))) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE) %>%
+  add_header_above(c(" " = 2, "Central Tendency" = 2, "Variability" = 1, 
+                     "Range" = 2, "Quartiles" = 3, "Classification" = 1)) %>%
+  footnote(general = "Log reduction = log10(baseline) - log10(14dpi); Positive values indicate reduction; Efficacy: <1 = Low, 1-3 = Moderate, ≥3 = High")
+
+# Create formatted table for Experiment 1_2
+kable(ecoli_log_stats,
+      caption = "Table 12: E. coli Log Reduction Statistics for Experiment 1_2 at 14 DPI",
+      col.names = c("Treatment Category", "N", "Mean", "Median", "SD", 
+                    "Min", "Max", "Q25", "Q75", "IQR", "Efficacy"),
+      align = c("l", rep("c", 10))) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE) %>%
+  add_header_above(c(" " = 2, "Central Tendency" = 2, "Variability" = 1, 
+                     "Range" = 2, "Quartiles" = 3, "Classification" = 1)) %>%
+  footnote(general = "Log reduction = log10(baseline) - log10(14dpi); Positive values indicate reduction; Efficacy: <1 = Low, 1-3 = Moderate, ≥3 = High")
+
+# Statistical analysis - ANOVA for E. coli log reduction differences
+cat("\n### Statistical Analysis: E. coli Log Reduction Differences\n\n")
+
+ecoli_log_anova_1_1 <- aov(ecoli_log_change ~ treatment_category, data = ecoli_log_change_data)
+print(summary(ecoli_log_anova_1_1))
+cat("\n")
+
+# Test for Experiment 1_2
+ecoli_log_anova_1_2 <- aov(ecoli_log_change ~ treatment_category, data = ecoli_log_change_data)
+cat("**Experiment 1_2 ANOVA Results:**\n")
+print(summary(ecoli_log_anova_1_2))
+cat("\n")
+
+# Post-hoc tests if significant
+if(summary(ecoli_log_anova_1_1)[[1]][["Pr(>F)"]][1] < 0.05) {
+  print(TukeyHSD(ecoli_log_anova_1_1))
+  cat("\n")
+}
+
+if(summary(ecoli_log_anova_1_2)[[1]][["Pr(>F)"]][1] < 0.05) {
+  cat("**Experiment 1_2 Tukey HSD Post-hoc Test:**\n")
+  print(TukeyHSD(ecoli_log_anova_1_2))
+  cat("\n")
+}
+
+# Overall summary
+cat("### Summary of Treatment Efficacy\n\n")
+cat("**Best performing treatments for E. coli reduction:**\n")
+
+best_1_1 <- ecoli_log_stats %>% 
+  filter(efficacy == "High" | mean == max(mean)) %>%
+  select(treatment_category, mean, efficacy)
+  
+best_1_2 <- ecoli_log_stats %>% 
+  filter(efficacy == "High" | mean == max(mean)) %>%
+  select(treatment_category, mean, efficacy)
+
+if(nrow(best_1_1) > 0) {
+  for(i in 1:nrow(best_1_1)) {
+    cat(paste0(best_1_1$treatment_category[i], " (", best_1_1$mean[i], " log reduction)"))
+    if(i < nrow(best_1_1)) cat(", ")
+  }
+  cat("\n")
+}
+
+if(nrow(best_1_2) > 0) {
+  cat("- **Experiment 1_2:** ")
+  for(i in 1:nrow(best_1_2)) {
+    cat(paste0(best_1_2$treatment_category[i], " (", best_1_2$mean[i], " log reduction)"))
+    if(i < nrow(best_1_2)) cat(", ")
+  }
+  cat("\n")
+}
+```
+
+# Faecal Sample Characteristics and Growth Success
+
+## Relationship Between Initial Faecal Parameters and Growth Success: P. ostreatus vs G. lucidum
+
+This section examines whether the characteristics of the initial faecal sample influence the probability of successful growth for two contrasting fungal species: **P. ostreatus columbinus** (aggressive decomposer) and **G. lucidum** (slow-growing medicinal mushroom).
+
+```{r faecal-growth-correlation-setup, include=FALSE}
+# Create binary growth outcome variable and combine with initial faecal parameters
+# Using area_size_14dpi > 10 mm² as meaningful growth threshold
+# ONLY ANALYZING EXPERIMENT 1_2
+growth_faecal_data <- experiment_1_2 %>%
+  mutate(
+    # Binary growth outcome: meaningful growth based on area size
+    growth_success_binary = case_when(
+      is.na(area_size_14dpi) ~ 0,  # No growth if area not measured
+      area_size_14dpi > 10 ~ 1,    # Growth if area > 10 mm²
+      area_size_14dpi <= 10 ~ 0    # No meaningful growth if area ≤ 10 mm²
+    ),
+    growth_success_binary = as.factor(growth_success_binary)
+  ) %>%
+  # Join with initial faecal parameters
+  select(id_treatment, id_faeces, species, growth_success_binary, 
+         area_size_14dpi, growth_description_14dpi, ph_0dpi, water_content_0dpi, ecoli_conc_mean_0dpi) %>%
+  filter(!is.na(growth_success_binary), 
+         species %in% c("P. ostreatus columbinus", "G. lucidum")) %>%  # Only analyze these two species
+  mutate(
+    # Log transform E. coli for analysis
+    log_ecoli_0dpi = log10(ecoli_conc_mean_0dpi + 1)  # +1 to handle zeros
+  )
+
+# Calculate summary statistics by growth outcome
+faecal_summary_stats <- growth_faecal_data %>%
+  group_by(growth_success_binary) %>%
+  summarise(
+    n = n(),
+    mean_ph = round(mean(ph_0dpi, na.rm = TRUE), 2),
+    sd_ph = round(sd(ph_0dpi, na.rm = TRUE), 2),
+    mean_water = round(mean(water_content_0dpi, na.rm = TRUE), 1),
+    sd_water = round(sd(water_content_0dpi, na.rm = TRUE), 1),
+    mean_ecoli = round(mean(ecoli_conc_mean_0dpi, na.rm = TRUE), 0),
+    median_ecoli = round(median(ecoli_conc_mean_0dpi, na.rm = TRUE), 0),
+    mean_log_ecoli = round(mean(log_ecoli_0dpi, na.rm = TRUE), 2),
+    sd_log_ecoli = round(sd(log_ecoli_0dpi, na.rm = TRUE), 2),
+    .groups = "drop"
+  )
+```
+
+### Summary Statistics by Growth Outcome
+
+```{r faecal-summary-table}
+# Create formatted summary table
+kable(faecal_summary_stats,
+      caption = "Table 13: Initial Faecal Sample Characteristics by Growth Outcome (P. ostreatus & G. lucidum)",
+      col.names = c("Growth", "N", "pH Mean", "pH SD", 
+                    "Water% Mean", "Water% SD", "E.coli Mean", "E.coli Median", 
+                    "Log E.coli Mean", "Log E.coli SD"),
+      align = c("c", rep("c", 9))) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE) %>%
+  add_header_above(c(" " = 2, "pH (0 DPI)" = 2, "Water Content (%)" = 2, 
+                     "E. coli (CFU/g)" = 2, "Log E. coli" = 2)) %>%
+  footnote(general = "Growth: 0 = No meaningful growth (≤10 mm²), 1 = Growth (>10 mm²); E. coli concentrations in CFU/g; Log transformation: log10(CFU/g + 1)")
+```
+
+### Species-wise Growth Analysis
+
+```{r species-growth-analysis, warning=FALSE}
+# Suppress warnings for this chunk as factor comparisons generate many warnings
+# Calculate growth success rate and average initial conditions by species
+species_growth_analysis <- suppressWarnings({
+  growth_faecal_data %>%
+    group_by(species) %>%
+    summarise(
+      n_total = n(),
+      n_growth = sum(growth_success_binary == "1"),
+      growth_rate = round(n_growth / n_total * 100, 1),
+      mean_area_when_grew = round(mean(area_size_14dpi[growth_success_binary == "1"], na.rm = TRUE), 1),
+      mean_ph = round(mean(ph_0dpi, na.rm = TRUE), 2),
+      mean_water = round(mean(water_content_0dpi, na.rm = TRUE), 1),
+      mean_ecoli = round(mean(ecoli_conc_mean_0dpi, na.rm = TRUE), 0),
+      .groups = "drop"
+    ) %>%
+    arrange(desc(growth_rate))
+})
+
+# Display species growth analysis
+kable(species_growth_analysis,
+      caption = "Table 14: Growth Success Comparison - P. ostreatus vs G. lucidum",
+      col.names = c("Species", "N Total", "N Grew", "Growth %", "Mean Area (mm²)", 
+                    "Mean pH", "Mean Water %", "Mean E.coli"),
+      align = c("l", rep("c", 7))) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE) %>%
+  footnote(general = "Growth defined as area >10 mm² at 14 DPI; Mean area calculated only for samples that grew")
+
+# Identify patterns
+cat("\n### Species-specific Growth Patterns:\n\n")
+
+# High performers (>75% growth rate)
+high_performers <- species_growth_analysis %>% filter(growth_rate > 75)
+if(nrow(high_performers) > 0) {
+  cat("**High Growth Success (>75%):**\n")
+  for(i in 1:nrow(high_performers)) {
+    cat(sprintf("- **%s**: %.1f%% growth rate (n=%d)\n", 
+                high_performers$species[i], 
+                high_performers$growth_rate[i],
+                high_performers$n_total[i]))
+  }
+  cat("\n")
+}
+
+# Poor performers (<25% growth rate)
+poor_performers <- species_growth_analysis %>% filter(growth_rate < 25)
+if(nrow(poor_performers) > 0) {
+  cat("**Low Growth Success (<25%):**\n")
+  for(i in 1:nrow(poor_performers)) {
+    cat(sprintf("- **%s**: %.1f%% growth rate (n=%d)\n", 
+                poor_performers$species[i], 
+                poor_performers$growth_rate[i],
+                poor_performers$n_total[i]))
+  }
+  cat("\n")
+}
+
+# Analyze potential reasons
+cat("### Potential Factors Influencing Growth by Species:\n\n")
+
+# For each species, identify key characteristics
+for(sp in unique(species_growth_analysis$species)) {
+  sp_data <- growth_faecal_data %>% filter(species == sp)
+  # Suppress warnings from factor comparisons
+  grew_data <- suppressWarnings(sp_data %>% filter(growth_success_binary == "1"))
+  no_grew_data <- suppressWarnings(sp_data %>% filter(growth_success_binary == "0"))
+  
+  cat(sprintf("**%s:**\n", sp))
+  
+  # Growth rate
+  growth_rate <- species_growth_analysis %>% filter(species == sp) %>% pull(growth_rate)
+  if(length(growth_rate) > 0) {
+    cat(sprintf("- Growth success rate: %.1f%%\n", growth_rate))
+  }
+  
+  # Compare conditions between growth and no growth
+  if(nrow(grew_data) > 0 && nrow(no_grew_data) > 0) {
+    # pH difference with NA handling
+    ph_grew <- mean(grew_data$ph_0dpi, na.rm = TRUE)
+    ph_no_grew <- mean(no_grew_data$ph_0dpi, na.rm = TRUE)
+    if(!is.na(ph_grew) && !is.na(ph_no_grew)) {
+      ph_diff <- ph_grew - ph_no_grew
+      if(abs(ph_diff) > 0.2) {
+        cat(sprintf("- Samples that grew had %s initial pH (Δ = %.2f)\n", 
+                    ifelse(ph_diff > 0, "higher", "lower"), abs(ph_diff)))
+      }
+    }
+    
+    # Water content difference with NA handling
+    water_grew <- mean(grew_data$water_content_0dpi, na.rm = TRUE)
+    water_no_grew <- mean(no_grew_data$water_content_0dpi, na.rm = TRUE)
+    if(!is.na(water_grew) && !is.na(water_no_grew)) {
+      water_diff <- water_grew - water_no_grew
+      if(abs(water_diff) > 5) {
+        cat(sprintf("- Samples that grew had %s water content (Δ = %.1f%%)\n", 
+                    ifelse(water_diff > 0, "higher", "lower"), abs(water_diff)))
+      }
+    }
+    
+    # E. coli difference with NA and zero handling
+    ecoli_grew <- mean(grew_data$ecoli_conc_mean_0dpi, na.rm = TRUE)
+    ecoli_no_grew <- mean(no_grew_data$ecoli_conc_mean_0dpi, na.rm = TRUE)
+    if(!is.na(ecoli_grew) && !is.na(ecoli_no_grew) && ecoli_no_grew > 0) {
+      ecoli_ratio <- ecoli_grew / ecoli_no_grew
+      if(!is.na(ecoli_ratio) && !is.infinite(ecoli_ratio) && (ecoli_ratio > 2 || ecoli_ratio < 0.5)) {
+        cat(sprintf("- Samples that grew had %.1fx the E. coli concentration\n", ecoli_ratio))
+      }
+    }
+  }
+  
+  # Species-specific notes (with safe growth_rate checks)
+  if(length(growth_rate) > 0 && !is.na(growth_rate)) {
+    if(sp == "F35 Sordaria" && growth_rate < 50) {
+      cat("- Known for slow initial growth; may need longer than 14 days\n")
+    } else if(sp == "Coprinus comata" && growth_rate > 75) {
+      cat("- Coprophilic species naturally adapted to faecal substrate\n")
+    } else if(grepl("T\\. harzianum", sp) && growth_rate > 50) {
+      cat("- Fast-growing competitive species with antimicrobial properties\n")
+    } else if(sp == "F31 Mucor spp I3" && growth_rate > 50) {
+      cat("- Rapid colonizer typical of Zygomycetes\n")
+    } else if(sp == "F15 Faecal isolate 1") {
+      cat("- Indigenous isolate pre-adapted to faecal conditions\n")
+    } else if(sp == "G. lucidum" && growth_rate < 50) {
+      cat("- Slow-growing medicinal mushroom, typically prefers woody substrates\n")
+    } else if(sp == "P. ostreatus columbinus" && growth_rate > 50) {
+      cat("- Aggressive decomposer with broad substrate range\n")
+    } else if(sp == "T. koningii") {
+      cat("- Cellulolytic species requiring adequate moisture\n")
+    }
+  }
+  
+  cat("\n")
+}
+
+# General conclusions
+cat("### General Growth Patterns:\n\n")
+cat("- **Growth threshold**: Meaningful growth defined as >10 mm² colony area at 14 DPI\n")
+cat("- **Fast colonizers**: Species reaching >100 mm² within 14 days likely have competitive advantages\n")
+cat("- **Slow starters**: Some species may require longer incubation periods for full assessment\n")
+cat("- **Environmental preferences**: Species show differential responses to pH, moisture, and microbial competition\n")
+```
+
+### Visualization of Relationships
+
+```{r faecal-growth-plots, fig.height=12, fig.width=10}
+# Create species-specific color palette
+species_colors <- c("P. ostreatus columbinus" = "#2166AC", "G. lucidum" = "#B2182B")
+
+# pH plot with species comparison
+ph_plot <- ggplot(growth_faecal_data, aes(x = growth_success_binary, y = ph_0dpi, fill = species)) +
+  geom_boxplot(alpha = 0.7, position = position_dodge(width = 0.8)) +
+  geom_point(aes(color = species), alpha = 0.6, size = 1.5, 
+             position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.8)) +
+  labs(
+    title = "A) Initial pH vs Growth Success by Species",
+    subtitle = "P. ostreatus vs G. lucidum comparison",
+    x = "Growth Outcome",
+    y = "pH at 0 DPI",
+    fill = "Species",
+    color = "Species"
+  ) +
+  theme_publication() +
+  scale_fill_manual(values = species_colors) +
+  scale_color_manual(values = species_colors) +
+  scale_x_discrete(labels = c("0" = "No Growth\n(≤10 mm²)", "1" = "Growth\n(>10 mm²)"))
+
+# Water content plot with species comparison
+water_plot <- ggplot(growth_faecal_data, aes(x = growth_success_binary, y = water_content_0dpi, fill = species)) +
+  geom_boxplot(alpha = 0.7, position = position_dodge(width = 0.8)) +
+  geom_point(aes(color = species), alpha = 0.6, size = 1.5,
+             position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.8)) +
+  labs(
+    title = "B) Initial Water Content vs Growth Success by Species",
+    subtitle = "P. ostreatus vs G. lucidum comparison",
+    x = "Growth Outcome",
+    y = "Water Content at 0 DPI (%)",
+    fill = "Species",
+    color = "Species"
+  ) +
+  theme_publication() +
+  scale_fill_manual(values = species_colors) +
+  scale_color_manual(values = species_colors) +
+  scale_x_discrete(labels = c("0" = "No Growth\n(≤10 mm²)", "1" = "Growth\n(>10 mm²)"))
+
+# E. coli plot with species comparison
+ecoli_plot <- ggplot(growth_faecal_data, aes(x = growth_success_binary, y = log_ecoli_0dpi, fill = species)) +
+  geom_boxplot(alpha = 0.7, position = position_dodge(width = 0.8)) +
+  geom_point(aes(color = species), alpha = 0.6, size = 1.5,
+             position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.8)) +
+  labs(
+    title = "C) Initial E. coli Concentration vs Growth Success by Species",
+    subtitle = "P. ostreatus vs G. lucidum comparison",
+    x = "Growth Outcome",
+    y = "Log10(E. coli CFU/g + 1)",
+    fill = "Species",
+    color = "Species"
+  ) +
+  theme_publication() +
+  scale_fill_manual(values = species_colors) +
+  scale_color_manual(values = species_colors) +
+  scale_x_discrete(labels = c("0" = "No Growth\n(≤10 mm²)", "1" = "Growth\n(>10 mm²)"))
+
+# Combine plots
+library(gridExtra)
+grid.arrange(ph_plot, water_plot, ecoli_plot, ncol = 1)
+```
+
+### Statistical Analysis
+
+```{r faecal-growth-stats}
+# Correlation analysis (point-biserial correlations)
+cat("### Point-Biserial Correlations\n\n")
+
+# Function to calculate point-biserial correlation
+calc_point_biserial <- function(data, var_name) {
+  # Convert binary factor to numeric (0,1)
+  binary_numeric <- as.numeric(as.character(data$growth_success_binary))
+  continuous_var <- data[[var_name]]
+  
+  # Remove missing values
+  complete_cases <- complete.cases(binary_numeric, continuous_var)
+  binary_clean <- binary_numeric[complete_cases]
+  continuous_clean <- continuous_var[complete_cases]
+  
+  if(length(unique(binary_clean)) < 2) {
+    return(list(correlation = NA, p_value = NA, n = length(binary_clean)))
+  }
+  
+  # Calculate correlation
+  cor_test <- cor.test(binary_clean, continuous_clean, method = "pearson")
+  
+  return(list(
+    correlation = round(cor_test$estimate, 3),
+    p_value = round(cor_test$p.value, 4),
+    n = length(binary_clean)
+  ))
+}
+
+# Calculate correlations for both species separately and combined
+variables <- c("ph_0dpi", "water_content_0dpi", "log_ecoli_0dpi")
+var_names <- c("pH", "Water Content (%)", "Log E. coli")
+
+cat("**P. ostreatus columbinus Correlations:**\n")
+p_ostreatus_data <- growth_faecal_data %>% filter(species == "P. ostreatus columbinus")
+for(i in 1:length(variables)) {
+  result <- calc_point_biserial(p_ostreatus_data, variables[i])
+  cat(sprintf("- %s: r = %s, p = %s, n = %d\n", 
+              var_names[i], result$correlation, result$p_value, result$n))
+}
+
+cat("\n**G. lucidum Correlations:**\n")
+g_lucidum_data <- growth_faecal_data %>% filter(species == "G. lucidum")
+for(i in 1:length(variables)) {
+  result <- calc_point_biserial(g_lucidum_data, variables[i])
+  cat(sprintf("- %s: r = %s, p = %s, n = %d\n", 
+              var_names[i], result$correlation, result$p_value, result$n))
+}
+
+cat("\n**Combined Species Correlations:**\n")
+for(i in 1:length(variables)) {
+  result <- calc_point_biserial(growth_faecal_data, variables[i])
+  cat(sprintf("- %s: r = %s, p = %s, n = %d\n", 
+              var_names[i], result$correlation, result$p_value, result$n))
+}
+
+# Logistic regression analysis
+cat("\n### Logistic Regression Analysis\n\n")
+
+# Check if there's sufficient variability in the outcome
+if(length(unique(growth_faecal_data$growth_success_binary)) < 2) {
+  cat("Note: Insufficient variability in growth outcomes to perform logistic regression.\n")
+  cat("All samples either grew or did not grow, preventing statistical modeling.\n")
+} else {
+  
+  # Fit logistic regression models with error handling
+  cat("**Individual Parameter Models (P. ostreatus & G. lucidum):**\n\n")
+  
+  # pH model with species
+  ph_model <- tryCatch({
+    glm(growth_success_binary ~ ph_0dpi + species, 
+        data = growth_faecal_data, family = binomial)
+  }, error = function(e) {
+    cat("pH Model: Unable to fit model - ", e$message, "\n")
+    NULL
+  })
+  if(!is.null(ph_model)) {
+    cat("pH Model (including species effect):\n")
+    print(summary(ph_model))
+    cat("\n")
+  }
+  
+  # Water content model with species
+  water_model <- tryCatch({
+    glm(growth_success_binary ~ water_content_0dpi + species, 
+        data = growth_faecal_data, family = binomial)
+  }, error = function(e) {
+    cat("Water Content Model: Unable to fit model - ", e$message, "\n")
+    NULL
+  })
+  if(!is.null(water_model)) {
+    cat("Water Content Model (including species effect):\n")
+    print(summary(water_model))
+    cat("\n")
+  }
+  
+  # E. coli model with species
+  ecoli_model <- tryCatch({
+    glm(growth_success_binary ~ log_ecoli_0dpi + species, 
+        data = growth_faecal_data, family = binomial)
+  }, error = function(e) {
+    cat("E. coli Model: Unable to fit model - ", e$message, "\n")
+    NULL
+  })
+  if(!is.null(ecoli_model)) {
+    cat("E. coli Model (including species effect):\n")
+    print(summary(ecoli_model))
+    cat("\n")
+  }
+  
+  # Combined model with species
+  combined_model <- tryCatch({
+    glm(growth_success_binary ~ ph_0dpi + water_content_0dpi + log_ecoli_0dpi + species, 
+        data = growth_faecal_data, family = binomial)
+  }, error = function(e) {
+    cat("Combined Model: Unable to fit model - ", e$message, "\n")
+    NULL
+  })
+  if(!is.null(combined_model)) {
+    cat("Combined Model (including species effect):\n")
+    print(summary(combined_model))
+    cat("\n")
+  }
+  
+  # Species-only model to test overall species difference
+  species_model <- tryCatch({
+    glm(growth_success_binary ~ species, 
+        data = growth_faecal_data, family = binomial)
+  }, error = function(e) {
+    cat("Species Model: Unable to fit model - ", e$message, "\n")
+    NULL
+  })
+  if(!is.null(species_model)) {
+    cat("Species-only Model:\n")
+    print(summary(species_model))
+    cat("\n")
+  }
+}
+
+# Model comparison (only for successfully fitted models)
+if(exists("ph_model") || exists("water_model") || exists("ecoli_model") || exists("combined_model") || exists("species_model")) {
+  cat("\n### Model Comparison (AIC):\n")
+  if(!is.null(species_model)) cat(sprintf("- Species only: AIC = %.2f\n", AIC(species_model)))
+  if(!is.null(ph_model)) cat(sprintf("- pH + species: AIC = %.2f\n", AIC(ph_model)))
+  if(!is.null(water_model)) cat(sprintf("- Water content + species: AIC = %.2f\n", AIC(water_model)))
+  if(!is.null(ecoli_model)) cat(sprintf("- E. coli + species: AIC = %.2f\n", AIC(ecoli_model)))
+  if(!is.null(combined_model)) cat(sprintf("- Combined model: AIC = %.2f\n", AIC(combined_model)))
+}
+
+# Calculate odds ratios for combined model (if model was successfully fitted)
+if(!is.null(combined_model)) {
+  cat("\n### Odds Ratios (Combined Model):\n")
+  odds_ratios <- exp(coef(combined_model))
+  
+  # Try to calculate confidence intervals with error handling
+  conf_int <- tryCatch({
+    exp(confint(combined_model))
+  }, error = function(e) {
+    cat("Note: Unable to calculate confidence intervals due to limited variability in the data.\n")
+    NULL
+  })
+  
+  if(!is.null(conf_int)) {
+    for(i in 2:(length(odds_ratios)-1)) {  # Skip intercept and experiment effect
+      param_name <- names(odds_ratios)[i]
+      cat(sprintf("- %s: OR = %.3f (95%% CI: %.3f - %.3f)\n", 
+                  param_name, odds_ratios[i], conf_int[i,1], conf_int[i,2]))
+    }
+  } else {
+    for(i in 2:(length(odds_ratios)-1)) {  # Skip intercept and experiment effect
+      param_name <- names(odds_ratios)[i]
+      cat(sprintf("- %s: OR = %.3f (95%% CI: Not available)\n", 
+                  param_name, odds_ratios[i]))
+    }
+  }
+}
+```
+
+### Interpretation
+
+```{r interpretation}
+cat("### Key Findings:\n\n")
+
+# Determine significant relationships
+significant_vars <- c()
+for(i in 1:length(variables)) {
+  result <- calc_point_biserial(growth_faecal_data, variables[i])
+  if(!is.na(result$p_value) && result$p_value < 0.05) {
+    significant_vars <- c(significant_vars, var_names[i])
+  }
+}
+
+if(length(significant_vars) > 0) {
+  cat("**Significant relationships found between growth success and:**\n")
+  for(var in significant_vars) {
+    cat(sprintf("- %s\n", var))
+  }
+} else {
+  cat("**No statistically significant relationships found** between initial faecal sample characteristics and growth success at the p < 0.05 level.\n")
+}
+
+cat("\n**Species-specific insights:**\n")
+
+# Compare growth rates between species
+p_growth_rate <- if(nrow(p_ostreatus_data) > 0) {
+  round(sum(p_ostreatus_data$growth_success_binary == "1") / nrow(p_ostreatus_data) * 100, 1)
+} else { NA }
+
+g_growth_rate <- if(nrow(g_lucidum_data) > 0) {
+  round(sum(g_lucidum_data$growth_success_binary == "1") / nrow(g_lucidum_data) * 100, 1)
+} else { NA }
+
+if(!is.na(p_growth_rate) && !is.na(g_growth_rate)) {
+  cat(sprintf("- **P. ostreatus**: %.1f%% growth success rate (n=%d)\n", p_growth_rate, nrow(p_ostreatus_data)))
+  cat(sprintf("- **G. lucidum**: %.1f%% growth success rate (n=%d)\n", g_growth_rate, nrow(g_lucidum_data)))
+  
+  if(p_growth_rate > g_growth_rate) {
+    cat("- P. ostreatus shows higher adaptability to faecal substrate conditions\n")
+  } else if(g_growth_rate > p_growth_rate) {
+    cat("- G. lucidum unexpectedly outperforms P. ostreatus on faecal substrate\n")
+  } else {
+    cat("- Both species show similar growth success rates\n")
+  }
+}
+
+cat("\n**Practical implications:**\n")
+cat("- Species selection should consider substrate characteristics and treatment goals\n")
+cat("- P. ostreatus: Fast decomposer, suitable for rapid waste processing\n")
+cat("- G. lucidum: Slow grower, may offer unique biochemical transformations\n")
+cat("- Environmental parameter optimization may be species-specific\n")
+```
+
+------------------------------------------------------------------------
+
+**Note:** This analysis focuses exclusively on Experiment 1_2 data, which provides the most complete dataset for comprehensive analysis of fungal treatment effects on faecal material. Results are specific to the experimental conditions and species tested in this particular experiment.

@@ -1,0 +1,141 @@
+﻿Can fungi grow on human faecal material?
+
+
+Can fungi be used as a treatment strategy for compost toilet substrates?
+Introduction
+
+
+Decentralized sanitation is needed in places where sewered toilets can not be built due to remote location or no central treatment plants are available. To meet this critical need, a variety of decentralized sanitation technologies have been developed, each with its own approach to safely managing human waste. A primary challenge for these systems is to effectively treat the excreta to inactivate pathogens, control odors, and manage the final end-product in a sustainable and user-friendly way. These solutions range broadly, from simple pit latrines to more engineered systems that separate different waste streams at the source for distinct treatment. One solution for decentralized sanitation is the Urine Diversion Dry Toilet (UDDT), where faeces and urine are collected in separate chambers. Urine is mostly sterile and can be safely handled (...). The collected faecal material is covered using different additives, commonly used are ash, lime, sawdust, soil or other lignocellulosic materials, to help drying out the material faster and avoid bad odour (Tilley et al., 2014). The dried faecal mixture relies mostly on desiccation for pathogen inactivation. Because of the desiccation the collected material will not degrade faecal material and in combination with bulking agents lead to  accumulation of big amounts of material. The final product would still be reminiscent rather to mixed faecal material than to finished compost (Tilley et al., 2014). To shorten the treatment time, and reduce the final mass, composting of the material is an option, however, to create safe compost that reaches the required temperature of  55°C over a two week time period must be reached. In not closely observed piles the temperature can vary inside the pile and regularly turning is needed. Also the pile needs to have enough volume to hold the temperature, this requires enough organic material which might not be reached at household level. Composting at suboptimal conditions leads to insufficient pathogen inactivation and unfinished compost. Also composting requires handling of faecal material which can negatively influence user acceptance (...). To reduce manual manipulations by the user dry composting toilets where faecal material is degraded in the collection chamber itself. However, in these systems the composting process is hard to control.  A study looking at these systems showed that the collected faecal material becomes too dry for efficient degradation, but not dry enough for efficient pathogen deactivation and temperatures to guarantee safe substrate are not reached (Redlinger et al., 2001). This shows how degradation of faecal material can result in several deadlock states that significantly slow down or completely halt the degradation process. While drying out is one of them others are, the low C:N ratio of about  8:1. The low C:N ratio can cause high pH >8 which can lead to toxic ammonia production killing microbes and stopping decomposition and leading to bad odour. Especially at ambient temperature ammonia can be assembled in high concentrations in the substrate.Substrate compression and limited amount of crude fibers leading to dense structure creating anaerobic conditions (Rose et al., 2015), Slowing down the degradation process. Both C:N ratio and aeration could be corrected by addition of lignocellulose material as bulking agents. However, due to the increased surface and the dried material the water content of the faecal mass can become too low for bacteria which need high water activity to effectively grow (Ahn et al., 2008; Richard et al., 2002). Furthermore,lignocellulosic materials are recalcitrant and degrade slowly especially if thermophilic conditions are not reached. Also bacterial enzyme capabilities to degrade Ligno cellulose are limited. The addition of lignocellulose after each defaecation would lead to a final substrate where most of the dry solids of the collected material would consist of lignocellulose rather than faecal material. While these conditions and recalcitrant lignocellulose - inhibit bacterial degradation, they could make the material an ideal substrate for fungal growth. In nature filamentous fungi are an essential part in faecal mass degradation especially for degradation of dung of herbivores (Calaça et al., 2024). A diverse fungal community grows on dung with certain species entirely dependent on this substrate to reproduce (Richardson & Watling, 1968). However, despite their presence being well described on herbivore dung, actual physiochemical changes and influence on dung inhabiting microbes has rarely been studied. And natural fungal microflora involved in human human faeces has not been investigated to our knowledge. Human faeces contains about 5-7% nitrogen in dried solids which is higher compared to 1.8-3% in cattle manure (Rose et al., 2015; Zhao et al., 2022). Also Human faeces are much lower in plant fibers compared to herbivore dung where fibers can make up to 70% of the dried solids. Filamentous dung fungi have adapted to use the remaining resistant lignocellulose found in herbivore dung. However if lignocellulose is mixed with the human faeces they would have a high fiber content and strongly resemble herbivore dung. 
+
+
+Fungi adapted to dung are expected to be  well adapted to the challenging dung environment like high nitrogen content and high bacterial concentrations since it is their native habitat. Some fungal species have been proven that extracts can have antibacterial properties against a diverse array of pathogenic bacteria, also some that can be found in faeces. 
+
+
+The broad adaption to different environment conditions 
+
+
+To our knowledge this is the first scientific study looking at different fungal species and observing growth speed and the influence on pH, E. coli concentration and material degradation on human faeces. For this study fresh untreated human faecal samples were inoculated with different fungal species with different specializations and niches. Some dung isolated ascomycetes Sordaria, Coprinopsis species a zygomycetes and several cultured edible and medicinal mushrooms were used to test if they can colonize human faeces and how they influence the pH value, E. coli concentrations and the weight of the treated sample. 
+
+
+
+
+While bacteria rely on high water content and dissolved nutrients for growth, Fungi have a broader water content acceptance and can grow in dryer substrates and access nutrient sources in solid structures.(Huhe et al., 2017; Peleg, 2022). 
+
+
+ Bacterials additives are commercially available for pit latrines
+
+
+Optimization of degradation processes in composting are well studied and can improve composting speed or quality. However these composting tests usually take place in professional composting settings and with balanced substrates. In the challenging hard to control faecal sludge environment bacterial pit latrine additives had no effect on faecal degradation (Bakare et al., 2015). 
+
+
+To reach continuous degradation of faecal material in the hard to control compost toilet environment the process would need to work at a broad pH and humidity and temperature range. [a]
+Materials and Methods
+Fungal strains used
+
+
+Dung and faecal isolates
+Isolates from Marter, Horse dung and human faeces were isolated by incubation of smaples in the lab and transferring mycelium on MEA plates with chloramphenicol antibiotics.
+
+
+Cultivable Mushroom isolates
+Strains P. ostreatus, P. ostreatus v. Floridae, C. comatus, G. lucidum were commercially obtained from (Mycogenetics Germany). 
+
+
+Storage and inoculum preparation
+To maintain fungal cultures during the experimental time every two weeks samples were inoculated to a new MEA plate, inoculated at 25°C. 
+Faecal material collection and substrate preparation
+
+
+Faecal samples from one individual were used throughout the experiment. Faeces were collected using a faecal catcher(Abbexa, Cabmbridge ,UK) and transferred into a 3 liter freezing bag (freshstar clic-lock, Galaxus) and stored in an airtight box (Rothobox 3 Liter, Galaxus) and directly put in the fridge at 5°C. The collected faecal samples were stored max 1 day at 5°C.
+
+
+Sample preparation
+Pure faecal samples were weighted and homogenised by kneading in an aseptic freezing bag for approximately  2 min. Pure faecal samples were then transferred into a piping bag and distributed on plates 20±2g per plate. The plates were evenly streaked using a sterile spatula. 
+
+
+For the wood chip mixed samples, beechwood chips (Chipsi, beech wood chips fine, Galaxus ) were added at a 2:1 ratio. The mass was homogenised again by kneading by hand for 2 min. Mixed faecal samples were transferred to plates using a sterile plastic spatula. The mixed solution (15±2g) was added to each plate and evenly distributed. 
+Inoculation 
+Plates were inoculated immediately after preparation using 6mm agar plugs from fungal colonized 14days old MEA plate. The plates were photographed using an iPhone (....) on a pole at fixed distance. As an identifier for each picture, a QR code was placed next to the plate identifying the fungal species, experiment ID, and inoculum ID. Pictures were taken at 0dpi, 7dpi and 14 dpi. Pictures were analysed using ImageJ (v) to measure the area of the mycelium plot by manually drawing lines around the growth area.  The scale was set to 222.09 pixels per cm according to the measurement of a ruler in the same setting. Plates that were fully colonised were set to a calculated max value 0f 63.(...). If the mycelium died, the old value was maintained to keep the maximum spread of the mycelium at 14 dpi. If no growth occurred, the value was set to the original plug value from the 0dpi picture. Visual contaminations were measured in the same way. 
+
+
+Fungal mycelium quality was rated on a scale of 0-5. 
+0: no mycelium; 1: fully necrotic; 2: partly necrotic; 3: loose mycelium; 4: healthy dense mycelium substrate still visible; 5: very dense mycelium with almost no substrate visible. 
+Illustrated scale figure 
+(include example picture of scale here)
+pH measurements
+At day 14 dpi, a subsample of each plate was removed and dissolved in dest. water 1:2 (w/v). A pH meter (LGG- ph meter…) was used to measure the pH of the diluted sample. 
+E. coli concentration measurements
+A sample of approximately 1 g was filled into a 15 ml centrifuge tube (...), and it was dissolved in 5 ml 0.85% NaCl solution. Further dilutions, if needed, were done using 0.85% NaCl in reaction tubes 2 ml (...). After streaking, samples were immediately put back into the fridge in case too high or too low colony counts were reached and repeated the next day.  Samples were plated out on TBX chromogenic agar (Roth,(...)) The plates were incubated overnight at 40°C. And blue colonies were counted the next day.
+Ammonium measurements 
+To measure the ammonium concentration xy grams were added in a centrifuge tube only done for a few samples?[b]
+Data analysis
+The data set was analysed using RStudio v2024.04.1 software. 
+
+
+Data pertaining to growth success were filtered by excluding single-replicate data points, retaining only those with three or more biological replicates. Growth was deemed successful when the mycelium covered an area greater than 10 cm2 at 14 days post-inoculation (dpi). Area coverage analysis was filtered to include only data points with at least three biological replicates demonstrating growth greater than 10, thereby excluding poor-growing and non-growing fungi. For E. coli, pH, and weight loss analyses, data were filtered to retain only those with growth greater than 10 at 14 dpi. Control treatments were categorised into two groups: control without fungal contaminant and control with fungal contaminant. Fungal-inoculated plates that did not exhibit growth were pooled into one category, while fungal plates with contamination exceeding 20 were categorised as inoculated but contaminated.
+
+
+Results and Discussion
+Growth dynamics on pure human faeces
+For this analysis, fungal growth exceeding 10 cm² at 14 days post-inoculation (dpi) was selected as the threshold for successful colonization. Among all tested species, Sordaria spp. demonstrated the highest success rate, achieving 100% growth across all inoculation scenarios and faecal batches. Faecal isolate 1 and a Zygomycetes species also managed to establish growth, albeit more slowly and with lower reliability. In contrast, Trichoderma species largely failed under these conditions. Notably, all tested fungi eventually experienced mycelial dieback, with the mycelium degenerating into necrotic fungal biomass (Figure 2). Plates exhibiting fungal dieback developed a pronounced foul odour and visually unpleasant appearance. This restricted fungal growth led to stopping experiments on pure faecal material. As anticipated, pure faeces do not constitute an optimal substrate for filamentous fungi due to high nitrogen and water content coupled with low fiber content. Anaerobic conditions beneath the substrate surface and elevated bacterial populations likely outcompeted the fungi, leading to fungal death and subsequent utilization of the necromass as a nutrient source.
+  
+
+
+
+  
+
+On the 2:1 woodchip-to-faecal material substrate, fungal growth proved more successful. Several fungal species managed to still have a dense mycelium without die back at the 14 dpi timepoint.  F35 Sordaria isolate was the most successful of the tested species, looking at the colonization rate it remained healthy mycelium without dieback until the end of the assay, and forming its reproductive structure perithecia on the substrate. It was also the fastest species to colonize the whole plate in less than 7 days. All three tested Trichoderma strains managed to grow in all cases but after 7dpi the mycelium was getting weaker and almost completely disappeared at 14 dpi. Only T. koningii was the fastest of the tested Trichoderma species but had a fast mycelium die back after a short time period resulting a big variance, but it showed strong sporulation before dieback happened if it managed to colonize the whole plate; the other two isolates only partly manage to finish their life cycle before almost completely vanishing from the substrate. While dieback after sporulation might be due to the end of the life cycle, the die back before conidia production might be due to environmental stress (high pH) or the high E. coli competition. The dung isolated Zygomycetes was able to colonize and form conidia fast but slower compared to the S. fimicola F35. It was expected that the zygomycetes would be the fastest growing fungi in this assay, following the succession of fungi on dung. It managed to stay as mycelium until the end of the assay at 14 dpi.  
+Of the tested whiterot fungi in this assay, surprisingly the two wood inhabiting fungi performed best. P. ostreatus and G. lucidum were able to colonize the substrate in 75% of the cases, if they managed to grow initially they maintained a strong mycelium dominance on the substrate until the end of the assay and weeks later (data not shown). Although their growth was slower compared to the used ascomycetes and Zygomycetes. Surprisingly this fungi in nature are found on wood logs performed better on the fresh faecal sample than the dung associated Coprinopsis species and Coprinus comata which is an indicator for high soil nitrogen which did only grow in 2 out of 9 inoculations or in case of coprinus not at all. Also samples inoculated with P. ostreatus exhibited a distinctive substrate colour change from dark brown to straw-coloured resembling the original color of the wood chips (Figure 3). Also G. lucidum as well as P. ostreatus inhibited faecal smell. G. lucidum partly suppressed it to smelling neutral P. ostreatus had a strong mushroom odour. If the initial growth did start was dependent on the faecal sample, when one replicate on the faecal sample managed to grow, usually all replicates in that block did grow. There was a correlation between initial E. coli concentration and growth success  (p = 0.03) for P. ostreatus and G. lucidum. A low initial E. coli concentration correlates with growth success. To increase the success rate a stronger inoculum could help (...) to become dominant and outcompete other microorganisms or a pre-processing- like pasteurization process to reduce the microorganisms in the faecal sample.
+  
+
+Influence on pH, weight and E. coli concentrations
+  
+
+
+
+The pH value at 14 dpi was dependent on the inoculated species and on the level of visible microbial growth in control treatments. In control treatments without visible microbial growth like fungal mycelium the pH at 14 dpi was 5.5±xy. With visible microbial growth filamentous fungi or colonies on the plate the pH increased to 8±xy. The initial pH drop can be explained by bacterial degradation of simple accessible nutrients in the faeces, and the resulting production of Short Chain Fatty Acids (SCFAs). In this enclosed environment this can result in a deadlock situation if an organism is missing that is able to degrade the resulting SCFAs in the low pH environment at ambient temperature. However if an organism was degrading these acids like spontaneous appearing fungi the pH shifted to alkaline levels following the hasselbach equation shifting the Ammonium/ammonia ratio to higher ammonia content. High ammonium production is especially expected in substrates with a low C:N ratio like dung and faeces. This shift is observed in composting when simple carbon sources are used up. Usually the ammonia gets mineralized  by nitrification or lost to the air due to denitrification and Ammonia gas loss due to elevated temperatures (...). The increase in pH occurred in S. fimicola F35, as well for all the tested Trichoderma strains, as well as for the zygomycetes. However in the tested Wood decaying fungi P. ostreatus and G. lucidum this shift to alkaline pH did not happen. The pH for G. lucidum at 14 dpi was 5.5±xy and for P. ostreatus 6.5±xy. Both G. lucidum and P. ostreatus demonstrate remarkable pH adaptability, with G. lucidum exhibiting optimal growth around pH 5 while tolerating a broad range from pH 5-9, and P. ostreatus showing optimal growth at pH 6 with a similarly wide tolerance range of pH 4-8 (Jayasinghe et al., 2008) (add additional source for P. ostreatus). The pH in their optimal growth zone is indicating that they actively control the pH in their growth zone. This has been described for both species are able to secrete organic acids to optimize the efficiency of their enzymes. This seems not to be true for the other tested fungal species where the pH rised to around 9 which might be the reason for the mycelium die back of the trichoderma strains. However S. fimicola F35 had no visible changes even at pH 9.One of tested whiterot fungi that managed to grow in only two cases (data not shown, or included in the plot?) showed no active acidification it is probably adapted to high pH it managed to develop a very strong mycelium mat even at pH 9 and stayed alive over a long time period (data not published). The different strategies might be due to adaptation and different reproduction strategies. The dung adapted fungi seem not to actively regulate the pH because this shift is expected in their natural habitat. F40 Coprinopsis even showed better growth at pH 9 and was competitive even on already overgrown plates (unpublished data). The wood inhabiting P. ostreatus and G. lucidum would have to colonize a bigger area first to have enough nutrients stored to be able to produce their big fruiting bodies. Trying to efficiently dominate the substrate might therefore be a good strategy and investing energy in optimization of the substrate use up and protecting the claimed territory would make sense in their reproduction strategy.    
+
+
+
+
+Influence on E. coli concentrations on 14 dpi
+
+
+  
+
+
+
+The E.coli concentration in control treatments was strongly dependent on visible microbial growth. If there was no visible growth on the control plates no E. coli were detected on 14 dpi in the tested sample. If visible spontaneous fungal growth occurred the E. coli concentration increased xy±z.  Trichoderma as well as the zygomycetes species led to an increase in E. coli concentrations by xy±z xy±Z respectively. While the non- fungal growth showing plates stayed in the acidic deadlock state with no accessible nutrients, probably E. coli disappeared due to the unsuitable environment and lack of nutrients. It is known that fungi could increase bacterial presence in several ways, enzyme secretion and exudates from the mycelium will set free nutrients that would not be degradable by the bacteria on it is own (...) like carbon sources and proteins in the lignocellulose matrix. Also they might create "fungal highways," which facilitate the movement and dispersal of bacteria within the substrate  and create microhabitats that can enhance bacterial growth through mycelium exudates (Bravo et al., 2013). However the Interactions are complex and highly dependent on environmental conditions as pH nutrient density and other microbes present. S. fimicola as a dung fungi shares its natural habitat with E. coli and they must have evolved to each other's presence. No research looking specific at E. coli- S. fimicola interaction could be found. But the relationship seems to be beneficial for E. coli to rise higher than the initial concentration. Also Trichoderma and Zygomycetes seem not to actively influence E. coli concentration with rise to similar levels. In contrast, in plates with visible P. ostreatus growth the E. coli concentration did not increase but stayed around the initial concentration. While there seems to be no strong antagonistic effect it still stopped E. coli from massive reproduction reaching high levels. G.lucidum had the strongest suppressive effect on  E.coli concentrations reaching comparable levels as the control plates without fungal growth. 
+
+
+Inhibitory effects of fruitbody extracts as well as Volatile organic compounds have shown antibacterial effects on E. coli as well as other pathogenic bacteria have been shown for P. ostreatus and G. lucidum while specific effects on E. coli were stronger in G. lucidum extracts (Gashaw et al., 2020; Hamad et al., 2022; Younis et al., 2015, Cör Andrejč et al., 2022; Mousavi et al., 2023; Solomon et al., 2025). However in-vivo co-cultivation research focusing on P. ostreatus  or G. lucidum - E. Coli interaction is absent. And effects are expected to be species and environmental specific. Also their ecological niche in nature is not overlapping, specific adaptation to each other are therefore unlikely. And the antibacterial effects might be due to their reproduction strategy and their need to be able to claim a substrate for a long time to be able to form reproductive structures. 
+
+
+Fungal influence on the wet weight 
+
+
+  
+
+The effect was significantly different between fungal species Sordaria caused the biggest weight loss with  xy+- and was the only treatment thea was significant (p = 0.009) different than to control without visible fungal growth (but was not significant with fungal growth)[c].  However the other tested fungi reached comparable weight reductions with a small trend to higher weight loss than the control.  Sordaria was the fastest growing fungus in this assay, it was able to colonize the whole plate in less than 7 days resulting in a longer time to actively degrade material. Also it increased bacteria numbers significantly which also must have used up nutrients. 
+
+
+Comparing enzymatic capabilities the White rot fungi P. ostreatus and G. lucidum would have the strongest enzymes to degrade lignocellulose, while sordaria also have laccases and cellulases it is less prominent for that. While Zygomycetes is lacking cellulases as well as lignin degradable enzymes, Trichoderma is more adapted to cellulose. 
+
+
+
+
+
+
+Looking at the enzymatic capabilities of these tested fungi they have similar enzymes, all of them are able to degrade lignocellulose, especially as they produce laccases. However, Sordaria is mainly adapted to the dung environment and showed very fast growth so in the 2 weeks assay they already covered the complete plate in less than 7 days which means they were able to degrade the material for a longer time. Also they appeared to produce less fungal biomass than the other two, and boosting bacterial activity more which would also enhance material degradation. The wood adapted basidiomycetes P. ostreatus and G. lucidum would be expected to be superior in material degradation in the long run. 
+
+Summary and study limitations
+The experiment could prove that fungal inoculation can significantly change physical parameters and E.coli concentrations in faecal material. Colonization rate was dependent on species used with the strongest species S. fimicola F35 with 100% success rate and whole plate coverage in less than 7 days. Trichoderma experienced dieback after 7 days while P. ostreatus and G. ludicum experienced 50% success rates and almost whole plate coverage after 14 dpi. The lower success rate correlated with initial E. coli concentrations in the faecal material. P. ostreatus was able to stabilize E. coli concentrations at initial levels and G. lucidum was able to suppress E. coli concentration to low concentrations. The other fungal species caused an increase in E.coli concentrations up to 2.5 log. P. ostreatus as well as G. lucidum seemed to actively manipulate the substrate pH at their respective optimal level. Substrate mass changes were only significant for S. fimicola F35, with a trend to bi higher also in the other tested fungi. P. ostreatus and G. lucidum were able to change faecal material appearance and suppress faecal smell. This study only looked at a 2 week timepoint and only faecal material from one person was used. It was mainly designed to select fungal species for further research but the results are very promising and fungi could indeed be a good resource to treat faecal material from UDDT or compost toilets. However to obtain a significant influence on the mass longer treatment times would be necessary at ambient temperature. However to make it a practical solution the fungal growth must be guaranteed and maintained until the end of the degradation process. There is a high risk for failure that could cause rotting fungal biomass which can become hazardous on its own. Therefore research should look at what could make the fungal colonization reliable and staying dominant in a non enclosed environment where it would be exposed to bacteria and competing fungi from the environment and from diverse faecal sources of different toilet users. 
+
+
+
+
+Outlook 
+Future research will use these species to further investigate optimization of the inoculation process, and optimization of the bulking agent to enhance the degradation process. 
+[a]Keep try to include above
+[b]Think about including after more replicates have been done. repeat with another one where fungal growth did take place. to prove that low ph i not due to absence of ammon
+[c]test this in the final data set?
