@@ -12,3 +12,6 @@ knitr
 kableExtra
 gridExtra
 scales
+Matrix
+lme4
+broom.mixed
